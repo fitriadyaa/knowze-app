@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "com.knowzeteam.knowze"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.knowzeteam.knowze"
