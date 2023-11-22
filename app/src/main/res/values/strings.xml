@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">knowze</string>
+
+    <string name="icon_login">Icon Login</string>
+    <string name="login_with_google">Login with Google</string>
+    <string name="register">Register</string>
+    <string name="login_with_email">Login with Email</string>
 </resources>
