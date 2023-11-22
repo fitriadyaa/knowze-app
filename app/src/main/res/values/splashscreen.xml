@@ -1,0 +1,10 @@
+<!-- Splash Screen -->
+
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.SplashScreen.MySplash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/backgorund_splashscreen</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item> <!-- Ini ndak bisa diisi Teks, harus Icon/Gambar Logo -->
+        <item name="postSplashScreenTheme">@style/Theme.Knowze</item>
+    </style>
+</resources>
