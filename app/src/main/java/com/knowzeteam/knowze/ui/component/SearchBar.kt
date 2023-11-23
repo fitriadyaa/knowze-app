@@ -42,8 +42,7 @@ private fun SearchBarContent(searchText: String, onValueChange: (String) -> Unit
         modifier = Modifier
             .fillMaxWidth()
             .height(50.dp)
-            .background(Color.White, RoundedCornerShape(12.dp))
-            .padding(horizontal = 16.dp),
+            .background(Color.White, RoundedCornerShape(12.dp)),
         contentAlignment = Alignment.CenterStart
     ) {
         BasicTextField(
@@ -61,7 +60,6 @@ private fun SearchBarContent(searchText: String, onValueChange: (String) -> Unit
             Text(
                 text = "Cara membuka tutup kaleng...",
                 color = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.padding(start = 16.dp)
             )
         }
         Image(

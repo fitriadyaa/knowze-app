@@ -62,7 +62,7 @@ fun HomeScreen(
                 )
                 Spacer(modifier = Modifier.width(30.dp))
                 Text(
-                    text = stringResource(id = R.string.selamat) + "Fitria",
+                    text = stringResource(id = R.string.selamat) + " Fitria",
                     style = MaterialTheme.typography.titleLarge.copy(
                         fontWeight = FontWeight.Bold,
                         color = Color.Black
@@ -85,7 +85,7 @@ fun HomeScreen(
                 .padding(16.dp)
         ) {
             LazyColumn(
-                modifier = Modifier.height(500.dp)
+                modifier = Modifier.height(520.dp)
             ) {
                 item {
                     Spacer(modifier = Modifier.height(16.dp))
@@ -140,7 +140,7 @@ fun SuggestionBox(
             text = stringResource(id = R.string.coba_ini),
             style = MaterialTheme.typography.bodyMedium
         )
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(10.dp))
         Box(
             modifier = modifier
                 .background(MaterialTheme.colorScheme.surface, RoundedCornerShape(12.dp))
