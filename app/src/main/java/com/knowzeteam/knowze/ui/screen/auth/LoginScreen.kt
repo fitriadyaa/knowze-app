@@ -54,46 +54,6 @@ fun LoginScreen(){
                 text = stringResource(R.string.login_with_google)
             )
         }
-
-        // Register ClickableText
-        ClickableText(
-            onClick = { /* Buat Register */ },
-            text = AnnotatedString(
-                stringResource(R.string.register),
-            ),
-            style = TextStyle(
-                color = MainColor,
-                fontSize = 14.sp,
-                fontFamily = PoppinsFontFamily,
-                fontWeight = FontWeight.Medium
-            ),
-            modifier = Modifier
-                .padding(16.dp),
-        )
-    }
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize(),
-        horizontalAlignment = Alignment.End,
-        verticalArrangement = Arrangement.Bottom
-    ) {
-        // Login with Email ClickableText
-        ClickableText(
-            onClick = { /* Buat Login with Email */ },
-            text = AnnotatedString(
-                stringResource(R.string.login_with_email)
-            ),
-            style = TextStyle(
-                color = MainColor,
-                fontSize = 14.sp,
-                fontFamily = PoppinsFontFamily,
-                fontWeight = FontWeight.Medium,
-                textAlign = TextAlign.End
-            ),
-            modifier = Modifier
-                .padding(16.dp)
-        )
     }
 }
 
