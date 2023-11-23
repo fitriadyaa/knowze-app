@@ -28,9 +28,7 @@ import androidx.compose.ui.unit.sp
 import com.knowzeteam.knowze.R
 import com.knowzeteam.knowze.ui.theme.KnowzeTheme
 @Composable
-fun SearchBar(
-    modifier: Modifier = Modifier
-) {
+fun SearchBar() {
     var searchText by remember { mutableStateOf("") }
 
     SearchBarContent(searchText, onValueChange = { searchText = it })
@@ -42,6 +40,7 @@ private fun SearchBarContent(searchText: String, onValueChange: (String) -> Unit
         modifier = Modifier
             .fillMaxWidth()
             .height(50.dp)
+            .padding(horizontal = 16.dp)
             .background(Color.White, RoundedCornerShape(12.dp)),
         contentAlignment = Alignment.CenterStart
     ) {
