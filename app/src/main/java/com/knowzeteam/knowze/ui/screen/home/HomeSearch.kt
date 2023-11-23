@@ -19,6 +19,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
+import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -43,7 +44,7 @@ fun HomeSearch(
         modifier = modifier
             .fillMaxSize()
             .background(color = MaterialTheme.colorScheme.secondaryContainer)
-    ){
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -58,7 +59,7 @@ fun HomeSearch(
             ) {
                 IconButton(onClick = {}) {
                     Icon(
-                       imageVector = Icons.Filled.KeyboardArrowLeft,
+                        imageVector = Icons.Filled.KeyboardArrowLeft,
                         contentDescription = "Back"
                     )
                 }
@@ -71,6 +72,7 @@ fun HomeSearch(
         }
     }
 }
+
 
 @Composable
 fun RecommendationContent(
@@ -149,11 +151,17 @@ fun SettingDuration(
                     onValueChangeFinished = {},
                     valueRange = 0f..5f,
                     steps = 4,
-                    modifier = modifier
+                    modifier = modifier,
+                    colors = SliderDefaults.colors(
+                        thumbColor = MaterialTheme.colorScheme.primary,
+                        activeTrackColor = MaterialTheme.colorScheme.primary,
+                        inactiveTrackColor = MaterialTheme.colorScheme.secondary,
+                    ),
                 )
                 Row(
                     modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
+                    horizontalArrangement = Arrangement.spacedBy(14.dp),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     rangeLabels.forEachIndexed { _, label ->
                         Text(
@@ -168,8 +176,6 @@ fun SettingDuration(
                 }
             }
         }
-
-
     }
 }
 
