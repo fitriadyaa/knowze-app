@@ -1,3 +1,14 @@
 <resources>
-    <string name="app_name">knowze</string>
+    <string name="app_name" translatable="false">knowze</string>
+    //MenuItem
+    <string name="menu_rekomendasi" translatable="false">Cari Rekomendasi Kursusmu</string>
+    <string name="menu_galeri" translatable="false">Galeri Kursus</string>
+    <string name="menu_galeri_detail" translatable="false">Lihat dan berikan feedback untuk kursus pengguna lain</string>
+    <string name="menu_keyword" translatable="false">Trending Keyword</string>
+    <string name="menu_keyword_detail">Lihat kata kunci dan topik yang populer</string>
+    <string name="menu_selamat" translatable="false">SELAMAT DATANG DI KNOWZE</string>
+    <string name="menu_selamat_detail">kebingungan ini membuat seseorang tidak tidur berhari-hari karena sangat mengingingkan 140 juta untuk DP Rumah di solo </string>
+
+    //HomeScreen
+    <string name="selamat">Selamat Datang, </string>
 </resources>
