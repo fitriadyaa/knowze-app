@@ -63,49 +63,22 @@ fun IntroThridScreen() {
         )
     }
 
-    Spacer(modifier = Modifier.height(20.dp))
-
     Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Bottom,
         modifier = Modifier
             .fillMaxSize()
     ) {
-        Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
+        Button(
+            onClick = { /* Login */ },
+            colors = ButtonDefaults.buttonColors(MainColor),
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
+                .padding(bottom = 25.dp)
+                .size(156.dp, 56.dp)
         ) {
-            ClickableText(
-                onClick = { /* Buat Skip */ },
-                text = AnnotatedString(
-                    stringResource(R.string.skip_welcome)
-                ),
-                style = TextStyle(
-                    color = MainColor,
-                    fontSize = 18.sp,
-                    fontFamily = PoppinsFontFamily,
-                    fontWeight = FontWeight.Medium,
-                    textAlign = TextAlign.End
-                ),
-                modifier = Modifier
-                    .padding(start = 40.dp, bottom = 60.dp)
+            Text(
+                text = stringResource(id = R.string.button_get_started),
             )
-
-            Button(
-                onClick = { /* Buat next intro screen */ },
-                colors = ButtonDefaults.buttonColors(MainColor),
-                modifier = Modifier
-                    .padding(end = 40.dp, bottom = 60.dp)
-                    .size(56.dp, 56.dp)
-                    .clip(CircleShape)
-            ) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_navigate),
-                    contentDescription = null
-                )
-            }
         }
     }
 }
