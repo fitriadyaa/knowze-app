@@ -40,7 +40,7 @@ fun HomeScreen(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(color = MaterialTheme.colorScheme.primary)
+            .background(color = MaterialTheme.colorScheme.secondaryContainer)
     ) {
         Column(
             modifier = Modifier
@@ -137,13 +137,13 @@ fun SuggestionBox(
 ) {
     Column {
         Text(
-            text = "Coba ini",
+            text = stringResource(id = R.string.coba_ini),
             style = MaterialTheme.typography.bodyMedium
         )
         Spacer(modifier = Modifier.height(16.dp))
         Box(
             modifier = modifier
-                .background(Color.LightGray, RoundedCornerShape(12.dp))
+                .background(MaterialTheme.colorScheme.surface, RoundedCornerShape(12.dp))
                 .padding(16.dp)
                 .height(20.dp)
         ) {
