@@ -11,4 +11,5 @@
 
     //HomeScreen
     <string name="selamat">Selamat Datang, </string>
+    <string name="coba_ini">Coba ini</string>
 </resources>

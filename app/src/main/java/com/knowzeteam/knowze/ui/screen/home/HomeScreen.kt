@@ -40,7 +40,7 @@ fun HomeScreen(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(color = MaterialTheme.colorScheme.primary)
+            .background(color = MaterialTheme.colorScheme.secondaryContainer)
     ) {
         Column(
             modifier = Modifier
@@ -62,7 +62,7 @@ fun HomeScreen(
                 )
                 Spacer(modifier = Modifier.width(30.dp))
                 Text(
-                    text = stringResource(id = R.string.selamat) + "Fitria",
+                    text = stringResource(id = R.string.selamat) + " Fitria",
                     style = MaterialTheme.typography.titleLarge.copy(
                         fontWeight = FontWeight.Bold,
                         color = Color.Black
@@ -85,7 +85,7 @@ fun HomeScreen(
                 .padding(16.dp)
         ) {
             LazyColumn(
-                modifier = Modifier.height(500.dp)
+                modifier = Modifier.height(520.dp)
             ) {
                 item {
                     Spacer(modifier = Modifier.height(16.dp))
@@ -137,13 +137,13 @@ fun SuggestionBox(
 ) {
     Column {
         Text(
-            text = "Coba ini",
+            text = stringResource(id = R.string.coba_ini),
             style = MaterialTheme.typography.bodyMedium
         )
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(10.dp))
         Box(
             modifier = modifier
-                .background(Color.LightGray, RoundedCornerShape(12.dp))
+                .background(MaterialTheme.colorScheme.surface, RoundedCornerShape(12.dp))
                 .padding(16.dp)
                 .height(20.dp)
         ) {
