@@ -22,6 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.knowzeteam.knowze.R
+import com.knowzeteam.knowze.ui.theme.KnowzeTheme
 import com.knowzeteam.knowze.ui.theme.MainColor
 import com.knowzeteam.knowze.ui.theme.PoppinsFontFamily
 
@@ -86,5 +87,7 @@ fun IntroThridScreen() {
 @Composable
 @Preview(showBackground = true)
 fun IntroThridScreenPreview() {
-    IntroThridScreen()
+    KnowzeTheme {
+        IntroThridScreen()
+    }
 }

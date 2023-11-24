@@ -24,6 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.knowzeteam.knowze.R
+import com.knowzeteam.knowze.ui.theme.KnowzeTheme
 import com.knowzeteam.knowze.ui.theme.MainColor
 import com.knowzeteam.knowze.ui.theme.PoppinsFontFamily
 
@@ -60,5 +61,7 @@ fun LoginScreen(){
 @Preview(showBackground = true)
 @Composable
 fun LoginScreenPreview() {
-    LoginScreen()
+    KnowzeTheme {
+        LoginScreen()
+    }
 }
