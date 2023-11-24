@@ -1,14 +1,16 @@
 package com.knowzeteam.knowze.ui.screen.welcome
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.ClickableText
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,17 +27,20 @@ import com.knowzeteam.knowze.R
 import com.knowzeteam.knowze.ui.theme.KnowzeTheme
 
 @Composable
-fun IntroSecondScreen() {
+fun IntroSecondScreen(
+    modifier: Modifier = Modifier,
+    onNextClick: () -> Unit,
+    onSkipClick: () -> Unit
+) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
-        modifier = Modifier
-            .fillMaxSize()
+        modifier = modifier.fillMaxSize()
     ) {
         Image(
             painter = painterResource(R.drawable.ic_intro2),
             contentDescription = stringResource(R.string.icon_welcome),
-            modifier = Modifier
+            modifier = modifier
                 .size(324.dp, 316.dp)
         )
 
@@ -48,73 +53,69 @@ fun IntroSecondScreen() {
                 textAlign = TextAlign.Center,
                 fontWeight = FontWeight.Bold,
             ),
-            modifier = Modifier
-                .fillMaxWidth()
+            modifier = modifier.fillMaxWidth()
         )
 
         Text(
             text = stringResource(id = R.string.desc_intro2),
-            style = MaterialTheme.typography.titleSmall.copy(
-                fontSize = 14.sp,
-                fontWeight = FontWeight.Light,
+            style = MaterialTheme.typography.bodyMedium.copy(
                 textAlign = TextAlign.Center,
             ),
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxWidth()
                 .padding(horizontal = 40.dp)
-                .padding(top = 20.dp)
         )
     }
 
-    Spacer(modifier = Modifier.height(20.dp))
+    Spacer(modifier = modifier.height(20.dp))
 
     Column(
         verticalArrangement = Arrangement.Bottom,
-        modifier = Modifier
-            .fillMaxSize()
+        modifier = modifier.fillMaxSize()
     ) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxWidth()
-                .padding(16.dp)
+                .padding(bottom = 60.dp, start = 30.dp, end = 30.dp)
         ) {
             ClickableText(
-                onClick = { /* Buat Skip */ },
-                text = AnnotatedString(
-                    stringResource(R.string.skip_welcome)
-                ),
+                onClick = { onSkipClick() },
+                text = AnnotatedString("Skip"),
                 style = MaterialTheme.typography.titleMedium.copy(
-                    fontSize = 18.sp,
                     fontWeight = FontWeight.Medium,
                     color = MaterialTheme.colorScheme.primary,
                 ),
-                modifier = Modifier
-                    .padding(start = 40.dp, bottom = 60.dp)
             )
 
-            Button(
-                onClick = { /* Buat next intro screen */ },
-                colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary),
+            Surface(
                 modifier = Modifier
-                    .padding(end = 40.dp, bottom = 60.dp)
-                    .size(56.dp, 56.dp)
+                    .size(56.dp)
                     .clip(CircleShape)
+                    .clickable(onClick = onNextClick),
+                color = MaterialTheme.colorScheme.primary
             ) {
                 Icon(
-                    painter = painterResource(R.drawable.ic_navigate),
-                    contentDescription = null
+                    imageVector = Icons.Default.KeyboardArrowRight,
+                    contentDescription = "Next",
+                    tint = MaterialTheme.colorScheme.onPrimary,
+                    modifier = Modifier
+                        .padding(16.dp)
                 )
             }
+
         }
     }
 }
 
 @Composable
 @Preview(showBackground = true)
-fun IntroSecondScreenPreview() {
+fun IntroSecondPreview() {
     KnowzeTheme {
-        IntroSecondScreen()
+        IntroSecondScreen(
+            onNextClick = { /* handle next click */ },
+            onSkipClick = { /* handle skip click */ }
+        )
     }
 }
