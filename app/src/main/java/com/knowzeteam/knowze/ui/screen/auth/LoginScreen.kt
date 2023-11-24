@@ -6,18 +6,16 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -25,8 +23,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.knowzeteam.knowze.R
 import com.knowzeteam.knowze.ui.theme.KnowzeTheme
-import com.knowzeteam.knowze.ui.theme.MainColor
-import com.knowzeteam.knowze.ui.theme.PoppinsFontFamily
 
 @Composable
 fun LoginScreen(){
@@ -49,10 +45,16 @@ fun LoginScreen(){
             shape = RoundedCornerShape(10.dp),
             modifier = Modifier
                 .size(335.dp, 51.dp),
-            colors = ButtonDefaults.buttonColors(MainColor)
+            colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary),
         ) {
             Text(
-                text = stringResource(R.string.login_with_google)
+                text = stringResource(R.string.login_with_google),
+                style = MaterialTheme.typography.titleMedium.copy(
+                    fontSize = 16.sp,
+                    color = Color.White,
+                    textAlign = TextAlign.Center,
+                    fontWeight = FontWeight.Bold,
+                )
             )
         }
     }

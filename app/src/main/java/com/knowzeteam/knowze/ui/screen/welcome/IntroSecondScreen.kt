@@ -8,6 +8,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -15,7 +16,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -23,8 +23,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.knowzeteam.knowze.R
 import com.knowzeteam.knowze.ui.theme.KnowzeTheme
-import com.knowzeteam.knowze.ui.theme.MainColor
-import com.knowzeteam.knowze.ui.theme.PoppinsFontFamily
 
 @Composable
 fun IntroSecondScreen() {
@@ -45,18 +43,22 @@ fun IntroSecondScreen() {
 
         Text(
             text = stringResource(id = R.string.title_intro2),
-            fontSize = 24.sp,
-            fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.titleLarge.copy(
+                fontSize = 24.sp,
+                textAlign = TextAlign.Center,
+                fontWeight = FontWeight.Bold,
+            ),
             modifier = Modifier
                 .fillMaxWidth()
         )
 
         Text(
             text = stringResource(id = R.string.desc_intro2),
-            fontSize = 14.sp,
-            fontWeight = FontWeight.Light,
-            textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.titleSmall.copy(
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Light,
+                textAlign = TextAlign.Center,
+            ),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 40.dp)
@@ -83,12 +85,10 @@ fun IntroSecondScreen() {
                 text = AnnotatedString(
                     stringResource(R.string.skip_welcome)
                 ),
-                style = TextStyle(
-                    color = MainColor,
+                style = MaterialTheme.typography.titleMedium.copy(
                     fontSize = 18.sp,
-                    fontFamily = PoppinsFontFamily,
                     fontWeight = FontWeight.Medium,
-                    textAlign = TextAlign.End
+                    color = MaterialTheme.colorScheme.primary,
                 ),
                 modifier = Modifier
                     .padding(start = 40.dp, bottom = 60.dp)
@@ -96,7 +96,7 @@ fun IntroSecondScreen() {
 
             Button(
                 onClick = { /* Buat next intro screen */ },
-                colors = ButtonDefaults.buttonColors(MainColor),
+                colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary),
                 modifier = Modifier
                     .padding(end = 40.dp, bottom = 60.dp)
                     .size(56.dp, 56.dp)
