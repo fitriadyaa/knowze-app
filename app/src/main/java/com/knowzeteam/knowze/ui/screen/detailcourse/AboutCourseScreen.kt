@@ -166,7 +166,7 @@ fun AboutCourseScreen(
                         Text(
                             text = stringResource(id = R.string.course_time)
                         )
-                        // Rating Course //
+                        // Course Time //
                     }
 
                     Divider(modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp))
@@ -249,7 +249,7 @@ fun BannerCourse(
             verticalAlignment = Alignment.CenterVertically,
             modifier = modifier
                 .fillMaxWidth()
-                .padding(bottom = 60.dp, start = 30.dp, end = 30.dp)
+                .padding(bottom = 60.dp, start = 10.dp, end = 30.dp)
         ) {
 
             Surface(
