@@ -12,4 +12,14 @@
     //HomeScreen
     <string name="selamat">Selamat Datang, </string>
     <string name="coba_ini">Coba ini</string>
+
+    <!-- DetailScreen -->
+    <string name="course_title">Photography Pemula</string>
+    <string name="course_rating">5.0</string>
+    <string name="course_time">4h, 23min</string>
+    <string name="desc_title">Tentang Kursus ini</string>
+    <string name="desc">You can learn about a variety of photography tecniques, tools, topics from selecting lenses and ligthting to composition, editing and color grading</string>
+    <string name="start_now">Mulai Sekarang!</string>
+    <string name="course_content">Konten Kursus</string>
+    <string name="topic">8 Topik</string>
 </resources>
