@@ -35,9 +35,9 @@ import com.knowzeteam.knowze.ui.theme.KnowzeTheme
 
 @Composable
 fun HomeScreen(
-    modifier: Modifier = Modifier,
-) {
-    Box(
+    modifier: Modifier = Modifier
+){
+   Box( 
         modifier = modifier
             .fillMaxSize()
             .background(color = MaterialTheme.colorScheme.secondaryContainer)

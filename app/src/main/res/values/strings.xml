@@ -1,5 +1,20 @@
 <resources>
-    <string name="app_name" translatable="false">knowze</string>
+    <string name="app_name">knowze</string>
+
+    <string name="icon_login">Icon Login</string>
+    <string name="icon_welcome">Icon Welcome</string>
+    <string name="login_with_google">Login with Google</string>
+    <string name="register">Register</string>
+    <string name="skip_welcome">Skip</string>
+    <string name="title_intro1">Check Understanding</string>
+    <string name="title_intro2">Make Easy Learning</string>
+    <string name="title_intro3">Make Easy Learning</string>
+    <string name="desc_intro1">Unlock your learning potential and develop your interest</string>
+    <string name="desc_intro2">Check your understood with quiz session and see the progress</string>
+    <string name="desc_intro3">Use chatbot feature while still confused with something</string>
+    <string name="button_get_started">Get Started</string>
+    <string name="login_with_email">Login with Email</string>
+    
     //MenuItem
     <string name="menu_rekomendasi" translatable="false">Cari Rekomendasi Kursusmu</string>
     <string name="menu_galeri" translatable="false">Galeri Kursus</string>
@@ -22,4 +37,5 @@
     <string name="start_now">Mulai Sekarang!</string>
     <string name="course_content">Konten Kursus</string>
     <string name="topic">8 Topik</string>
+
 </resources>
