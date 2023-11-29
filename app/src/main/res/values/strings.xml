@@ -46,4 +46,9 @@
 
     <string name="generate_message">Tahukah kamu perbuatan dosa menyebabkanmu masuk neraka</string>
     <string name="cancel">Batal</string>
+
+    <!--  -->
+    <string name="course_done">Kursus Selesai</string>
+    <string name="congratulation_course">Selamat anda telah menyelesaikan kursus ini, yuk belajar hal menarik lainnya!</string>
+    <string name="feedback_button">Kirim Feedback</string>
 </resources>
