@@ -1,9 +1,12 @@
 package com.knowzeteam.knowze.ui.screen.auth
 
+import android.app.Activity
+import android.content.Intent
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -19,17 +22,55 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
 import com.knowzeteam.knowze.R
 import com.knowzeteam.knowze.ui.theme.KnowzeTheme
 
 @Composable
 fun LoginScreen(
+    viewModel: GoogleLoginViewModel = viewModel(),
     modifier: Modifier = Modifier
 ) {
+    val context = LocalContext.current
+
+    // Create an ActivityResultLauncher
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val data: Intent? = result.data
+            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+            try {
+                val account = task.getResult(ApiException::class.java)
+                val idToken = account?.idToken
+                if (!idToken.isNullOrBlank()) {
+                    viewModel.signInWithGoogle(
+                        idToken,
+                        onSuccess = {
+                            // Handle successful login
+                        },
+                        onFailure = { error ->
+                            // Handle login failure
+                        }
+                    )
+                } else {
+                    // Handle missing ID token
+                }
+            } catch (e: ApiException) {
+                // Handle sign-in failure
+            }
+        }
+    }
+
+
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -52,9 +93,19 @@ fun LoginScreen(
 
             Spacer(modifier = Modifier.weight(1f)) // Take up remaining space
 
-            GoogleLoginButton(
-                onClick = {},
-            )
+            GoogleLoginButton(onClick = {
+                // Initiate Google Sign-In
+                val googleSignInClient = GoogleSignIn.getClient(
+                    context,
+                    GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                        .requestIdToken("702409136848-erealnui6do9k0ka2u111hd256qbuc5o.apps.googleusercontent.com")
+                        .requestEmail()
+                        .build()
+                )
+                val signInIntent = googleSignInClient.signInIntent
+                launcher.launch(signInIntent)
+            })
+
         }
     }
 }

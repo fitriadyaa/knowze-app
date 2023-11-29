@@ -27,7 +27,6 @@ import com.knowzeteam.knowze.ui.theme.KnowzeTheme
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
-
 ){
     Column(
         modifier = modifier

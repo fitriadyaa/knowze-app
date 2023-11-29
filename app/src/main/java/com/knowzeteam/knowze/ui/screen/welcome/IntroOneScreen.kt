@@ -28,9 +28,9 @@ import com.knowzeteam.knowze.ui.theme.KnowzeTheme
 
 @Composable
 fun IntroOneScreen(
-    modifier: Modifier = Modifier,
     onNextClick: () -> Unit,
-    onSkipClick: () -> Unit
+    onSkipClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -93,7 +93,7 @@ fun IntroOneScreen(
                 modifier = Modifier
                     .size(56.dp)
                     .clip(CircleShape)
-                    .clickable(onClick = onNextClick),
+                    .clickable(onClick = {onNextClick()} ),
                 color = MaterialTheme.colorScheme.primary
             ) {
                 Icon(
@@ -115,7 +115,7 @@ fun IntroOneScreenPreview() {
     KnowzeTheme {
         IntroOneScreen(
             onNextClick = { /* handle next click */ },
-            onSkipClick = { /* handle skip click */ }
+            onSkipClick = { /* handle skip click */ },
         )
     }
 }
