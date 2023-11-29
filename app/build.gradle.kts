@@ -79,7 +79,7 @@ dependencies {
     implementation("com.google.accompanist:accompanist-pager-indicators:0.13.0")
 
     // Live Data
-    implementation("androidx.lifecycle:lifecycle-livedata:2.6.2")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
