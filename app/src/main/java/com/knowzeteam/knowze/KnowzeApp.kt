@@ -1,12 +1,13 @@
 package com.knowzeteam.knowze
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.knowzeteam.knowze.ui.navigation.Screen
 import com.knowzeteam.knowze.ui.screen.auth.LoginScreen
-import com.knowzeteam.knowze.ui.screen.auth.LoginViewModel
 import com.knowzeteam.knowze.ui.screen.home.HomeScreen
 import com.knowzeteam.knowze.ui.screen.welcome.IntroOneScreen
 import com.knowzeteam.knowze.ui.screen.welcome.IntroSecondScreen
@@ -16,6 +17,7 @@ import com.knowzeteam.knowze.ui.screen.welcome.SplashScreen
 @Composable
 fun KnowzeApp() {
     val navController = rememberNavController()
+    val context = LocalContext.current
 
     NavHost(navController = navController, startDestination = Screen.Splash.route) {
         composable(Screen.Splash.route) {
@@ -40,14 +42,15 @@ fun KnowzeApp() {
             )
         }
 
-        composable(Screen.Login.route){
-            LoginScreen(
-                navController = navController
-            )
+        composable(Screen.Login.route) {
+            LoginScreen(navController = navController)
         }
 
+
         composable(Screen.Home.route){
-            HomeScreen()
+            HomeScreen(
+                navController = navController
+            )
         }
     }
 }
