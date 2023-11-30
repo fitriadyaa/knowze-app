@@ -1,6 +1,8 @@
 package com.knowzeteam.knowze.ui.screen.auth
 
 import android.app.Activity
+import android.util.Log
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.material3.Text
@@ -18,25 +20,28 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.Scopes
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.Scope
 import com.knowzeteam.knowze.R
-import com.knowzeteam.knowze.ui.theme.KnowzeTheme
+import com.knowzeteam.knowze.ui.navigation.Screen
 
 @Composable
 fun LoginScreen(
+    navController: NavHostController,
     viewModel: LoginViewModel = viewModel(),
     modifier: Modifier = Modifier
 ) {
@@ -48,8 +53,27 @@ fun LoginScreen(
         .requestEmail()
         .build()
 
-
     val googleSignInClient = GoogleSignIn.getClient(context, gso)
+    val isAuthenticated = viewModel.isAuthenticated.collectAsState().value
+
+    // Responding to changes in authentication state
+    LaunchedEffect(isAuthenticated) {
+        when (isAuthenticated) {
+            true -> {
+                // Navigate to HomeScreen on successful login
+                navController.navigate(Screen.Home.route) {
+                    popUpTo(Screen.Login.route) { inclusive = true }
+                }
+            }
+            false -> {
+                // Show a Toast message on login failure
+                Toast.makeText(context, "Login failed, please try again or check your internet connection", Toast.LENGTH_LONG).show()
+            }
+            else -> {
+                Log.d("LoginScreen", "Authentication state is undefined")
+            }
+        }
+    }
 
     // Launcher for Google Sign-In Intent
     val launcher = rememberLauncherForActivityResult(
@@ -61,6 +85,8 @@ fun LoginScreen(
                 val account = task.getResult(ApiException::class.java)
                 val accessToken = account.serverAuthCode // This is the token you need
                 // Use the access token as required for your API
+
+                viewModel.signInWithGoogle(account)
             } catch (e: ApiException) {
                 // Handle exception
             }
@@ -74,20 +100,20 @@ fun LoginScreen(
         contentAlignment = Alignment.Center
     ) {
         Column(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxWidth()
                 .align(Alignment.Center)
         ) {
-            Spacer(modifier = Modifier.weight(1f))
+            Spacer(modifier = modifier.weight(1f))
             Image(
                 painter = painterResource(R.drawable.ic_login),
                 contentDescription = stringResource(R.string.icon_login),
-                modifier = Modifier
+                modifier = modifier
                     .size(290.dp, 286.dp)
                     .align(Alignment.CenterHorizontally)
             )
 
-            Spacer(modifier = Modifier.weight(1f)) // Take up remaining space
+            Spacer(modifier = modifier.weight(1f)) // Take up remaining space
 
             GoogleLoginButton(onClick = {
                 val signInIntent = googleSignInClient.signInIntent
@@ -119,15 +145,15 @@ fun GoogleLoginButton(
         )
         Text(
             text = stringResource(R.string.login_with_google),
-            modifier = Modifier.padding(start = 8.dp)
+            modifier = modifier.padding(start = 8.dp)
         )
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun LoginScreenPreview() {
-    KnowzeTheme {
-        LoginScreen()
-    }
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun LoginScreenPreview() {
+//    KnowzeTheme {
+//        LoginScreen()
+//    }
+//}

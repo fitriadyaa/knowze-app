@@ -8,12 +8,15 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.auth
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
 class LoginViewModel : ViewModel() {
     private val auth: FirebaseAuth = Firebase.auth
 
     // LiveData to observe the authentication state
-    private val isAuthenticated = MutableLiveData<Boolean>()
+    private val _isAuthenticated = MutableStateFlow<Boolean?>(null)
+    val isAuthenticated: StateFlow<Boolean?> = _isAuthenticated
 
     fun signInWithGoogle(googleSignInAccount: GoogleSignInAccount) {
         val idToken = googleSignInAccount.idToken
@@ -24,7 +27,7 @@ class LoginViewModel : ViewModel() {
             val credential = GoogleAuthProvider.getCredential(idToken, null)
             auth.signInWithCredential(credential)
                 .addOnCompleteListener { task ->
-                    isAuthenticated.value = task.isSuccessful
+                    _isAuthenticated.value = task.isSuccessful
                 }
         } else {
             // Handle the case where the ID token is null

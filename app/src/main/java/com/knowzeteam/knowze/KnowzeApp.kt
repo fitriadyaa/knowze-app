@@ -41,7 +41,9 @@ fun KnowzeApp() {
         }
 
         composable(Screen.Login.route){
-            LoginScreen()
+            LoginScreen(
+                navController = navController
+            )
         }
 
         composable(Screen.Home.route){
