@@ -30,7 +30,11 @@ import com.knowzeteam.knowze.ui.theme.BorderColor
 import com.knowzeteam.knowze.ui.theme.KnowzeTheme
 
 @Composable
-fun CourseItem() {
+fun CourseItem(
+    courseTitle: String,
+    courseDuration: String,
+    imageResId: Int
+) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
@@ -43,7 +47,7 @@ fun CourseItem() {
     ) {
         Box {
             Image(
-                painter = painterResource(id = R.drawable.ex_pict_course),
+                painter = painterResource(imageResId),
                 contentDescription = "Gambar Course",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -64,7 +68,7 @@ fun CourseItem() {
 
         Column {
             Text(
-                text = "1. Intro to Photography",
+                text = courseTitle,
                 style = MaterialTheme.typography.titleLarge.copy(
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Bold
@@ -74,7 +78,7 @@ fun CourseItem() {
             Spacer(modifier = Modifier.height(20.dp))
 
             Text(
-                text = "1min",
+                text = courseDuration,
                 style = MaterialTheme.typography.bodyLarge.copy(
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Light
@@ -88,6 +92,10 @@ fun CourseItem() {
 @Composable
 fun CourseItemPreview() {
     KnowzeTheme {
-        CourseItem()
+        CourseItem(
+            courseTitle = "1. Intro to Photography",
+            courseDuration = "1min",
+            imageResId = R.drawable.ex_pict_course
+        )
     }
 }
