@@ -41,7 +41,6 @@ private fun SearchBarContent(searchText: String, onValueChange: (String) -> Unit
         modifier = Modifier
             .fillMaxWidth()
             .height(50.dp)
-            .padding(horizontal = 16.dp)
             .background(Color.White, RoundedCornerShape(12.dp)),
         contentAlignment = Alignment.CenterStart
     ) {
@@ -55,7 +54,7 @@ private fun SearchBarContent(searchText: String, onValueChange: (String) -> Unit
             ),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(end = 24.dp)
+                .padding(end = 24.dp, start = 14.dp)
         )
         if (searchText.isEmpty()) {
             Text(
