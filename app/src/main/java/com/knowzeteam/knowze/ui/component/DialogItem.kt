@@ -29,7 +29,9 @@ import com.knowzeteam.knowze.R
 import com.knowzeteam.knowze.ui.theme.KnowzeTheme
 
 @Composable
-fun DialogItem() {
+fun DialogItem(
+    onButtonClick: () -> Unit
+) {
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
@@ -77,7 +79,7 @@ fun DialogItem() {
             Spacer(modifier = Modifier.height(50.dp))
 
             Button(
-                onClick = { /* Buat Kirim Review */ },
+                onClick = onButtonClick,
                 shape = RoundedCornerShape(10.dp)
             ) {
                 Text(
@@ -96,6 +98,6 @@ fun DialogItem() {
 @Composable
 fun DialogItemPreview() {
     KnowzeTheme {
-        DialogItem()
+        DialogItem(onButtonClick = {})
     }
 }
