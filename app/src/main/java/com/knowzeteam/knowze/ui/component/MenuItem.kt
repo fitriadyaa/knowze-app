@@ -47,13 +47,13 @@ fun MenuItem(
             .clickable { onClick() }
     ) {
         Row(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxWidth()
                 .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Column(modifier = Modifier.weight(1f)) {
+            Column(modifier = modifier.weight(1f)) {
                 Text(
                     text = text,
                     style = MaterialTheme.typography.titleLarge.copy(
@@ -72,12 +72,12 @@ fun MenuItem(
                     )
                 }
             }
-            Spacer(modifier = Modifier.width(16.dp))
+            Spacer(modifier = modifier.width(16.dp))
             Image(
                 painter = painterResource(id = imageResId),
                 contentDescription = "image description",
                 contentScale = ContentScale.Crop,
-                modifier = Modifier
+                modifier = modifier
                     .size(70.dp)
                     .clip(RoundedCornerShape(10.dp))
             )

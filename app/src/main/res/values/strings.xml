@@ -1,5 +1,20 @@
 <resources>
-    <string name="app_name" translatable="false">knowze</string>
+    <string name="app_name">knowze</string>
+
+    <string name="icon_login">Icon Login</string>
+    <string name="icon_welcome">Icon Welcome</string>
+    <string name="login_with_google">Login with Google</string>
+    <string name="register">Register</string>
+    <string name="skip_welcome">Skip</string>
+    <string name="title_intro1">Check Understanding</string>
+    <string name="title_intro2">Make Easy Learning</string>
+    <string name="title_intro3">Make Easy Learning</string>
+    <string name="desc_intro1">Unlock your learning potential and develop your interest</string>
+    <string name="desc_intro2">Check your understood with quiz session and see the progress</string>
+    <string name="desc_intro3">Use chatbot feature while still confused with something</string>
+    <string name="button_get_started">Get Started</string>
+    <string name="login_with_email">Login with Email</string>
+    
     //MenuItem
     <string name="menu_rekomendasi" translatable="false">Cari Rekomendasi Kursusmu</string>
     <string name="menu_galeri" translatable="false">Galeri Kursus</string>
@@ -18,4 +33,31 @@
     <string name="menu_1">1.\tPemilu 2024, Pakar Imbau Gen Z Waspada Hal Ini</string>
     <string name="menu_2">2.\tPakar Imbau Gen Z Waspada Hal Ini</string>
     <string name="menu_3">3.\tMenyadarkan Pemilih Pemula soal Pentingnya Kepekaan Di.</string>
+
+    <!-- DetailScreen -->
+    <string name="course_title">Photography Pemula</string>
+    <string name="course_rating">5.0</string>
+    <string name="course_time">4h, 23min</string>
+    <string name="desc_title">Tentang Kursus ini</string>
+    <string name="desc">You can learn about a variety of photography tecniques, tools, topics from selecting lenses and ligthting to composition, editing and color grading</string>
+    <string name="start_now">Mulai Sekarang!</string>
+    <string name="course_content">Konten Kursus</string>
+    <string name="topic">8 Topik</string>
+
+    <string name="detail">Detail</string>
+    <string name="title_detail">Photography Pemula</string>
+    <string name="course_detail_1">In this tutorial, we will delve into a captivating exploration of the history and evolution of comics, tracing their origins and development from their early beginnings to their contemporary significance in popular culture. Through a comprehensive analysis of key historical milestones and influential artists, we will uncover the transformative journey that has shaped comics into the dynamic medium it is today.</string>
+    <string name="course_detail_2">Key Points Covered:\n\n1. Origins of Comics: Explore the ancient origins of comics, tracing their roots back to early visual storytelling traditions in ancient civilizations and examining their progression through the ages.\n\n2. Early Comic Strips and Newspapers: Investigate the emergence of comic strips in newspapers and their role in shaping the early narrative styles and visual elements that became synonymous with the medium.\n\n3. Golden Age of Comics: Examine the influential period of the Golden Age of Comics, highlighting the rise of iconic superheroes and the establishment of the comic book format as a cultural phenomenon.\n\n4. Silver and Bronze Age Developments: Delve into the developments of the Silver and Bronze Ages, analyzing the diversification of genres, the emergence of anti-heroes, and the evolution of narrative structures within the medium.\n\n5. Modern Era and Beyond: Discuss the contemporary landscape of comics, including the rise of graphic novels, the impact of independent and underground comics, and the fusion of traditional and digital storytelling techniques in the digital age.\n\nThrough engaging historical accounts, visual representations, and insightful discussions, this tutorial aims to provide a comprehensive understanding of the historical context and cultural significance of comics, allowing you to appreciate the rich heritage and dynamic evolution of this compelling visual medium.</string>
+
+    <string name="default_web_client_id">702409136848-es4l54u709778ug42hbktlntv2arvs9f.apps.googleusercontent.com</string>
+
+    <string name="generate_message">Tahukah kamu perbuatan dosa menyebabkanmu masuk neraka</string>
+    <string name="cancel">Batal</string>
+
+    <!--  -->
+    <string name="course_done">Kursus Selesai</string>
+    <string name="congratulation_course">Selamat anda telah menyelesaikan kursus ini, yuk belajar hal menarik lainnya!</string>
+    <string name="feedback_button">Kirim Feedback</string>
+    <string name="feedback_form">Feedback</string>
+
 </resources>
