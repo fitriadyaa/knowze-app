@@ -5,7 +5,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -32,8 +31,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.ui.graphics.Color
@@ -41,19 +38,21 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
+import com.knowzeteam.knowze.ui.component.CategoryButton
+import com.knowzeteam.knowze.ui.component.CourseItem
 
 @Composable
 fun AboutContentScreen(
     modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
     ) {
         BannerContent()
 
         Box(
-            modifier = Modifier
+            modifier = modifier
                 .background(
                     color = Color.White,
                     shape = RoundedCornerShape(topEnd = 40.dp, topStart = 40.dp)
@@ -76,7 +75,7 @@ fun AboutContentScreen(
                             fontSize = 20.sp,
                             fontWeight = FontWeight.Bold
                         ),
-                        modifier = Modifier
+                        modifier = modifier
                             .padding(top = 20.dp)
                     )
 
@@ -86,24 +85,29 @@ fun AboutContentScreen(
                             fontSize = 14.sp,
                             fontWeight = FontWeight.Light
                         ),
-                        modifier = Modifier
+                        modifier = modifier
                             .padding(top = 20.dp, end = 10.dp)
                     )
                 }
 
-                Divider(modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp))
+                Divider(modifier = modifier.padding(horizontal = 16.dp, vertical = 16.dp))
 
-                Box {
-                    LazyColumn(
-                        contentPadding = PaddingValues(
-                            top = 0.dp,
-                            end = 16.dp,
-                            bottom = 10.dp
-                        ),
-                    ) {
-                        // Buat Lazy Column, Template Card/Item ada di component/CourseItem.kt
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(end = 16.dp, bottom = 10.dp)
+                ) {
+                    LazyColumn {
+                        item {
+                            CourseItem(
+                                courseTitle = "1. Intro to Photography",
+                                courseDuration = "1min",
+                                imageResId = R.drawable.ex_pict_course
+                            )
+                        }
                     }
                 }
+
             }
         }
     }
@@ -114,14 +118,22 @@ fun BannerContent(
     modifier: Modifier = Modifier
 ) {
     Box(modifier = Modifier) {
-        Image(
-            painter = painterResource(id = R.drawable.ex_pict_course),
-            contentDescription = "Gambar Course",
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
+        Box(
+            modifier = modifier
                 .fillMaxWidth()
                 .size(375.dp, 338.dp)
-        )
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.ex_pict_course),
+                contentDescription = "Gambar Course",
+                contentScale = ContentScale.Crop,
+                modifier = modifier
+                    .fillMaxSize()
+            )
+
+            // Overlay
+            BoxContentOverlay(modifier = modifier)
+        }
 
         Column(
             horizontalAlignment = Alignment.Start,
@@ -135,7 +147,7 @@ fun BannerContent(
             ) {
 
                 Surface(
-                    modifier = Modifier
+                    modifier = modifier
                         .padding(top = 10.dp)
                         .size(56.dp)
                         .clip(CircleShape),
@@ -145,60 +157,29 @@ fun BannerContent(
                         imageVector = Icons.Default.KeyboardArrowLeft,
                         contentDescription = "Next",
                         tint = MaterialTheme.colorScheme.onPrimary,
-                        modifier = Modifier
+                        modifier = modifier
                             .padding(16.dp)
                     )
                 }
             }
 
-            Spacer(modifier = Modifier.height(25.dp))
+            Spacer(modifier = modifier.height(25.dp))
 
             Row(
                 horizontalArrangement = Arrangement.Start,
                 verticalAlignment = Alignment.Top,
-                modifier = Modifier
+                modifier = modifier
                     .fillMaxWidth()
                     .padding(start = 10.dp, top = 10.dp, end = 10.dp)
             ) {
-                // Course Category: Photography
-                Button(
-                    onClick = { /*TODO*/ },
-                    colors =ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary),
-                    shape = RoundedCornerShape(25.dp),
-                    modifier = Modifier
-                        .size(109.dp, 25.dp)
-                ) {
-                    Text(
-                        text = "Photography",
-                        style = MaterialTheme.typography.labelMedium.copy(
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.Bold,
-                        )
-                    )
-                }
-
-                Spacer(modifier = Modifier.width(10.dp))
-
-                // Course Category: Indoor
-                Button(
-                    onClick = { /*TODO*/ },
-                    shape = RoundedCornerShape(25.dp),
-                    modifier = Modifier
-                        .size(109.dp, 25.dp)
-                ) {
-                    Text(
-                        text = "indoor",
-                        style = MaterialTheme.typography.labelMedium.copy(
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.Bold,
-                        )
-                    )
-                }
+                CategoryButton(categoryText = "Photography", onClick = { /*TODO*/ })
+                Spacer(modifier = modifier.width(10.dp))
+                CategoryButton(categoryText = "Indoor", onClick = { /*TODO*/ })
             }
 
             Column(
                 horizontalAlignment = Alignment.Start,
-                modifier = Modifier
+                modifier = modifier
                     .padding(start = 10.dp, top = 10.dp, end = 10.dp)
             ) {
                 // Judul Course
@@ -207,19 +188,20 @@ fun BannerContent(
                     style = MaterialTheme.typography.titleLarge.copy(
                         fontSize = 24.sp,
                         textAlign = TextAlign.Start,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White
                     ),
-                    modifier = Modifier
+                    modifier = modifier
                         .fillMaxWidth()
                         .padding(vertical = 8.dp)
                 )
 
-                Spacer(modifier = Modifier.height(25.dp))
+                Spacer(modifier = modifier.height(25.dp))
 
                 Row(
                     horizontalArrangement = Arrangement.Start,
                     verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier
+                    modifier = modifier
                         .fillMaxWidth()
                         .padding(top = 10.dp, end = 10.dp)
                 ) {
@@ -227,35 +209,49 @@ fun BannerContent(
                     Image(
                         painter = painterResource(id = R.drawable.ic_star),
                         contentDescription = "Course Time",
-                        modifier = Modifier
+                        modifier = modifier
                     )
 
-                    Spacer(modifier = Modifier.width(4.dp))
+                    Spacer(modifier = modifier.width(4.dp))
 
                     Text(
-                        text = stringResource(id = R.string.course_rating)
+                        text = stringResource(id = R.string.course_rating),
+                        style = MaterialTheme.typography.bodyMedium.copy(
+                            color = Color.White
+                        ),
                     )
-                    // Rating Course //
 
-                    Spacer(modifier = Modifier.width(10.dp))
+                    Spacer(modifier = modifier.width(10.dp))
 
                     // Course Time //
                     Image(
                         painter = painterResource(id = R.drawable.ic_time),
                         contentDescription = "Course Time",
-                        modifier = Modifier
+                        modifier = modifier
+                            .size(24.dp)
                     )
 
-                    Spacer(modifier = Modifier.width(4.dp))
+                    Spacer(modifier = modifier.width(4.dp))
 
                     Text(
-                        text = stringResource(id = R.string.course_time)
+                        text = stringResource(id = R.string.course_time),
+                        style = MaterialTheme.typography.bodyMedium.copy(
+                            color = Color.White
+                        ),
                     )
-                    // Course Time //
                 }
             }
         }
     }
+}
+
+@Composable
+fun BoxContentOverlay(modifier: Modifier = Modifier) {
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .background(color = Color.Black.copy(alpha = 0.4f))
+    )
 }
 
 @Preview

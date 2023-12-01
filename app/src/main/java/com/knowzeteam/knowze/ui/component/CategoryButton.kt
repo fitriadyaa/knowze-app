@@ -1,5 +1,6 @@
 package com.knowzeteam.knowze.ui.component
 
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -18,17 +19,19 @@ fun CategoryButton(categoryText: String, onClick: () -> Unit) {
     Button(
         onClick = onClick,
         colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary),
-        shape = RoundedCornerShape(25.dp),
+        shape = RoundedCornerShape(12.dp),
+        modifier = Modifier.height(28.dp)
     ) {
         Text(
             text = categoryText,
             style = MaterialTheme.typography.labelMedium.copy(
-                fontSize = 14.sp,
+                fontSize = 10.sp, // Adjust the font size as needed
                 fontWeight = FontWeight.Bold
             ),
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.padding(horizontal = 16.dp)
+            modifier = Modifier.padding(horizontal = 4.dp)
         )
     }
 }
+
