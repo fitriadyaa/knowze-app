@@ -52,6 +52,12 @@ android {
 
 dependencies {
 
+    // ExoPlayer
+    implementation("androidx.media3:media3-exoplayer:1.2.0")
+
+    // Shimmer (Buat bikin loading)
+    implementation("com.valentinilk.shimmer:compose-shimmer:1.2.0")
+
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
     implementation("androidx.activity:activity-compose:1.8.1")
@@ -61,6 +67,8 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
     implementation("androidx.compose.foundation:foundation-android:1.5.4")
+<<<<<<< HEAD
+
 
     // Firebase
     implementation(platform("com.google.firebase:firebase-bom:32.6.0"))
@@ -81,6 +89,12 @@ dependencies {
     // Live Data
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
 
+
+    implementation("androidx.media3:media3-ui:1.2.0")
+
+=======
+    implementation("androidx.media3:media3-ui:1.2.0")
+>>>>>>> f5ba5910dde0ab05c74576e304266f78e45ac431
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
