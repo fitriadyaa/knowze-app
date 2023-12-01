@@ -28,6 +28,12 @@
     <string name="selamat">Selamat Datang, </string>
     <string name="coba_ini">Coba ini</string>
 
+    <!-- Mini Menu Item -->
+    <string name="title_menu_mini">Kursus Berdasarkan Berita Trending</string>
+    <string name="menu_1">1.\tPemilu 2024, Pakar Imbau Gen Z Waspada Hal Ini</string>
+    <string name="menu_2">2.\tPakar Imbau Gen Z Waspada Hal Ini</string>
+    <string name="menu_3">3.\tMenyadarkan Pemilih Pemula soal Pentingnya Kepekaan Di.</string>
+
     <!-- DetailScreen -->
     <string name="course_title">Photography Pemula</string>
     <string name="course_rating">5.0</string>
@@ -53,4 +59,5 @@
     <string name="congratulation_course">Selamat anda telah menyelesaikan kursus ini, yuk belajar hal menarik lainnya!</string>
     <string name="feedback_button">Kirim Feedback</string>
     <string name="feedback_form">Feedback</string>
+
 </resources>
