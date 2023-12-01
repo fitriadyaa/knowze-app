@@ -1,16 +1,14 @@
 package com.knowzeteam.knowze.ui.component
 
-import android.view.MotionEvent
-import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -29,10 +27,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -43,10 +39,13 @@ import androidx.compose.ui.unit.sp
 import com.knowzeteam.knowze.R
 import com.knowzeteam.knowze.ui.theme.KnowzeTheme
 
-@OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun DialogFeedback() {
+fun DialogFeedback(
+    onRatingSelected: (Int) -> Unit,
+    onSubmitFeedback: (String) -> Unit
+) {
     var text by remember { mutableStateOf(TextFieldValue("")) }
+    var ratingState by remember { mutableIntStateOf(4) }
 
     Box(
         contentAlignment = Alignment.Center,
@@ -64,7 +63,16 @@ fun DialogFeedback() {
             modifier = Modifier
                 .padding(horizontal = 24.dp)
         ) {
-            RatingBar(rating = 4)
+            RatingBar(
+                modifier = Modifier
+                    .height(50.dp)
+                    .width(290.dp),
+                rating = ratingState,
+                onRatingSelected = { rating ->
+                    ratingState = rating
+                    onRatingSelected(rating)
+                }
+            )
 
             Spacer(modifier = Modifier.height(25.dp))
 
@@ -77,9 +85,9 @@ fun DialogFeedback() {
                     )
                 )
 
-                OutlinedTextField(
+                CustomOutlinedTextField(
                     value = text,
-                    label = { Text(text = "Kursusnya bagus...") },
+                    labelText = "Masukan feedback anda disini...",
                     onValueChange = {
                         text = it
                     }
@@ -89,7 +97,7 @@ fun DialogFeedback() {
             Spacer(modifier = Modifier.height(60.dp))
 
             Button(
-                onClick = { /* Buat Kirim Review */ },
+                onClick = { onSubmitFeedback(text.text) },
                 shape = RoundedCornerShape(10.dp)
             ) {
                 Text(
@@ -104,27 +112,31 @@ fun DialogFeedback() {
     }
 }
 
-@ExperimentalComposeUiApi
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun CustomOutlinedTextField(
+    value: TextFieldValue,
+    labelText: String,
+    onValueChange: (TextFieldValue) -> Unit
+) {
+    OutlinedTextField(
+        value = value,
+        onValueChange = { onValueChange(it) },
+        label = { Text(text = labelText) },
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(56.dp)
+    )
+}
+
 @Composable
 fun RatingBar(
     modifier: Modifier = Modifier,
-    rating: Int
+    rating: Int,
+    onRatingSelected: (Int) -> Unit
 ) {
-    var ratingState by remember {
-        mutableIntStateOf(rating)
-    }
-
-    var selected by remember {
-        mutableStateOf(false)
-    }
-    val size by animateDpAsState(
-        targetValue = if (selected) 50.dp else 40.dp,
-        spring(Spring.DampingRatioMediumBouncy), label = ""
-    )
-
     Row(
-        modifier = Modifier
-            .size(290.dp, 50.dp),
+        modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
@@ -132,32 +144,26 @@ fun RatingBar(
             Icon(
                 painter = painterResource(id = R.drawable.ic_star),
                 contentDescription = "star",
-                modifier = modifier
-                    .width(size)
-                    .height(size)
-                    .pointerInteropFilter {
-                        when (it.action) {
-                            MotionEvent.ACTION_DOWN -> {
-                                selected = true
-                                ratingState = i
-                            }
-
-                            MotionEvent.ACTION_UP -> {
-                                selected = false
-                            }
-                        }
-                        true
+                modifier = Modifier
+                    .width(40.dp)
+                    .height(40.dp)
+                    .clickable {
+                        onRatingSelected(i)
                     },
-                tint = if (i <= ratingState) Color(0xFFFFD700) else Color(0xFFA2ADB1)
+                tint = if (i <= rating) Color(0xFFFFD700) else Color(0xFFA2ADB1)
             )
         }
     }
 }
 
+
 @Preview(showBackground = true)
 @Composable
 fun FeedbackPreview() {
     KnowzeTheme {
-        DialogFeedback()
+        DialogFeedback(
+            onRatingSelected = { /* handle rating selection */ },
+            onSubmitFeedback = { /* handle feedback submission */ }
+        )
     }
 }
