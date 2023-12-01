@@ -24,6 +24,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -110,7 +111,7 @@ fun RatingBar(
     rating: Int
 ) {
     var ratingState by remember {
-        mutableStateOf(rating)
+        mutableIntStateOf(rating)
     }
 
     var selected by remember {
@@ -118,7 +119,7 @@ fun RatingBar(
     }
     val size by animateDpAsState(
         targetValue = if (selected) 50.dp else 40.dp,
-        spring(Spring.DampingRatioMediumBouncy)
+        spring(Spring.DampingRatioMediumBouncy), label = ""
     )
 
     Row(
