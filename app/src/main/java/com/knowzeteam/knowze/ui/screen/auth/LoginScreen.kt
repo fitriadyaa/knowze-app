@@ -1,7 +1,5 @@
 package com.knowzeteam.knowze.ui.screen.auth
 
-import android.app.Activity
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -19,9 +17,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -33,9 +33,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.Scopes
 import com.google.android.gms.common.api.ApiException
-import com.google.android.gms.common.api.Scope
 import com.knowzeteam.knowze.R
 import com.knowzeteam.knowze.ui.navigation.Screen
 
@@ -47,49 +45,23 @@ fun LoginScreen(
 ) {
     val context = LocalContext.current
 
+    // Configure Google Sign In
     val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-        .requestScopes(Scope(Scopes.PROFILE), Scope(Scopes.EMAIL))
-        .requestIdToken(stringResource(R.string.default_web_client_id))
         .requestEmail()
         .build()
-
     val googleSignInClient = GoogleSignIn.getClient(context, gso)
-    val isAuthenticated = viewModel.isAuthenticated.collectAsState().value
 
-    // Responding to changes in authentication state
-    LaunchedEffect(isAuthenticated) {
-        when (isAuthenticated) {
-            true -> {
-                // Navigate to HomeScreen on successful login
-                navController.navigate(Screen.Home.route) {
-                    popUpTo(Screen.Login.route) { inclusive = true }
-                }
-            }
-            false -> {
-                // Show a Toast message on login failure
-                Toast.makeText(context, "Login failed, please try again or check your internet connection", Toast.LENGTH_LONG).show()
-            }
-            else -> {
-                Log.d("LoginScreen", "Authentication state is undefined")
-            }
-        }
-    }
-
-    // Launcher for Google Sign-In Intent
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult()
     ) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
-            try {
-                val account = task.getResult(ApiException::class.java)
-                val accessToken = account.serverAuthCode // This is the token you need
-                // Use the access token as required for your API
-
-                viewModel.signInWithGoogle(account)
-            } catch (e: ApiException) {
-                // Handle exception
-            }
+        // Handle the result of the sign-in intent
+        val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+        try {
+            val account = task.getResult(ApiException::class.java)
+            // Notify ViewModel for Google auth
+            viewModel.firebaseAuthWithGoogle()
+        } catch (e: ApiException) {
+            // Handle exception
         }
     }
 
@@ -113,13 +85,33 @@ fun LoginScreen(
                     .align(Alignment.CenterHorizontally)
             )
 
-            Spacer(modifier = modifier.weight(1f)) // Take up remaining space
+            Spacer(modifier = modifier.weight(1f))
 
             GoogleLoginButton(onClick = {
                 val signInIntent = googleSignInClient.signInIntent
                 launcher.launch(signInIntent)
             })
 
+            // Observe ViewModel states
+            val isLoading by viewModel.isLoading.collectAsState()
+            val idToken by viewModel.idToken.observeAsState()
+            val error by viewModel.error.observeAsState()
+
+            // UI response to ViewModel states...
+            if (isLoading) {
+                CircularProgressIndicator()
+            }
+
+            idToken?.let {
+                // Navigate to next screen
+                navController.navigate(Screen.Home.route) {
+                    popUpTo(Screen.Login.route) { inclusive = true }
+                }
+            }
+
+            error?.let {
+                Toast.makeText(context, "Login failed, please try again or check your internet connection", Toast.LENGTH_LONG).show()
+            }
         }
     }
 }

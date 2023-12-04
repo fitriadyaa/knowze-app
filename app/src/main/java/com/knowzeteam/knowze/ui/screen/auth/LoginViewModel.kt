@@ -1,42 +1,40 @@
 package com.knowzeteam.knowze.ui.screen.auth
 
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.auth
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
+
 class LoginViewModel  : ViewModel(){
     private val auth: FirebaseAuth = Firebase.auth
 
-    // LiveData to observe the authentication state
-    private val _isAuthenticated = MutableStateFlow<Boolean?>(null)
-    val isAuthenticated: StateFlow<Boolean?> = _isAuthenticated
+    private val _idToken = MutableLiveData<String?>()
+    val idToken: LiveData<String?> = _idToken
 
-    fun signInWithGoogle(googleSignInAccount: GoogleSignInAccount) {
+    private val _error = MutableLiveData<Exception?>()
+    val error: LiveData<Exception?> = _error
 
-        val idToken = googleSignInAccount.idToken
-        if (idToken != null) {
-            // Log the ID token (for debugging purposes)
-            Log.d("LoginViewModel", "Google ID Token: $idToken")
+    fun firebaseAuthWithGoogle() {
+        val user = FirebaseAuth.getInstance().currentUser
+        user?.getIdToken(true)?.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val idTokenResult = task.result?.token
+                _idToken.value = idTokenResult
 
-            val credential = GoogleAuthProvider.getCredential(idToken, null)
-            auth.signInWithCredential(credential)
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-
-                    }
-                    _isAuthenticated.value = task.isSuccessful
-                }
-        } else {
-            // Handle the case where the ID token is null
-            Log.d("LoginViewModel", "Google ID Token is null")
+                // Print the ID token
+                Log.d("LoginViewModel", "Firebase ID Token: $idTokenResult")
+            } else {
+                _error.value = task.exception
+                Log.d("LoginViewModel", "Error retrieving Firebase ID Token", task.exception)
+            }
         }
     }
 
