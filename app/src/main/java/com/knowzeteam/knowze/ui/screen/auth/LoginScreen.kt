@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -28,7 +29,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -36,6 +42,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.knowzeteam.knowze.R
 import com.knowzeteam.knowze.ui.navigation.Screen
+import com.knowzeteam.knowze.ui.theme.KnowzeTheme
 
 @Composable
 fun LoginScreen(
@@ -92,6 +99,24 @@ fun LoginScreen(
                 launcher.launch(signInIntent)
             })
 
+            Spacer(modifier = Modifier.weight(0.1f))
+
+            EmailLoginButton(
+                onClick = { /*TODO*/ }
+            )
+
+            Spacer(modifier = Modifier.weight(0.1f))
+
+            ClickableText(
+                onClick = { /*TODO*/ },
+                text = AnnotatedString(stringResource(id = R.string.register_message)),
+                style = MaterialTheme.typography.bodyMedium.copy(
+                    fontSize = 12.sp,
+                    textAlign = TextAlign.Center,
+                ),
+                modifier = Modifier.fillMaxWidth()
+            )
+
             // Observe ViewModel states
             val isLoading by viewModel.isLoading.collectAsState()
             val idToken by viewModel.idToken.observeAsState()
@@ -142,10 +167,38 @@ fun GoogleLoginButton(
     }
 }
 
-//@Preview(showBackground = true)
-//@Composable
-//fun LoginScreenPreview() {
-//    KnowzeTheme {
-//        LoginScreen()
-//    }
-//}
+@Composable
+fun EmailLoginButton(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Button(
+        onClick = onClick,
+        shape = RoundedCornerShape(10.dp),
+        modifier = modifier
+            .fillMaxWidth()
+            .height(60.dp),
+        colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary)
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.ic_email),
+            contentDescription = stringResource(R.string.login_with_email),
+            modifier = modifier
+                .size(24.dp)
+                .clip(RoundedCornerShape(10.dp))
+        )
+        Text(
+            text = stringResource(R.string.login_with_email),
+            modifier = modifier.padding(start = 8.dp)
+        )
+    }
+}
+
+/*
+@Preview(showBackground = true)
+@Composable
+fun LoginScreenPreview() {
+    KnowzeTheme {
+        LoginScreen()
+    }
+}*/

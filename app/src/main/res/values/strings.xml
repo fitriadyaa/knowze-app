@@ -14,6 +14,7 @@
     <string name="desc_intro3">Use chatbot feature while still confused with something</string>
     <string name="button_get_started">Get Started</string>
     <string name="login_with_email">Login with Email</string>
+    <string name="register_message">Belum punya akun? Register disini</string>
     
     //MenuItem
     <string name="menu_rekomendasi" translatable="false">Cari Rekomendasi Kursusmu</string>
