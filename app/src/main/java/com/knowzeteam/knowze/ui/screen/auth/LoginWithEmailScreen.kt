@@ -37,15 +37,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.knowzeteam.knowze.R
+import com.knowzeteam.knowze.ui.component.EmailTextField
+import com.knowzeteam.knowze.ui.component.PasswordTextField
 import com.knowzeteam.knowze.ui.theme.KnowzeTheme
 
 @Composable
 fun LoginWithEmailScreen(
     modifier: Modifier = Modifier
 ) {
-    var email by remember { mutableStateOf(TextFieldValue("")) }
-    var password by remember { mutableStateOf(TextFieldValue("")) }
-
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
@@ -74,13 +73,7 @@ fun LoginWithEmailScreen(
                     )
                 )
 
-                OutlinedTextField(
-                    value = email,
-                    label = { Text(text = stringResource(id = R.string.email_example)) },
-                    onValueChange = { email = it },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-                    modifier = Modifier.size(335.dp, 51.dp)
-                )
+                EmailTextField(label = stringResource(id = R.string.email_example))
 
                 Spacer(modifier = Modifier.height(25.dp))
 
@@ -93,13 +86,7 @@ fun LoginWithEmailScreen(
                     )
                 )
 
-                OutlinedTextField(
-                    value = password,
-                    label = { Text(text = stringResource(id = R.string.password_example)) },
-                    onValueChange = { password = it },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                    modifier = Modifier.size(335.dp, 51.dp)
-                )
+                PasswordTextField(label = stringResource(id = R.string.password_example))
             }
         }
 

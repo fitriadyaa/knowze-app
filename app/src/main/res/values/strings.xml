@@ -24,6 +24,8 @@
     <string name="login">Login</string>
     <string name="write_your_name_here">Write your name here...</string>
     <string name="your_name">Your name...</string>
+    <string name="icon_password_visible">Password Visible</string>
+    <string name="icon_password_hidden">Password Hidden</string>
 
     
     //MenuItem
