@@ -27,6 +27,12 @@
     <string name="your_name">Your name...</string>
     <string name="icon_password_visible">Password Visible</string>
     <string name="icon_password_hidden">Password Hidden</string>
+    <string name="email_verification">Email Verification</string>
+    <string name="verify">Verify</string>
+    <string name="verify_message">Didn’t have code ? Send Again</string>
+    <string name="register_success">Register Success!</string>
+    <string name="verification_dialog_message">Anda telah berhasil Verifikasi kode\nyang telah kami kirim</string>
+    <string name="back_to_login">Back to Login</string>
 
     
     //MenuItem
