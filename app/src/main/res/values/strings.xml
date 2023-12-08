@@ -85,6 +85,7 @@
     <string name="course_gallery">Galeri Kursus</string>
     <string name="course_theme">Tema Kursus</string>
     <string name="course_theme_name">Tema Olahraga</string>
+    <string name="trending_keyword">Trending Keyword</string>
 
     <!-- Course Theme -->
     <string name="course_theme_1">Pendidikan</string>
@@ -99,5 +100,19 @@
     <!-- Course Theme Detail -->
     <string name="course_theme_detail_1">Cara Hiking\nDengan Sepeda</string>
     <string name="course_theme_detail_2">Tips Bermain\nFutsal</string>
+
+    <!-- Trending Keyword -->
+    <string name="trending_keyword_1">Copywriting</string>
+    <string name="trending_keyword_2">SEO</string>
+    <string name="trending_keyword_3">Mendaki</string>
+    <string name="trending_keyword_4">Sejarah</string>
+    <string name="trending_keyword_5">Golf</string>
+    <string name="trending_keyword_6">Menggambar</string>
+    <string name="trending_keyword_7">Melupakan Dia</string>
+    <string name="trending_keyword_8">Cara menjadi Kaya</string>
+    <string name="trending_keyword_9">Cara menang lotre</string>
+    <string name="trending_keyword_10">Pola Gacor</string>
+    <string name="trending_keyword_11">Cara menjadi anime</string>
+    <string name="trending_keyword_12">Cara masuk ISEKAI</string>
 
 </resources>
