@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
@@ -77,7 +78,7 @@ fun OTPTextField(
                     keyboardType = KeyboardType.Number,
                     imeAction = ImeAction.Next
                 ),
-                visualTransformation = PasswordVisualTransformation()
+                visualTransformation = VisualTransformation.None
             )
 
             Spacer(modifier = Modifier.width(15.dp))
