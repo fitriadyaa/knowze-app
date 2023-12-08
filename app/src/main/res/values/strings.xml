@@ -79,5 +79,20 @@
     <string name="congratulation_course">Selamat anda telah menyelesaikan kursus ini, yuk belajar hal menarik lainnya!</string>
     <string name="feedback_button">Kirim Feedback</string>
     <string name="feedback_form">Feedback</string>
+    <string name="theme_course_pict">Gambar Tema Kursus</string>
+
+    <!-- Gallery -->
+    <string name="course_gallery">Galeri Kursus</string>
+    <string name="course_theme">Tema Kursus</string>
+
+    <!-- Course Theme -->
+    <string name="course_theme_1">Pendidikan</string>
+    <string name="course_theme_2">Photography</string>
+    <string name="course_theme_3">Programming</string>
+    <string name="course_theme_4">Desain</string>
+    <string name="course_theme_5">Sosial</string>
+    <string name="course_theme_6">Lifeskills</string>
+    <string name="course_theme_7">Bahasa</string>
+    <string name="course_theme_8">Outdoor</string>
 
 </resources>
