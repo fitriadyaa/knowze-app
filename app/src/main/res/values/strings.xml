@@ -19,6 +19,7 @@
     <string name="email">Email</string>
     <string name="email_example">username@gmail.com</string>
     <string name="password">Password</string>
+    <string name="repeat_password">Ulangi Password</string>
     <string name="password_example">************</string>
     <string name="forgot_password">forgot password?</string>
     <string name="login">Login</string>
