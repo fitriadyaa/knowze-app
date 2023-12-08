@@ -55,6 +55,41 @@ fun EmailTextField(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun NameTextField(
+    modifier: Modifier = Modifier,
+    // value: String,
+    // onValueChange: (String) -> Unit
+    label: String,
+    isError: Boolean = false,
+    errorText: String = "",
+    imeAction: ImeAction = ImeAction.Next
+) {
+    var name by remember { mutableStateOf(TextFieldValue("")) }
+
+    OutlinedTextField(
+        modifier = modifier
+            .size(335.dp, 51.dp),
+        value = name,
+        onValueChange = { name = it },
+        label = {
+            Text(text = label)
+        },
+        maxLines = 1,
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Email,
+            imeAction = imeAction
+        ),
+        isError = isError,
+        supportingText = {
+            if (isError) {
+                ErrorTextInputField(text = errorText)
+            }
+        },
+    )
+}
+
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun PasswordTextField(

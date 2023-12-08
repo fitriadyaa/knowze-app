@@ -37,14 +37,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.knowzeteam.knowze.R
+import com.knowzeteam.knowze.ui.component.NameTextField
 import com.knowzeteam.knowze.ui.theme.KnowzeTheme
 
 @Composable
 fun YourNameScreen(
     modifier: Modifier = Modifier
 ) {
-    var name by remember { mutableStateOf(TextFieldValue("")) }
-
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -63,13 +62,7 @@ fun YourNameScreen(
                 )
             )
 
-            OutlinedTextField(
-                value = name,
-                label = { Text(text = stringResource(id = R.string.your_name)) },
-                onValueChange = { name = it },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-                modifier = Modifier.size(335.dp, 51.dp)
-            )
+            NameTextField(label = stringResource(id = R.string.your_name))
         }
 
         Spacer(modifier = Modifier.height(20.dp))
