@@ -41,13 +41,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.knowzeteam.knowze.R
+import com.knowzeteam.knowze.ui.component.CourseThemeDetailItem
 import com.knowzeteam.knowze.ui.component.CourseThemeItem
 import com.knowzeteam.knowze.ui.theme.KnowzeTheme
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CourseThemeGallery(
+fun CourseThemeDetailGallery(
     modifier: Modifier = Modifier
 ) {
     Scaffold(
@@ -82,7 +83,7 @@ fun CourseThemeGallery(
                 .padding(start = 16.dp, top = 100.dp)
         ) {
             Text(
-                text = stringResource(id = R.string.course_theme),
+                text = stringResource(id = R.string.course_theme_name),
                 style = MaterialTheme.typography.titleMedium.copy(
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Bold,
@@ -95,68 +96,19 @@ fun CourseThemeGallery(
             Row {
                 LazyColumn {
                     item {
-                        CourseThemeItem(
-                            titleCourse = stringResource(id = R.string.course_theme_1),
+                        CourseThemeDetailItem(
+                            titleCourse = stringResource(id = R.string.course_theme_detail_1),
                             imgCourseTheme = R.drawable.ex_pict_course,
+                            ratingCourse = stringResource(id = R.string.course_rating),
                             onClick = { /*TODO*/ })
                     }
 
                     item {
-                        Spacer(modifier = Modifier.height(14.dp))
-                        CourseThemeItem(
-                            titleCourse = stringResource(id = R.string.course_theme_2),
+                        Spacer(modifier = Modifier.height(10.dp))
+                        CourseThemeDetailItem(
+                            titleCourse = stringResource(id = R.string.course_theme_detail_2),
                             imgCourseTheme = R.drawable.ex_pict_course,
-                            onClick = { /*TODO*/ })
-                    }
-
-                    item {
-                        Spacer(modifier = Modifier.height(14.dp))
-                        CourseThemeItem(
-                            titleCourse = stringResource(id = R.string.course_theme_3),
-                            imgCourseTheme = R.drawable.ex_pict_course,
-                            onClick = { /*TODO*/ })
-                    }
-
-                    item {
-                        Spacer(modifier = Modifier.height(14.dp))
-                        CourseThemeItem(
-                            titleCourse = stringResource(id = R.string.course_theme_4),
-                            imgCourseTheme = R.drawable.ex_pict_course,
-                            onClick = { /*TODO*/ })
-                    }
-                }
-
-                Spacer(modifier = Modifier.width(50.dp))
-
-                LazyColumn {
-                    item {
-                        CourseThemeItem(
-                            titleCourse = stringResource(id = R.string.course_theme_1),
-                            imgCourseTheme = R.drawable.ex_pict_course,
-                            onClick = { /*TODO*/ })
-                    }
-
-                    item {
-                        Spacer(modifier = Modifier.height(14.dp))
-                        CourseThemeItem(
-                            titleCourse = stringResource(id = R.string.course_theme_2),
-                            imgCourseTheme = R.drawable.ex_pict_course,
-                            onClick = { /*TODO*/ })
-                    }
-
-                    item {
-                        Spacer(modifier = Modifier.height(14.dp))
-                        CourseThemeItem(
-                            titleCourse = stringResource(id = R.string.course_theme_3),
-                            imgCourseTheme = R.drawable.ex_pict_course,
-                            onClick = { /*TODO*/ })
-                    }
-
-                    item {
-                        Spacer(modifier = Modifier.height(14.dp))
-                        CourseThemeItem(
-                            titleCourse = stringResource(id = R.string.course_theme_4),
-                            imgCourseTheme = R.drawable.ex_pict_course,
+                            ratingCourse = stringResource(id = R.string.course_rating),
                             onClick = { /*TODO*/ })
                     }
                 }
@@ -167,8 +119,8 @@ fun CourseThemeGallery(
 
 @Preview(showBackground = true)
 @Composable
-fun CourseThemePreview() {
+fun CourseThemeDetailPreview() {
     KnowzeTheme {
-        CourseThemeGallery()
+        CourseThemeDetailGallery()
     }
 }

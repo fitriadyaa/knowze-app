@@ -30,7 +30,7 @@ import com.knowzeteam.knowze.ui.theme.KnowzeTheme
 
 @Composable
 fun CourseThemeItem(
-    text: String,
+    titleCourse: String,
     imgCourseTheme: Int,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
@@ -55,7 +55,7 @@ fun CourseThemeItem(
         )
 
         Text(
-            text = text,
+            text = titleCourse,
             style = MaterialTheme.typography.bodyMedium.copy(
                 color = Color.White,
                 fontWeight = FontWeight.Bold,
@@ -73,7 +73,7 @@ fun CourseThemeItem(
 fun CourseThemePreview() {
     KnowzeTheme {
         CourseThemeItem(
-            text = stringResource(id = R.string.course_theme_1),
+            titleCourse = stringResource(id = R.string.course_theme_1),
             imgCourseTheme = R.drawable.ex_pict_course,
             onClick = { /*TODO*/ })
     }

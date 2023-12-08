@@ -84,6 +84,7 @@
     <!-- Gallery -->
     <string name="course_gallery">Galeri Kursus</string>
     <string name="course_theme">Tema Kursus</string>
+    <string name="course_theme_name">Tema Olahraga</string>
 
     <!-- Course Theme -->
     <string name="course_theme_1">Pendidikan</string>
@@ -94,5 +95,9 @@
     <string name="course_theme_6">Lifeskills</string>
     <string name="course_theme_7">Bahasa</string>
     <string name="course_theme_8">Outdoor</string>
+
+    <!-- Course Theme Detail -->
+    <string name="course_theme_detail_1">Cara Hiking\nDengan Sepeda</string>
+    <string name="course_theme_detail_2">Tips Bermain\nFutsal</string>
 
 </resources>
