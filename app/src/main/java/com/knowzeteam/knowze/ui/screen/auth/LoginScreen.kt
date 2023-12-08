@@ -30,8 +30,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -42,7 +40,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.knowzeteam.knowze.R
 import com.knowzeteam.knowze.ui.navigation.Screen
-import com.knowzeteam.knowze.ui.theme.KnowzeTheme
 
 @Composable
 fun LoginScreen(
@@ -113,6 +110,7 @@ fun LoginScreen(
                 style = MaterialTheme.typography.bodyMedium.copy(
                     fontSize = 12.sp,
                     textAlign = TextAlign.Center,
+                    color = MaterialTheme.colorScheme.primary
                 ),
                 modifier = Modifier.fillMaxWidth()
             )
