@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("com.google.gms.google-services")
+    kotlin("kapt")
 }
 
 android {
@@ -90,8 +91,21 @@ dependencies {
 
     // OkHttp Logging Interceptor
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.0")
-
     implementation("androidx.compose.material:material-icons-extended:1.5.4")
+
+    // Hilt dependencies
+    implementation("com.google.dagger:hilt-android:2.38.1")
+    kapt("com.google.dagger:hilt-android-compiler:2.38.1")
+
+    // Room dependencies
+    implementation("androidx.room:room-runtime:2.6.1")
+    kapt("androidx.room:room-compiler:2.6.1")
+
+    // Additional Room dependencies for Kotlin
+    implementation("androidx.room:room-ktx:2.6.1")
+
+    // Coil
+    implementation("com.google.accompanist:accompanist-coil:0.13.0")
 
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
@@ -102,6 +116,8 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
     implementation("androidx.compose.foundation:foundation-android:1.5.4")
+    implementation("com.google.firebase:firebase-firestore-ktx:24.10.0")
+    implementation("com.google.android.datatransport:transport-runtime:3.2.0")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")

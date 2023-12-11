@@ -24,7 +24,7 @@ class MainActivity : ComponentActivity() {
         FirebaseApp.initializeApp(this)
         installSplashScreen()
 
-        val viewModelFactory = ViewModelFactory(apiService)
+        val viewModelFactory = ViewModelFactory(this)
 
         setContent {
             KnowzeTheme {

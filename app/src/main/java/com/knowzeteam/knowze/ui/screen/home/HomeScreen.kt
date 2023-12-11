@@ -22,7 +22,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -58,8 +57,8 @@ import com.knowzeteam.knowze.ui.component.MenuItem
 import com.knowzeteam.knowze.ui.component.MiniMenuItem
 import com.knowzeteam.knowze.ui.component.SearchBar
 import com.knowzeteam.knowze.ui.screen.auth.login.LoginViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.google.accompanist.coil.rememberCoilPainter
 import com.knowzeteam.knowze.ui.navigation.Screen
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -72,6 +71,9 @@ fun HomeScreen(
     val showLogoutDialog = remember { mutableStateOf(false) }
 
     val loginState by viewModel.loginState.collectAsState()
+    val userName by viewModel.userName.collectAsState() // Observe the user's name
+    val userEmail by viewModel.userEmail.collectAsState() // Observe the user's email
+    val userPhotoUrl by viewModel.userPhotoUrl.collectAsState() // Observe the user's photo URL
 
     if (loginState is LoginViewModel.LoginState.Logout) {
         navController.navigate(Screen.Login.route)
@@ -81,16 +83,22 @@ fun HomeScreen(
         ModalNavigationDrawer(
             drawerState = drawerState,
             drawerContent = {
-                DrawerContent(showLogoutDialog, viewModel)
+                DrawerContent(showLogoutDialog, viewModel, userName, userEmail, userPhotoUrl)
             }
         ) {
-            HomeContent(drawerState = drawerState)
+            HomeContent(drawerState = drawerState, userName)
         }
     }
 }
 
 @Composable
-fun DrawerContent(showLogoutDialog: MutableState<Boolean>, viewModel: LoginViewModel) {
+fun DrawerContent(
+    showLogoutDialog: MutableState<Boolean>,
+    viewModel: LoginViewModel,
+    userName: String?,
+    userEmail: String?,
+    userPhotoUrl: String?
+) {
     Box(
         modifier = Modifier
             .background(Color.White)
@@ -98,7 +106,7 @@ fun DrawerContent(showLogoutDialog: MutableState<Boolean>, viewModel: LoginViewM
             .width(260.dp)
     ) {
         Column {
-            DrawerHeader()
+            DrawerHeader(userName, userEmail, userPhotoUrl)
             DrawerItem("Profile", Icons.Default.Person)
             Spacer(Modifier.height(20.dp))
             Button(
@@ -120,25 +128,25 @@ fun DrawerContent(showLogoutDialog: MutableState<Boolean>, viewModel: LoginViewM
 }
 
 @Composable
-fun DrawerHeader() {
+fun DrawerHeader(userName: String?, userEmail: String?, userPhotoUrl: String?) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Icon(
-            imageVector = Icons.Default.Person,
-            contentDescription = "Profile",
-            modifier = Modifier
-                .size(100.dp)
-                .clip(CircleShape)
-                .background(MaterialTheme.colorScheme.primaryContainer)
-                .padding(16.dp)
-        )
+        if (!userPhotoUrl.isNullOrBlank()) {
+            Image(
+                painter = rememberCoilPainter(request = userPhotoUrl),
+                contentDescription = "User Photo",
+                modifier = Modifier
+                    .size(72.dp)
+                    .clip(CircleShape)
+            )
+        }
         Spacer(modifier = Modifier.height(8.dp))
-        Text("Fitria Widyani", style = MaterialTheme.typography.titleMedium)
-        Text("email@example.com", style = MaterialTheme.typography.bodySmall)
+        Text( text = userName.orEmpty(), style = MaterialTheme.typography.titleMedium)
+        Text(text = userEmail.orEmpty(), style = MaterialTheme.typography.bodySmall)
     }
 }
 
@@ -160,6 +168,7 @@ fun DrawerItem(text: String, icon: ImageVector) {
 @Composable
 fun HomeContent(
     drawerState: DrawerState,
+    userName: String?,
     modifier: Modifier = Modifier
 ){
 
@@ -206,7 +215,7 @@ fun HomeContent(
                 }
                 Spacer(modifier = Modifier.width(30.dp))
                 Text(
-                    text = stringResource(id = R.string.selamat) + " Fitria",
+                    text = stringResource(id = R.string.selamat) + " " + userName,
                     style = MaterialTheme.typography.titleLarge.copy(
                         fontWeight = FontWeight.Bold,
                         color = Color.Black

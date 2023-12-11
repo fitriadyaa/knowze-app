@@ -13,6 +13,7 @@ import com.knowzeteam.knowze.data.remote.response.dashboard.DashboardResponse
 import com.knowzeteam.knowze.data.remote.retrofit.ApiService
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.tasks.await
 
@@ -21,12 +22,18 @@ class LoginViewModel(
 ) : ViewModel() {
 
     private val _loginState = MutableStateFlow<LoginState>(LoginState.Idle)
-    val loginState = _loginState.asStateFlow()
+    val loginState: StateFlow<LoginState> = _loginState.asStateFlow()
 
-    private val firebaseAuth: FirebaseAuth by lazy {
-        FirebaseAuth.getInstance()
-    }
-    private val auth: FirebaseAuth = Firebase.auth
+    private val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
+
+    private val _userName = MutableStateFlow<String?>(null)
+    val userName: StateFlow<String?> = _userName.asStateFlow()
+
+    private val _userEmail = MutableStateFlow<String?>(null)
+    val userEmail: StateFlow<String?> = _userEmail.asStateFlow()
+
+    private val _userPhotoUrl = MutableStateFlow<String?>(null)
+    val userPhotoUrl: StateFlow<String?> = _userPhotoUrl.asStateFlow()
 
     fun googleLogin(googleSignInAccount: GoogleSignInAccount) {
 
@@ -40,11 +47,19 @@ class LoginViewModel(
                     val credential = GoogleAuthProvider.getCredential(idToken, null)
 
                     // Sign in with Firebase using the credential
-                    val authResult = auth.signInWithCredential(credential).await()
+                    val authResult = firebaseAuth.signInWithCredential(credential).await()
 
                     // Check if the authentication was successful
                     if (authResult.user != null) {
-                        // Authentication successful, you can proceed with fetching the Firebase token and other actions.
+                        val user = authResult.user
+                        val userName = user?.displayName
+                        val userEmail = user?.email
+                        val userPhotoUrl = user?.photoUrl?.toString()
+
+                        _userName.value = userName
+                        _userEmail.value = userEmail
+                        _userPhotoUrl.value = userPhotoUrl
+
                         val token = getFirebaseAuthToken()
                         if (token != null) {
                             val response = apiService.getDashboardData("Bearer $token")
