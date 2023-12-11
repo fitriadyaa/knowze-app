@@ -99,13 +99,15 @@ fun LoginScreen(
             Spacer(modifier = Modifier.weight(0.1f))
 
             EmailLoginButton(
-                onClick = { /*TODO*/ }
+                onClick = {
+                    navController.navigate(Screen.EmailLogin.route)
+                }
             )
 
             Spacer(modifier = Modifier.weight(0.1f))
 
             ClickableText(
-                onClick = { /*TODO*/ },
+                onClick = {navController.navigate(Screen.Register.route)},
                 text = AnnotatedString(stringResource(id = R.string.register_message)),
                 style = MaterialTheme.typography.bodyMedium.copy(
                     fontSize = 12.sp,

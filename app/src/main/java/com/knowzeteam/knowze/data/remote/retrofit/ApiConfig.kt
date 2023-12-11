@@ -18,15 +18,15 @@ object ApiConfig {
                 level = HttpLoggingInterceptor.Level.BODY
             }
             addInterceptor(loggingInterceptor)
-            token?.let { addInterceptor(AuthInterceptor(it)) }
+            token?.let { addInterceptor(AuthInterceptor { Preference.getToken(context) })
+            }
         }.build()
 
         return Retrofit.Builder()
-            .baseUrl("https://b5f7-182-4-132-15.ngrok-free.app/")
+            .baseUrl("https://f073-103-169-9-45.ngrok-free.app/")
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
             .build()
             .create(ApiService::class.java)
     }
 }
-

@@ -31,16 +31,20 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.knowzeteam.knowze.R
 import com.knowzeteam.knowze.ui.component.EmailTextField
 import com.knowzeteam.knowze.ui.component.NameTextField
 import com.knowzeteam.knowze.ui.component.PasswordTextField
+import com.knowzeteam.knowze.ui.navigation.Screen
 import com.knowzeteam.knowze.ui.theme.KnowzeTheme
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RegisterScreen(
+    navController: NavHostController,
     modifier: Modifier = Modifier
 ) {
     Scaffold(
@@ -54,7 +58,7 @@ fun RegisterScreen(
                     )
                 },
                 navigationIcon = {
-                    IconButton(onClick = { /* do something */ }) {
+                    IconButton(onClick = { navController.navigate(Screen.Login.route) }) {
                         Icon(
                             imageVector = Icons.Filled.KeyboardArrowLeft,
                             contentDescription = "Localized description"
@@ -64,68 +68,75 @@ fun RegisterScreen(
             )
         },
     ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
-            modifier = modifier.fillMaxSize()
+        Box(
+            modifier = modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            contentAlignment = Alignment.Center
         ) {
-            Box {
-                Column {
-                    Text(
-                        text = stringResource(id = R.string.write_your_name_here),
-                        style = MaterialTheme.typography.bodyMedium.copy(
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.Light,
-                            textAlign = TextAlign.Start
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+                modifier = modifier.fillMaxSize()
+            ) {
+                Box {
+                    Column {
+                        Text(
+                            text = stringResource(id = R.string.write_your_name_here),
+                            style = MaterialTheme.typography.bodyMedium.copy(
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.Light,
+                                textAlign = TextAlign.Start
+                            )
                         )
-                    )
 
-                    NameTextField(label = stringResource(id = R.string.your_name))
+                        NameTextField(label = stringResource(id = R.string.your_name))
 
-                    Spacer(modifier = Modifier.height(30.dp))
+                        Spacer(modifier = Modifier.height(30.dp))
 
-                    Text(
-                        text = stringResource(id = R.string.email),
-                        style = MaterialTheme.typography.bodyMedium.copy(
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.Light,
-                            textAlign = TextAlign.Start
+                        Text(
+                            text = stringResource(id = R.string.email),
+                            style = MaterialTheme.typography.bodyMedium.copy(
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.Light,
+                                textAlign = TextAlign.Start
+                            )
                         )
-                    )
 
-                    EmailTextField(label = stringResource(id = R.string.email_example))
+                        EmailTextField(label = stringResource(id = R.string.email_example))
 
-                    Spacer(modifier = Modifier.height(25.dp))
+                        Spacer(modifier = Modifier.height(25.dp))
 
-                    Text(
-                        text = stringResource(id = R.string.password),
-                        style = MaterialTheme.typography.bodyMedium.copy(
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.Light,
-                            textAlign = TextAlign.Start
+                        Text(
+                            text = stringResource(id = R.string.password),
+                            style = MaterialTheme.typography.bodyMedium.copy(
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.Light,
+                                textAlign = TextAlign.Start
+                            )
                         )
-                    )
 
-                    PasswordTextField(label = stringResource(id = R.string.password_example))
+                        PasswordTextField(label = stringResource(id = R.string.password_example))
 
-                    Spacer(modifier = Modifier.height(25.dp))
+                        Spacer(modifier = Modifier.height(25.dp))
 
-                    Text(
-                        text = stringResource(id = R.string.repeat_password),
-                        style = MaterialTheme.typography.bodyMedium.copy(
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.Light,
-                            textAlign = TextAlign.Start
+                        Text(
+                            text = stringResource(id = R.string.repeat_password),
+                            style = MaterialTheme.typography.bodyMedium.copy(
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.Light,
+                                textAlign = TextAlign.Start
+                            )
                         )
-                    )
 
-                    PasswordTextField(label = stringResource(id = R.string.password_example))
+                        PasswordTextField(label = stringResource(id = R.string.password_example))
+                    }
                 }
+
+                Spacer(modifier = Modifier.height(50.dp))
+
+                RegisterButton(onClick = { /*TODO*/ })
             }
-
-            Spacer(modifier = Modifier.height(50.dp))
-
-            RegisterButton(onClick = { /*TODO*/ })
         }
     }
 }
@@ -154,6 +165,8 @@ fun RegisterButton(
 @Composable
 fun RegisterPreview() {
     KnowzeTheme {
-        RegisterScreen()
+        RegisterScreen(
+            navController = rememberNavController()
+        )
     }
 }

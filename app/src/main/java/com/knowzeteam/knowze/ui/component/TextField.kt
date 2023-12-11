@@ -1,5 +1,7 @@
 package com.knowzeteam.knowze.ui.component
 
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -35,7 +37,8 @@ fun EmailTextField(
 
     OutlinedTextField(
         modifier = modifier
-            .size(335.dp, 51.dp),
+            .fillMaxWidth()
+            .height(60.dp),
         value = email,
         onValueChange = { email = it },
         label = {
@@ -70,7 +73,8 @@ fun NameTextField(
 
     OutlinedTextField(
         modifier = modifier
-            .size(335.dp, 51.dp),
+            .fillMaxWidth()
+            .height(60.dp),
         value = name,
         onValueChange = { name = it },
         label = {
@@ -111,7 +115,8 @@ fun PasswordTextField(
 
     OutlinedTextField(
         modifier = modifier
-            .size(335.dp, 51.dp),
+            .fillMaxWidth()
+            .height(60.dp),
         value = password,
         onValueChange = { password = it },
         label = {
