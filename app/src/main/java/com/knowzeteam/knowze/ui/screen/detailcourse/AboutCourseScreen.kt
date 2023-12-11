@@ -29,6 +29,7 @@ import com.knowzeteam.knowze.R
 import com.knowzeteam.knowze.ui.theme.KnowzeTheme
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -38,6 +39,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import com.knowzeteam.knowze.ui.component.CategoryButton
+import com.knowzeteam.knowze.ui.component.ReviewItem
 
 
 @Composable
@@ -64,13 +66,13 @@ fun AboutCourseScreen(
                     color = Color.White,
                     shape = RoundedCornerShape(topEnd = 40.dp, topStart = 40.dp)
                 )
-                .padding(16.dp)
+                .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 16.dp)
                 .fillMaxSize()
         ) {
             Column(
                 modifier = modifier
                     .verticalScroll(rememberScrollState())
-                    .padding(bottom = 16.dp)
+                    .padding(/*bottom = 16.dp*/)
             ) {
 
                 Row(
@@ -172,6 +174,58 @@ fun AboutCourseScreen(
                             modifier = Modifier
                                 .fillMaxWidth()
                         )
+
+                        Divider(modifier = modifier.padding(horizontal = 16.dp, vertical = 16.dp))
+
+                        Text(
+                            text = stringResource(R.string.reviews_section),
+                            style = MaterialTheme.typography.bodyMedium.copy(
+                                fontSize = 16.sp,
+                                textAlign = TextAlign.Start,
+                                fontWeight = FontWeight.Bold
+                            ),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                        )
+
+                        Spacer(modifier = modifier.height(25.dp))
+
+                        LazyColumn {
+                            item {
+                                ReviewItem(
+                                    user_profile_picture = R.drawable.user_picture_1,
+                                    user_name = stringResource(id = R.string.user_name_1),
+                                    review_time = stringResource(id = R.string.review_time_1),
+                                    feedback = stringResource(id = R.string.feedback_1),
+                                    ratingValue = 4,
+                                    rating = stringResource(id = R.string.rating_1)
+                                )
+                            }
+
+                            item {
+                                Divider(modifier = modifier.padding(horizontal = 16.dp, vertical = 16.dp))
+                                ReviewItem(
+                                    user_profile_picture = R.drawable.user_picture_2,
+                                    user_name = stringResource(id = R.string.user_name_2),
+                                    review_time = stringResource(id = R.string.review_time_2),
+                                    feedback = stringResource(id = R.string.feedback_2),
+                                    ratingValue = 4,
+                                    rating = stringResource(id = R.string.rating_2)
+                                )
+                            }
+
+                            item {
+                                Divider(modifier = modifier.padding(horizontal = 16.dp, vertical = 16.dp))
+                                ReviewItem(
+                                    user_profile_picture = R.drawable.user_picture_3,
+                                    user_name = stringResource(id = R.string.user_name_3),
+                                    review_time = stringResource(id = R.string.review_time_3),
+                                    feedback = stringResource(id = R.string.feedback_3),
+                                    ratingValue = 4,
+                                    rating = stringResource(id = R.string.rating_3)
+                                )
+                            }
+                        }
 
                         Spacer(modifier = modifier.height(60.dp))
 

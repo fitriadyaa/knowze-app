@@ -60,4 +60,25 @@
     <string name="feedback_button">Kirim Feedback</string>
     <string name="feedback_form">Feedback</string>
 
+    <!-- Nama Penngguna -->
+    <string name="user_name_1">Ahmad Hayfar</string>
+    <string name="user_name_2">Asep Bujang</string>
+    <string name="user_name_3">John Doe</string>
+
+    <!-- Review Time -->
+    <string name="review_time_1">1</string>
+    <string name="review_time_2">1</string>
+    <string name="review_time_3">1</string>
+
+    <!-- Feedback -->
+    <string name="feedback_1">Very goods, and interesting</string>
+    <string name="feedback_2">Amazing!</string>
+    <string name="feedback_3">Materi kursusnya RILLL, BANH</string>
+
+    <!-- Rating -->
+    <string name="rating_1">4.7</string>
+    <string name="rating_2">4.7</string>
+    <string name="rating_3">5</string>
+    <string name="reviews_section">Reviews (2)</string>
+
 </resources>
