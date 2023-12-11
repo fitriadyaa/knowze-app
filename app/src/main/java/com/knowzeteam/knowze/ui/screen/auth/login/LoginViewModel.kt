@@ -32,6 +32,7 @@ class LoginViewModel(
 
         viewModelScope.launch {
             try {
+                _loginState.value = LoginState.Loading
                 // Get the Google ID token from the GoogleSignInAccount
                 val idToken = googleSignInAccount.idToken
                 if (idToken != null) {
