@@ -81,4 +81,7 @@
     <string name="rating_3">5</string>
     <string name="reviews_section">Reviews (2)</string>
 
+    <!-- SplashScreen -->
+    <string name="knowzee">KNOW\nZEEEEEEE</string>
+
 </resources>
