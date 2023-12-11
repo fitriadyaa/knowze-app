@@ -51,12 +51,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Devices
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.knowzeteam.knowze.R
-import com.knowzeteam.knowze.ui.component.BigMenuItem
 import com.knowzeteam.knowze.ui.component.MenuItem
 import com.knowzeteam.knowze.ui.component.MiniMenuItem
 import com.knowzeteam.knowze.ui.component.SearchBar
@@ -371,11 +368,13 @@ fun SuggestionBox(
     }
 }
 
-
+//
 //@Preview(showBackground = true, device = Devices.PIXEL_4)
 //@Composable
 //fun HomeScreenPreview(){
 //    KnowzeTheme {
-//       HomeScreen()
+//        HomeScreen(
+//
+//        )
 //    }
 //}

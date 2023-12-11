@@ -1,5 +1,6 @@
 package com.knowzeteam.knowze.ui.screen.auth
 
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -19,6 +20,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -29,24 +31,39 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.knowzeteam.knowze.R
+import com.knowzeteam.knowze.data.remote.retrofit.ApiConfig
+import com.knowzeteam.knowze.ui.ViewModelFactory
 import com.knowzeteam.knowze.ui.navigation.Screen
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.knowzeteam.knowze.repository.DashboardRepository
+import com.knowzeteam.knowze.repository.DashboardRepositoryImpl
+import com.knowzeteam.knowze.utils.UserPreferencesRepository
+
 
 @Composable
 fun LoginScreen(
     navController: NavHostController,
-    viewModel: LoginViewModel = viewModel(),
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
+    val viewModel: LoginViewModel = viewModel(
+        factory = ViewModelFactory(
+            dashboardRepository = DashboardRepositoryImpl(ApiConfig.getApiService(context)),
+            userPreferencesRepository = UserPreferencesRepository(context)
+        )
+    )
 
-    // Configure Google Sign In
+    // Observing loading state
+    val isLoading by viewModel.isLoading.collectAsState()
+    val error by viewModel.error.observeAsState()
+
     val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+        .requestIdToken(context.getString(R.string.default_web_client_id))
         .requestEmail()
         .build()
     val googleSignInClient = GoogleSignIn.getClient(context, gso)
@@ -54,15 +71,25 @@ fun LoginScreen(
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult()
     ) { result ->
-        // Handle the result of the sign-in intent
         val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
         try {
             val account = task.getResult(ApiException::class.java)
-            // Notify ViewModel for Google auth
-            viewModel.firebaseAuthWithGoogle()
+            viewModel.loginWithGoogle(account)
         } catch (e: ApiException) {
-            // Handle exception
+            Log.e("LoginScreen", "Google Sign-In failed", e)
         }
+    }
+
+    val dashboardData by viewModel.dashboardData.observeAsState()
+    LaunchedEffect(dashboardData) {
+        dashboardData?.let {
+            navController.navigate(Screen.Home.route)
+        }
+    }
+
+    // Show a toast on error
+    error?.let {
+        Toast.makeText(context, "Error: ${it.message}", Toast.LENGTH_LONG).show()
     }
 
     Box(
@@ -91,27 +118,13 @@ fun LoginScreen(
                 val signInIntent = googleSignInClient.signInIntent
                 launcher.launch(signInIntent)
             })
-
-            // Observe ViewModel states
-            val isLoading by viewModel.isLoading.collectAsState()
-            val idToken by viewModel.idToken.observeAsState()
-            val error by viewModel.error.observeAsState()
-
-            // UI response to ViewModel states...
-            if (isLoading) {
-                CircularProgressIndicator()
-            }
-
-            idToken?.let {
-                // Navigate to next screen
-                navController.navigate(Screen.Home.route) {
-                    popUpTo(Screen.Login.route) { inclusive = true }
-                }
-            }
-
-            error?.let {
-                Toast.makeText(context, "Login failed, please try again or check your internet connection", Toast.LENGTH_LONG).show()
-            }
+        }
+        if (isLoading) {
+            CircularProgressIndicator(
+                modifier = Modifier.size(100.dp),
+                color = MaterialTheme.colorScheme.primary,
+                strokeWidth = 8.dp
+            )
         }
     }
 }

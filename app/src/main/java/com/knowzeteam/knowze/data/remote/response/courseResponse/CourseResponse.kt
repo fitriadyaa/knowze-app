@@ -1,22 +1,22 @@
-package com.knowzeteam.knowze.data.remote.response
+package com.knowzeteam.knowze.data.remote.response.courseResponse
 
 import com.google.gson.annotations.SerializedName
 
 data class CourseResponse(
 
-	@field:SerializedName("duration")
+    @field:SerializedName("duration")
 	val duration: String? = null,
 
-	@field:SerializedName("subtitles")
+    @field:SerializedName("subtitles")
 	val subtitles: List<SubtitlesItem?>? = null,
 
-	@field:SerializedName("title")
+    @field:SerializedName("title")
 	val title: String? = null,
 
-	@field:SerializedName("desc")
+    @field:SerializedName("desc")
 	val desc: String? = null,
 
-	@field:SerializedName("lessons")
+    @field:SerializedName("lessons")
 	val lessons: Int? = null
 )
 
