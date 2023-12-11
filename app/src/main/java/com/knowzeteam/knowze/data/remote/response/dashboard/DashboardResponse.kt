@@ -1,4 +1,4 @@
-package com.knowzeteam.knowze.data.remote.response
+package com.knowzeteam.knowze.data.remote.response.dashboard
 
 import com.google.gson.annotations.SerializedName
 

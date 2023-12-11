@@ -1,15 +1,16 @@
 package com.knowzeteam.knowze
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
-import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.knowzeteam.knowze.ui.navigation.Screen
-import com.knowzeteam.knowze.ui.screen.auth.LoginScreen
-import com.knowzeteam.knowze.ui.screen.auth.LoginWithEmailScreen
-import com.knowzeteam.knowze.ui.screen.auth.RegisterScreen
+import com.knowzeteam.knowze.ui.screen.auth.login.LoginScreen
+import com.knowzeteam.knowze.ui.screen.auth.login.LoginViewModel
+import com.knowzeteam.knowze.ui.screen.auth.login.LoginWithEmailScreen
+import com.knowzeteam.knowze.ui.screen.auth.register.RegisterScreen
 import com.knowzeteam.knowze.ui.screen.home.HomeScreen
 import com.knowzeteam.knowze.ui.screen.welcome.IntroOneScreen
 import com.knowzeteam.knowze.ui.screen.welcome.IntroSecondScreen
@@ -17,8 +18,10 @@ import com.knowzeteam.knowze.ui.screen.welcome.IntroThridScreen
 import com.knowzeteam.knowze.ui.screen.welcome.SplashScreen
 
 @Composable
-fun KnowzeApp() {
+fun KnowzeApp(viewModelFactory: ViewModelProvider.Factory) {
+
     val navController = rememberNavController()
+    val loginViewModel: LoginViewModel = viewModel(factory = viewModelFactory)
 
     NavHost(navController = navController, startDestination = Screen.Splash.route) {
         composable(Screen.Splash.route) {
@@ -44,7 +47,8 @@ fun KnowzeApp() {
         }
 
         composable(Screen.Login.route) {
-            LoginScreen(navController = navController)
+
+            LoginScreen(navController = navController, viewModel = loginViewModel)
         }
 
         composable(Screen.EmailLogin.route) {
@@ -56,10 +60,10 @@ fun KnowzeApp() {
             RegisterScreen(navController = navController)
         }
 
-
         composable(Screen.Home.route){
             HomeScreen(
-                navController = navController
+                navController = navController,
+                viewModel = loginViewModel
             )
         }
     }

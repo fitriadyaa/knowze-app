@@ -1,5 +1,6 @@
-package com.knowzeteam.knowze.ui.screen.auth
+package com.knowzeteam.knowze.ui.screen.auth.login
 
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -16,13 +17,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -33,7 +35,6 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -44,13 +45,46 @@ import com.knowzeteam.knowze.ui.navigation.Screen
 @Composable
 fun LoginScreen(
     navController: NavHostController,
-    viewModel: LoginViewModel = viewModel(),
+    viewModel: LoginViewModel,
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
+    val loginState by viewModel.loginState.collectAsState()
 
-    // Configure Google Sign In
+    val isGoogleSignInInitiated = rememberUpdatedState(false)
+
+    when (loginState) {
+        // Check if Google Sign-In is initiated, and if so, show the loading indicator
+        is LoginViewModel.LoginState.Success -> {
+            if (!isGoogleSignInInitiated.value) {
+                // Navigate to home screen or show success message
+                navController.navigate(Screen.Home.route)
+            } else {
+                LoadingIndicator()
+            }
+        }
+        is LoginViewModel.LoginState.Error -> {
+            // Check if Google Sign-In is initiated, and if so, show the error message
+            if (!isGoogleSignInInitiated.value) {
+                LaunchedEffect(key1 = loginState) {
+                    Toast.makeText(context, (loginState as LoginViewModel.LoginState.Error).message, Toast.LENGTH_LONG).show()
+                }
+            } else {
+                // Show the loading indicator
+                LoadingIndicator()
+            }
+        }
+        LoginViewModel.LoginState.Idle -> {
+            // Show loading indicator only when Google Sign-In is initiated
+            if (isGoogleSignInInitiated.value) {
+                LoadingIndicator()
+            }
+        }
+        else -> {}
+    }
+
     val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+        .requestIdToken(context.getString(R.string.default_web_client_id))
         .requestEmail()
         .build()
     val googleSignInClient = GoogleSignIn.getClient(context, gso)
@@ -58,14 +92,12 @@ fun LoginScreen(
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult()
     ) { result ->
-        // Handle the result of the sign-in intent
         val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
         try {
             val account = task.getResult(ApiException::class.java)
-            // Notify ViewModel for Google auth
-            viewModel.firebaseAuthWithGoogle()
+            viewModel.googleLogin(account)
         } catch (e: ApiException) {
-            // Handle exception
+            Log.e("LoginScreen", "Google Sign-In failed", e)
         }
     }
 
@@ -96,6 +128,7 @@ fun LoginScreen(
                 launcher.launch(signInIntent)
             })
 
+
             Spacer(modifier = Modifier.weight(0.1f))
 
             EmailLoginButton(
@@ -116,28 +149,14 @@ fun LoginScreen(
                 ),
                 modifier = Modifier.fillMaxWidth()
             )
-
-            // Observe ViewModel states
-            val isLoading by viewModel.isLoading.collectAsState()
-            val idToken by viewModel.idToken.observeAsState()
-            val error by viewModel.error.observeAsState()
-
-            // UI response to ViewModel states...
-            if (isLoading) {
-                CircularProgressIndicator()
-            }
-
-            idToken?.let {
-                // Navigate to next screen
-                navController.navigate(Screen.Home.route) {
-                    popUpTo(Screen.Login.route) { inclusive = true }
-                }
-            }
-
-            error?.let {
-                Toast.makeText(context, "Login failed, please try again or check your internet connection", Toast.LENGTH_LONG).show()
-            }
         }
+    }
+}
+
+@Composable
+fun LoadingIndicator() {
+    Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
+        CircularProgressIndicator()
     }
 }
 @Composable
@@ -194,11 +213,11 @@ fun EmailLoginButton(
     }
 }
 
-/*
-@Preview(showBackground = true)
-@Composable
-fun LoginScreenPreview() {
-    KnowzeTheme {
-        LoginScreen()
-    }
-}*/
+
+//@Preview(showBackground = true)
+//@Composable
+//fun LoginScreenPreview() {
+//    KnowzeTheme {
+//        LoginScreen()
+//    }
+//}

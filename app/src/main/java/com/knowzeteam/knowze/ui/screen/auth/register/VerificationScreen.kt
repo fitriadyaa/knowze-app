@@ -1,4 +1,4 @@
-package com.knowzeteam.knowze.ui.screen.auth
+package com.knowzeteam.knowze.ui.screen.auth.register
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement

@@ -51,16 +51,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Devices
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.knowzeteam.knowze.R
-import com.knowzeteam.knowze.ui.component.BigMenuItem
 import com.knowzeteam.knowze.ui.component.MenuItem
 import com.knowzeteam.knowze.ui.component.MiniMenuItem
 import com.knowzeteam.knowze.ui.component.SearchBar
-import com.knowzeteam.knowze.ui.screen.auth.LoginViewModel
+import com.knowzeteam.knowze.ui.screen.auth.login.LoginViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.knowzeteam.knowze.ui.navigation.Screen
@@ -69,43 +66,31 @@ import com.knowzeteam.knowze.ui.navigation.Screen
 @Composable
 fun HomeScreen(
     navController: NavController,
-    viewModel: LoginViewModel = viewModel()
+    viewModel: LoginViewModel
 ) {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val showLogoutDialog = remember { mutableStateOf(false) }
-    val isLoggedOut by viewModel.isLoggedOut.collectAsState()
-    val isLoading by viewModel.isLoading.collectAsState()
 
-    if (showLogoutDialog.value) {
-        LogoutDialog(showLogoutDialog, onConfirmLogout = { viewModel.logout() })
-    }
+    val loginState by viewModel.loginState.collectAsState()
 
-    LaunchedEffect(isLoggedOut) {
-        if (isLoggedOut) {
-            navController.navigate(Screen.Login.route) {
-                popUpTo(Screen.Home.route) { inclusive = true }
-            }
-        }
+    if (loginState is LoginViewModel.LoginState.Logout) {
+        navController.navigate(Screen.Login.route)
     }
 
     Box {
         ModalNavigationDrawer(
             drawerState = drawerState,
             drawerContent = {
-                DrawerContent(showLogoutDialog)
+                DrawerContent(showLogoutDialog, viewModel)
             }
         ) {
             HomeContent(drawerState = drawerState)
-        }
-
-        if (isLoading) {
-            CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
         }
     }
 }
 
 @Composable
-fun DrawerContent(showLogoutDialog: MutableState<Boolean>) {
+fun DrawerContent(showLogoutDialog: MutableState<Boolean>, viewModel: LoginViewModel) {
     Box(
         modifier = Modifier
             .background(Color.White)
@@ -124,6 +109,12 @@ fun DrawerContent(showLogoutDialog: MutableState<Boolean>) {
             ) {
                 Text("Log Out")
             }
+        }
+    }
+
+    if (showLogoutDialog.value) {
+        LogoutDialog(showLogoutDialog) {
+            viewModel.logout()
         }
     }
 }
@@ -371,7 +362,7 @@ fun SuggestionBox(
     }
 }
 
-
+//
 //@Preview(showBackground = true, device = Devices.PIXEL_4)
 //@Composable
 //fun HomeScreenPreview(){
