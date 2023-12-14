@@ -14,6 +14,26 @@
     <string name="desc_intro3">Use chatbot feature while still confused with something</string>
     <string name="button_get_started">Get Started</string>
     <string name="login_with_email">Login with Email</string>
+    <string name="register_message">Belum punya akun? Register disini</string>
+    <string name="login_here">Login Here!</string>
+    <string name="email">Email</string>
+    <string name="email_example">username@gmail.com</string>
+    <string name="password">Password</string>
+    <string name="repeat_password">Ulangi Password</string>
+    <string name="password_example">************</string>
+    <string name="forgot_password">forgot password?</string>
+    <string name="login">Login</string>
+    <string name="write_your_name_here">Write your name here...</string>
+    <string name="your_name">Your name...</string>
+    <string name="icon_password_visible">Password Visible</string>
+    <string name="icon_password_hidden">Password Hidden</string>
+    <string name="email_verification">Email Verification</string>
+    <string name="verify">Verify</string>
+    <string name="verify_message">Didn’t have code ? Send Again</string>
+    <string name="register_success">Register Success!</string>
+    <string name="verification_dialog_message">Anda telah berhasil Verifikasi kode\nyang telah kami kirim</string>
+    <string name="back_to_login">Back to Login</string>
+
     
     //MenuItem
     <string name="menu_rekomendasi" translatable="false">Cari Rekomendasi Kursusmu</string>
@@ -59,5 +79,64 @@
     <string name="congratulation_course">Selamat anda telah menyelesaikan kursus ini, yuk belajar hal menarik lainnya!</string>
     <string name="feedback_button">Kirim Feedback</string>
     <string name="feedback_form">Feedback</string>
+    <string name="theme_course_pict">Gambar Tema Kursus</string>
+
+    <!-- Gallery -->
+    <string name="course_gallery">Galeri Kursus</string>
+    <string name="course_theme">Tema Kursus</string>
+    <string name="course_theme_name">Tema Olahraga</string>
+    <string name="trending_keyword">Trending Keyword</string>
+
+    <!-- Course Theme -->
+    <string name="course_theme_1">Pendidikan</string>
+    <string name="course_theme_2">Photography</string>
+    <string name="course_theme_3">Programming</string>
+    <string name="course_theme_4">Desain</string>
+    <string name="course_theme_5">Sosial</string>
+    <string name="course_theme_6">Lifeskills</string>
+    <string name="course_theme_7">Bahasa</string>
+    <string name="course_theme_8">Outdoor</string>
+
+    <!-- Course Theme Detail -->
+    <string name="course_theme_detail_1">Cara Hiking\nDengan Sepeda</string>
+    <string name="course_theme_detail_2">Tips Bermain\nFutsal</string>
+
+    <!-- Trending Keyword -->
+    <string name="trending_keyword_1">Copywriting</string>
+    <string name="trending_keyword_2">SEO</string>
+    <string name="trending_keyword_3">Mendaki</string>
+    <string name="trending_keyword_4">Sejarah</string>
+    <string name="trending_keyword_5">Golf</string>
+    <string name="trending_keyword_6">Menggambar</string>
+    <string name="trending_keyword_7">Melupakan Dia</string>
+    <string name="trending_keyword_8">Cara menjadi Kaya</string>
+    <string name="trending_keyword_9">Cara menang lotre</string>
+    <string name="trending_keyword_10">Pola Gacor</string>
+    <string name="trending_keyword_11">Cara menjadi anime</string>
+    <string name="trending_keyword_12">Cara masuk ISEKAI</string>
+
+    <!-- Nama Penngguna -->
+    <string name="user_name_1">Ahmad Hayfar</string>
+    <string name="user_name_2">Asep Bujang</string>
+    <string name="user_name_3">John Doe</string>
+
+    <!-- Review Time -->
+    <string name="review_time_1">1</string>
+    <string name="review_time_2">1</string>
+    <string name="review_time_3">1</string>
+
+    <!-- Feedback -->
+    <string name="feedback_1">Very goods, and interesting</string>
+    <string name="feedback_2">Amazing!</string>
+    <string name="feedback_3">Materi kursusnya RILLL, BANH</string>
+
+    <!-- Rating -->
+    <string name="rating_1">4.7</string>
+    <string name="rating_2">4.7</string>
+    <string name="rating_3">5</string>
+    <string name="reviews_section">Reviews (2)</string>
+
+    <!-- SplashScreen -->
+    <string name="knowzee">KNOW\nZEEEEEEE</string>
 
 </resources>

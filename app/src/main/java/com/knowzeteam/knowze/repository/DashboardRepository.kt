@@ -1,7 +1,11 @@
 package com.knowzeteam.knowze.repository
 
-import com.knowzeteam.knowze.data.remote.response.authResponse.DashboardResponse
+import com.knowzeteam.knowze.data.remote.response.dashboard.DashboardResponse
+import com.knowzeteam.knowze.data.remote.retrofit.ApiService
+import retrofit2.Response
 
-interface DashboardRepository {
-    suspend fun getDashboard(): Result<DashboardResponse>
+class DashboardRepository(private val apiService: ApiService) {
+    suspend fun getDashboardData(idToken: String): Response<DashboardResponse> {
+        return apiService.getDashboardData(idToken)
+    }
 }
