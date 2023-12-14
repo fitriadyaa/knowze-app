@@ -11,6 +11,7 @@ import com.knowzeteam.knowze.ui.screen.auth.login.LoginScreen
 import com.knowzeteam.knowze.ui.screen.auth.login.LoginViewModel
 import com.knowzeteam.knowze.ui.screen.auth.login.LoginWithEmailScreen
 import com.knowzeteam.knowze.ui.screen.auth.register.RegisterScreen
+import com.knowzeteam.knowze.ui.screen.gallery.CourseThemeGallery
 import com.knowzeteam.knowze.ui.screen.home.HomeScreen
 import com.knowzeteam.knowze.ui.screen.welcome.IntroOneScreen
 import com.knowzeteam.knowze.ui.screen.welcome.IntroSecondScreen
@@ -71,6 +72,10 @@ fun KnowzeApp(viewModelFactory: ViewModelProvider.Factory, isLoggedIn: Boolean) 
                 navController = navController,
                 viewModel = loginViewModel
             )
+        }
+
+        composable(Screen.GalleryCourse.route){
+            CourseThemeGallery()
         }
     }
 }

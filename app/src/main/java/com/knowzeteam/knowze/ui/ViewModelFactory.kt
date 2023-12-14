@@ -10,9 +10,14 @@ import com.knowzeteam.knowze.ui.screen.auth.login.LoginViewModel
 class ViewModelFactory(private val context: Context) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(LoginViewModel::class.java)) {
+            // Provide ApiService
             val apiService = ServiceLocator.provideApiService(context)
+
+            // Provide UserRepository
+            val userRepository = ServiceLocator.provideUserRepository(context)
+
             @Suppress("UNCHECKED_CAST")
-            return LoginViewModel(apiService) as T
+            return LoginViewModel(apiService, userRepository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

@@ -17,9 +17,12 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.BottomSheetValue
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.Divider
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.rememberBottomSheetState
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.DrawerState
@@ -86,7 +89,7 @@ fun HomeScreen(
                 DrawerContent(showLogoutDialog, viewModel, userName, userEmail, userPhotoUrl)
             }
         ) {
-            HomeContent(drawerState = drawerState, userName)
+            HomeContent(drawerState = drawerState, userName, navController)
         }
     }
 }
@@ -164,11 +167,12 @@ fun DrawerItem(text: String, icon: ImageVector) {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
 fun HomeContent(
     drawerState: DrawerState,
     userName: String?,
+    navController: NavController,
     modifier: Modifier = Modifier
 ){
 
@@ -182,7 +186,6 @@ fun HomeContent(
             openDrawer = false // Reset the state
         }
     }
-
 
     Box(
         modifier = modifier
@@ -225,9 +228,8 @@ fun HomeContent(
             SearchBar()
             Spacer(modifier = Modifier.height(16.dp))
             SuggestionBox(text = "Cara makan rumput")
-            Spacer(modifier = Modifier.height(16.dp))
         }
-        // Container
+        Spacer(modifier = Modifier.height(16.dp))
         Box(
             modifier = Modifier
                 .align(Alignment.BottomStart)
@@ -235,6 +237,7 @@ fun HomeContent(
                     color = Color.White,
                     shape = RoundedCornerShape(topEnd = 20.dp, topStart = 20.dp)
                 )
+                .fillMaxWidth()
                 .padding(16.dp)
         ) {
             LazyColumn(
@@ -271,7 +274,7 @@ fun HomeContent(
                         subText = stringResource(id = R.string.menu_galeri_detail),
                         imageResId = R.drawable.ic_gallery,
                         boxColor = MaterialTheme.colorScheme.primary,
-                        onClick = {}
+                        onClick = { navController.navigate(Screen.GalleryCourse.route)}
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     Divider(

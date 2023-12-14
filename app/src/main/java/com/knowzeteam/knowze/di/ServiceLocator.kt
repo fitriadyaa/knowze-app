@@ -17,7 +17,10 @@ object ServiceLocator {
     }
 
     fun provideUserRepository(context: Context): UserRepository {
-        return UserRepository.create(provideUserProfileDao(context))
+        return UserRepository.create(
+            context = context,
+            userProfileDao = provideUserProfileDao(context)
+        )
     }
 
     private fun provideUserProfileDao(context: Context): UserProfileDao {

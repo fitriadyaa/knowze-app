@@ -15,6 +15,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
@@ -43,19 +45,22 @@ fun CourseThemeGallery(
             CenterAlignedTopAppBar(
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primary,
+                    titleContentColor = Color.White,
+                    navigationIconContentColor = Color.White
                 ),
                 title = {
-                    androidx.compose.material3.Text(
+                    Text(
                         text = stringResource(id = R.string.menu_galeri),
                         maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
+                        overflow = TextOverflow.Ellipsis,
+                        color = Color.White
                     )
                 },
                 navigationIcon = {
-                    androidx.compose.material3.IconButton(onClick = { /* do something */ }) {
-                        androidx.compose.material3.Icon(
+                    IconButton(onClick = { /* do something */ }) {
+                        Icon(
                             imageVector = Icons.Filled.KeyboardArrowLeft,
-                            contentDescription = "Localized description"
+                            contentDescription = "Localized description",
                         )
                     }
                 }
@@ -67,7 +72,7 @@ fun CourseThemeGallery(
             verticalArrangement = Arrangement.Top,
             modifier = modifier
                 .fillMaxSize()
-                .padding(start = 16.dp, top = 100.dp)
+                .padding(start = 16.dp, top = 100.dp, end = 16.dp)
         ) {
             Text(
                 text = stringResource(id = R.string.course_theme),

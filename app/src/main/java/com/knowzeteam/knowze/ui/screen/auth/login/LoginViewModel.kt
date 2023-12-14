@@ -5,12 +5,11 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
-import com.google.firebase.auth.auth
 import com.knowzeteam.knowze.data.remote.response.dashboard.DashboardResponse
 import com.knowzeteam.knowze.data.remote.retrofit.ApiService
+import com.knowzeteam.knowze.repository.UserRepository
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -18,7 +17,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.tasks.await
 
 class LoginViewModel(
-    private val apiService: ApiService
+    private val apiService: ApiService,
+    private val userRepository: UserRepository
 ) : ViewModel() {
 
     private val _loginState = MutableStateFlow<LoginState>(LoginState.Idle)
@@ -60,7 +60,10 @@ class LoginViewModel(
                         _userEmail.value = userEmail
                         _userPhotoUrl.value = userPhotoUrl
 
+                        userRepository.setLoginStatus(true)
+
                         val token = getFirebaseAuthToken()
+
                         if (token != null) {
                             val response = apiService.getDashboardData("Bearer $token")
                             if (response.isSuccessful) {
@@ -128,6 +131,7 @@ class LoginViewModel(
         viewModelScope.launch {
             try {
                 firebaseAuth.signOut()
+                userRepository.setLoginStatus(false)
                 _loginState.value = LoginState.Logout
             } catch (e: Exception) {
                 _loginState.value = LoginState.Error(e.message ?: "Logout failed")

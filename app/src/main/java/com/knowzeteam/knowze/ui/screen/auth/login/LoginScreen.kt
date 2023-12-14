@@ -51,8 +51,6 @@ fun LoginScreen(
     val context = LocalContext.current
     val loginState by viewModel.loginState.collectAsState()
 
-    val isGoogleSignInInitiated = rememberUpdatedState(false)
-
     when (loginState) {
         is LoginViewModel.LoginState.Success -> {
             // Navigate to home screen or show success message
@@ -71,36 +69,6 @@ fun LoginScreen(
         }
         else -> {}
     }
-
-//    when (loginState) {
-//        // Check if Google Sign-In is initiated, and if so, show the loading indicator
-//        is LoginViewModel.LoginState.Success -> {
-//            if (!isGoogleSignInInitiated.value) {
-//                // Navigate to home screen or show success message
-//                navController.navigate(Screen.Home.route)
-//            } else {
-//                LoadingIndicator()
-//            }
-//        }
-//        is LoginViewModel.LoginState.Error -> {
-//            // Check if Google Sign-In is initiated, and if so, show the error message
-//            if (!isGoogleSignInInitiated.value) {
-//                LaunchedEffect(key1 = loginState) {
-//                    Toast.makeText(context, (loginState as LoginViewModel.LoginState.Error).message, Toast.LENGTH_LONG).show()
-//                }
-//            } else {
-//                // Show the loading indicator
-//                LoadingIndicator()
-//            }
-//        }
-//        LoginViewModel.LoginState.Idle -> {
-//            // Show loading indicator only when Google Sign-In is initiated
-//            if (isGoogleSignInInitiated.value) {
-//                LoadingIndicator()
-//            }
-//        }
-//        else -> {}
-//    }
 
     val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
         .requestIdToken(context.getString(R.string.default_web_client_id))

@@ -24,20 +24,6 @@ object Preference {
         return token
     }
 
-    fun saveToken(context: Context, newToken: String) {
-        val editor = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).edit()
-        editor.putString(KEY_TOKEN, newToken)
-        editor.apply()
-        token = newToken
-    }
-
-    fun logOut(context: Context) {
-        val editor = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).edit()
-        editor.remove(KEY_TOKEN)
-        editor.apply()
-        token = null
-    }
-
     fun setLoginStatus(context: Context, isLoggedIn: Boolean) {
         val preferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
         val editor = preferences.edit()
