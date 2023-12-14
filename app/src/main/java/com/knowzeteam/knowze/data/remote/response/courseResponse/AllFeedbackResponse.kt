@@ -1,4 +1,4 @@
-package com.knowzeteam.knowze.data.remote.response.courseResponse
+package com.knowzeteam.knowze.data.remote.response
 
 import com.google.gson.annotations.SerializedName
 
