@@ -47,6 +47,7 @@
     //HomeScreen
     <string name="selamat">Selamat Datang, </string>
     <string name="coba_ini">Coba ini</string>
+    <string name="search_value">Cara membuka tutup kaleng...</string>
 
     <!-- Mini Menu Item -->
     <string name="title_menu_mini">Kursus Berdasarkan Berita Trending</string>

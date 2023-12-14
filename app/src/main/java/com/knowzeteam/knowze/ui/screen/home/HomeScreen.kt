@@ -2,6 +2,7 @@ package com.knowzeteam.knowze.ui.screen.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,12 +18,9 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.BottomSheetValue
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.Divider
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.rememberBottomSheetState
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.DrawerState
@@ -167,7 +165,7 @@ fun DrawerItem(text: String, icon: ImageVector) {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeContent(
     drawerState: DrawerState,
@@ -225,11 +223,16 @@ fun HomeContent(
                     )
                 )
             }
-            SearchBar()
+            ClickableSearchBar(
+                placeholderText = stringResource(R.string.search_value),
+                onSearchBarClick = {
+                    navController.navigate("${Screen.HomeS.route}/focus")
+                }
+            )
             Spacer(modifier = Modifier.height(16.dp))
             SuggestionBox(text = "Cara makan rumput")
         }
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(40.dp))
         Box(
             modifier = Modifier
                 .align(Alignment.BottomStart)
@@ -325,6 +328,38 @@ fun HomeContent(
         }
     }
 }
+
+@Composable
+fun ClickableSearchBar(
+    placeholderText: String,
+    onSearchBarClick: () -> Unit
+) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(50.dp)
+            .background(Color.White, RoundedCornerShape(12.dp))
+            .clickable { onSearchBarClick() }
+            .padding(horizontal = 16.dp),
+        contentAlignment = Alignment.CenterStart
+    ) {
+        Text(
+            text = placeholderText,
+            color = MaterialTheme.colorScheme.primary,
+            modifier = Modifier.padding(start = 16.dp),
+        )
+        Image(
+            painter = painterResource(id = R.drawable.ic_search),
+            contentDescription = "Search Icon",
+            contentScale = ContentScale.None,
+            modifier = Modifier
+                .size(32.dp)
+                .align(Alignment.CenterEnd)
+                .padding(end = 10.dp)
+        )
+    }
+}
+
 
 @Composable
 fun LogoutDialog(showLogoutDialog: MutableState<Boolean>, onConfirmLogout: () -> Unit) {

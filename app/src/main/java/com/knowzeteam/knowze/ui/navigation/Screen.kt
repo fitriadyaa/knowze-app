@@ -15,4 +15,6 @@ sealed class Screen(val route: String) {
     object GalleryCourse : Screen("gallery_course")
     object DetailGalleryCourse : Screen("detail_gallery_course")
     object TrendingKeyword : Screen("trending_keyword")
+
+    object HomeS : Screen("home_search")
 }

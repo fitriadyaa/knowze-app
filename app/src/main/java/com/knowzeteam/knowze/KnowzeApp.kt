@@ -3,9 +3,11 @@ package com.knowzeteam.knowze
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.knowzeteam.knowze.ui.navigation.Screen
 import com.knowzeteam.knowze.ui.screen.auth.login.LoginScreen
 import com.knowzeteam.knowze.ui.screen.auth.login.LoginViewModel
@@ -13,6 +15,7 @@ import com.knowzeteam.knowze.ui.screen.auth.login.LoginWithEmailScreen
 import com.knowzeteam.knowze.ui.screen.auth.register.RegisterScreen
 import com.knowzeteam.knowze.ui.screen.gallery.CourseThemeGallery
 import com.knowzeteam.knowze.ui.screen.home.HomeScreen
+import com.knowzeteam.knowze.ui.screen.home.HomeSearch
 import com.knowzeteam.knowze.ui.screen.welcome.IntroOneScreen
 import com.knowzeteam.knowze.ui.screen.welcome.IntroSecondScreen
 import com.knowzeteam.knowze.ui.screen.welcome.IntroThridScreen
@@ -76,6 +79,18 @@ fun KnowzeApp(viewModelFactory: ViewModelProvider.Factory, isLoggedIn: Boolean) 
 
         composable(Screen.GalleryCourse.route){
             CourseThemeGallery()
+        }
+
+        composable(
+            "${Screen.HomeS.route}/{focus}",
+            arguments = listOf(navArgument("focus") { defaultValue = "nofocus"; type = NavType.StringType })
+        ) { backStackEntry ->
+            val focus = backStackEntry.arguments?.getString("focus") ?: "nofocus"
+            HomeSearch(
+                onBack = { navController.popBackStack() },
+                initialSearchText = "",
+                shouldFocus = focus == "focus",
+            )
         }
     }
 }

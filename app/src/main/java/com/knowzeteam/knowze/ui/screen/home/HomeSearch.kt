@@ -22,24 +22,45 @@ import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.knowzeteam.knowze.ui.component.SearchBar
-import com.knowzeteam.knowze.ui.theme.KnowzeTheme
+import com.knowzeteam.knowze.ui.navigation.Screen
 
 @Composable
 fun HomeSearch(
+    onBack: () -> Unit,
+    initialSearchText: String,
+    shouldFocus: Boolean = false,
     modifier: Modifier = Modifier
 ){
+    val focusRequester = remember { FocusRequester() }
+
+    SearchBar(
+        initialText = initialSearchText,
+        onSearch = {/* existing search logic */},
+        focusRequester = focusRequester
+    )
+
+    LaunchedEffect(shouldFocus) {
+        if (shouldFocus) {
+            focusRequester.requestFocus()
+        }
+    }
+
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -57,13 +78,17 @@ fun HomeSearch(
                     .fillMaxWidth(),
                 horizontalArrangement = Arrangement.Start
             ) {
-                IconButton(onClick = {}) {
+                IconButton(onClick = { onBack() }) {
                     Icon(
                         imageVector = Icons.Filled.KeyboardArrowLeft,
                         contentDescription = "Back"
                     )
                 }
-                SearchBar()
+                SearchBar(
+                    initialText = initialSearchText,
+                    focusRequester = focusRequester,
+                    onSearch = {}
+                )
             }
             Spacer(modifier = Modifier.height(20.dp))
             RecommendationContent()
@@ -102,7 +127,7 @@ fun BoxWithText(
     BoxWithConstraints(modifier = modifier.padding(bottom = 10.dp)) {
         Box(
             modifier = Modifier
-                .background(color = MaterialTheme.colorScheme.surface, RoundedCornerShape(12.dp))
+                .background(color = Color.White, RoundedCornerShape(12.dp))
                 .padding(14.dp)
                 .widthIn(max = maxWidth)
                 .height(20.dp)
@@ -179,10 +204,10 @@ fun SettingDuration(
     }
 }
 
-@Preview
-@Composable
-fun HomeSearchPreview() {
-    KnowzeTheme {
-        HomeSearch()
-    }
-}
+//@Preview
+//@Composable
+//fun HomeSearchPreview() {
+//    KnowzeTheme {
+//        HomeSearch()
+//    }
+//}
