@@ -78,7 +78,9 @@ fun KnowzeApp(viewModelFactory: ViewModelProvider.Factory, isLoggedIn: Boolean) 
         }
 
         composable(Screen.GalleryCourse.route){
-            CourseThemeGallery()
+            CourseThemeGallery(
+                onBack = { navController.popBackStack() },
+            )
         }
 
         composable(
@@ -87,6 +89,7 @@ fun KnowzeApp(viewModelFactory: ViewModelProvider.Factory, isLoggedIn: Boolean) 
         ) { backStackEntry ->
             val focus = backStackEntry.arguments?.getString("focus") ?: "nofocus"
             HomeSearch(
+                navController= navController,
                 onBack = { navController.popBackStack() },
                 initialSearchText = "",
                 shouldFocus = focus == "focus",

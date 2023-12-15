@@ -1,22 +1,15 @@
 package com.knowzeteam.knowze.repository
 
-import android.content.Context
 import com.knowzeteam.knowze.data.local.UserProfileDao
 import com.knowzeteam.knowze.data.local.UserProfileEntity
 
-interface UserRepository {
-    suspend fun getUserProfile(userId: Int): UserProfileEntity?
-    suspend fun insertUserProfile(userProfile: UserProfileEntity)
+class UserRepository(private val userProfileDao: UserProfileDao) {
 
-    suspend fun saveUserProfile(user: UserProfileEntity)
+    suspend fun saveUserProfile(userProfile: UserProfileEntity) {
+        userProfileDao.insertUserProfile(userProfile)
+    }
 
-    fun setLoginStatus(isLoggedIn: Boolean)
-    fun getLoginStatus(): Boolean
-
-    companion object {
-        @JvmStatic
-        fun create(context: Context, userProfileDao: UserProfileDao): UserRepository {
-            return UserRepositoryImpl(context, userProfileDao)
-        }
+    suspend fun getUserProfile(userId: Int): UserProfileEntity? {
+        return userProfileDao.getUserProfile(userId)
     }
 }

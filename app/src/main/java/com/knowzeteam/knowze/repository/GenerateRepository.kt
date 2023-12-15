@@ -1,0 +1,18 @@
+package com.knowzeteam.knowze.repository
+
+import com.knowzeteam.knowze.data.remote.response.courseResponse.CourseResponse
+import com.knowzeteam.knowze.data.remote.response.courseResponse.GenerateRequest
+import com.knowzeteam.knowze.data.remote.response.courseResponse.GenerateResponse
+import com.knowzeteam.knowze.data.remote.retrofit.ApiService
+
+class GenerateRepository(private val apiService: ApiService) {
+    suspend fun postGenerateQuery(prompt: String): GenerateResponse? {
+        val response = apiService.postGenerate(GenerateRequest(prompt))
+        return if (response.isSuccessful) response.body() else null
+    }
+
+    suspend fun getCourseDetails(courseId: String): CourseResponse? {
+        val response = apiService.getCourseDetails(courseId)
+        return if (response.isSuccessful) response.body() else null
+    }
+}

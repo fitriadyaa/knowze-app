@@ -38,6 +38,7 @@ import com.knowzeteam.knowze.ui.theme.KnowzeTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CourseThemeGallery(
+    onBack: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Scaffold(
@@ -57,7 +58,7 @@ fun CourseThemeGallery(
                     )
                 },
                 navigationIcon = {
-                    IconButton(onClick = { /* do something */ }) {
+                    IconButton(onClick = { onBack }) {
                         Icon(
                             imageVector = Icons.Filled.KeyboardArrowLeft,
                             contentDescription = "Localized description",
@@ -162,6 +163,8 @@ fun CourseThemeGallery(
 @Composable
 fun CourseThemePreview() {
     KnowzeTheme {
-        CourseThemeGallery()
+        CourseThemeGallery(
+            onBack = {}
+        )
     }
 }

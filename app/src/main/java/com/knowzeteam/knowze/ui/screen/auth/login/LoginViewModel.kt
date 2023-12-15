@@ -7,8 +7,10 @@ import androidx.lifecycle.viewModelScope
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import com.knowzeteam.knowze.data.local.UserProfileEntity
 import com.knowzeteam.knowze.data.remote.response.dashboard.DashboardResponse
 import com.knowzeteam.knowze.data.remote.retrofit.ApiService
+import com.knowzeteam.knowze.repository.TokenRepository
 import com.knowzeteam.knowze.repository.UserRepository
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,7 +20,8 @@ import kotlinx.coroutines.tasks.await
 
 class LoginViewModel(
     private val apiService: ApiService,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val tokenRepository: TokenRepository
 ) : ViewModel() {
 
     private val _loginState = MutableStateFlow<LoginState>(LoginState.Idle)
@@ -52,19 +55,26 @@ class LoginViewModel(
                     // Check if the authentication was successful
                     if (authResult.user != null) {
                         val user = authResult.user
+                        val userId = user?.uid ?: return@launch
                         val userName = user?.displayName
                         val userEmail = user?.email
                         val userPhotoUrl = user?.photoUrl?.toString()
 
-                        _userName.value = userName
-                        _userEmail.value = userEmail
-                        _userPhotoUrl.value = userPhotoUrl
-
-                        userRepository.setLoginStatus(true)
+                        // Check for null values and save the user profile
+                        if (!userName.isNullOrEmpty() && !userEmail.isNullOrEmpty()) {
+                            val userProfile = UserProfileEntity(
+                                id = userId,
+                                userName = userName,
+                                userEmail = userEmail,
+                                userPhotoUrl = userPhotoUrl
+                            )
+                            userRepository.saveUserProfile(userProfile)
+                        }
 
                         val token = getFirebaseAuthToken()
 
                         if (token != null) {
+                            tokenRepository.saveToken(token)
                             val response = apiService.getDashboardData("Bearer $token")
                             if (response.isSuccessful) {
                                 _loginState.value = LoginState.Success(response.body())
@@ -131,7 +141,6 @@ class LoginViewModel(
         viewModelScope.launch {
             try {
                 firebaseAuth.signOut()
-                userRepository.setLoginStatus(false)
                 _loginState.value = LoginState.Logout
             } catch (e: Exception) {
                 _loginState.value = LoginState.Error(e.message ?: "Logout failed")

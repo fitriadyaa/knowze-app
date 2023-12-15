@@ -23,7 +23,7 @@ object ApiConfig {
         }.build()
 
         return Retrofit.Builder()
-            .baseUrl("http://34.122.11.96:5000/")
+            .baseUrl("http://34.122.11.96:5000")
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
             .build()

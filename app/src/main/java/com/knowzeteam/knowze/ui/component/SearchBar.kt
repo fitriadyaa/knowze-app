@@ -35,8 +35,8 @@ import com.knowzeteam.knowze.R
 @Composable
 fun SearchBar(
     initialText: String = "",
-    onSearch: () -> Unit,
     focusRequester: FocusRequester = FocusRequester(),
+    onSearchAction: (String) -> Unit,
 ) {
     var searchText by remember { mutableStateOf(initialText) }
 
@@ -45,7 +45,7 @@ fun SearchBar(
         onValueChange = {
             searchText = it
         },
-        onSearchBarClick = { onSearch() },
+        onSearchAction = onSearchAction,
         focusRequester = focusRequester,
     )
 }
@@ -54,14 +54,13 @@ fun SearchBar(
 private fun SearchBarContent(
     searchText: String,
     onValueChange: (String) -> Unit,
-    onSearchBarClick: () -> Unit,
+    onSearchAction: (String) -> Unit,
     focusRequester: FocusRequester = FocusRequester(),
 ) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .height(50.dp)
-            .clickable { onSearchBarClick() }
             .background(Color.White, RoundedCornerShape(12.dp)),
         contentAlignment = Alignment.CenterStart
     ) {
@@ -93,7 +92,7 @@ private fun SearchBarContent(
                 .size(32.dp)
                 .align(Alignment.CenterEnd)
                 .padding(end = 10.dp)
-
+                .clickable { onSearchAction(searchText) }
         )
     }
 }

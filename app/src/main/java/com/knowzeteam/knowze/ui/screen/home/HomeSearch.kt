@@ -1,5 +1,6 @@
 package com.knowzeteam.knowze.ui.screen.home
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -22,38 +23,57 @@ import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import com.knowzeteam.knowze.ui.ViewModelFactory
 import com.knowzeteam.knowze.ui.component.SearchBar
 import com.knowzeteam.knowze.ui.navigation.Screen
 
 @Composable
 fun HomeSearch(
+    modifier: Modifier = Modifier,
+    navController: NavController,
     onBack: () -> Unit,
     initialSearchText: String,
     shouldFocus: Boolean = false,
-    modifier: Modifier = Modifier
 ){
+    val context = LocalContext.current
     val focusRequester = remember { FocusRequester() }
-
-    SearchBar(
-        initialText = initialSearchText,
-        onSearch = {/* existing search logic */},
-        focusRequester = focusRequester
+    val viewModel: GenerateViewModel = viewModel(
+        factory = ViewModelFactory(context)
     )
+
+    val response by viewModel.response.observeAsState()
+
+    // Navigate to AboutCourseScreen when course_id is available
+    LaunchedEffect(response) {
+        response?.courseId?.let { courseId ->
+            // Ensure the route format matches the navigation graph setup
+            val route = Screen.AboutCourse.route.replace("{courseId}", courseId)
+            navController.navigate(route)
+        }
+    }
+
+    LaunchedEffect(response) {
+        response?.let {
+            Log.d("APIResponse", "Response: $it")
+        }
+    }
 
     LaunchedEffect(shouldFocus) {
         if (shouldFocus) {
@@ -86,8 +106,10 @@ fun HomeSearch(
                 }
                 SearchBar(
                     initialText = initialSearchText,
+                    onSearchAction = { query ->
+                        viewModel.postGenerateQuery(query)
+                    },
                     focusRequester = focusRequester,
-                    onSearch = {}
                 )
             }
             Spacer(modifier = Modifier.height(20.dp))
