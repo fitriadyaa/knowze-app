@@ -56,19 +56,31 @@ class LoginViewModel(
                     if (authResult.user != null) {
                         val user = authResult.user
                         val userId = user?.uid ?: return@launch
-                        val userName = user?.displayName
-                        val userEmail = user?.email
-                        val userPhotoUrl = user?.photoUrl?.toString()
+                        val userName = user.displayName
+                        val userEmail = user.email
+                        val userPhotoUrl = user.photoUrl?.toString()
 
                         // Check for null values and save the user profile
-                        if (!userName.isNullOrEmpty() && !userEmail.isNullOrEmpty()) {
-                            val userProfile = UserProfileEntity(
+                        val userProfile: UserProfileEntity? = if (!userName.isNullOrEmpty() && !userEmail.isNullOrEmpty()) {
+                            val userProfileToSave = UserProfileEntity(
                                 id = userId,
                                 userName = userName,
                                 userEmail = userEmail,
                                 userPhotoUrl = userPhotoUrl
                             )
-                            userRepository.saveUserProfile(userProfile)
+                            userRepository.saveUserProfile(userProfileToSave)
+
+                            // Assign the userProfile object to the one you just saved
+                            userProfileToSave
+                        } else {
+                            // If any of the fields is null or empty, set userProfile to null
+                            null
+                        }
+
+                        userProfile?.let { userProfileEntity ->
+                            _userName.value = userProfileEntity.userName
+                            _userEmail.value = userProfileEntity.userEmail
+                            _userPhotoUrl.value = userProfileEntity.userPhotoUrl
                         }
 
                         val token = getFirebaseAuthToken()
