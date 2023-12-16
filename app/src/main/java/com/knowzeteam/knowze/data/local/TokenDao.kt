@@ -12,4 +12,7 @@ interface TokenDao {
 
     @Query("SELECT * FROM auth_token WHERE id = 0")
     suspend fun getToken(): TokenEntity?
+
+    @Query("DELETE FROM auth_token")
+    suspend fun deleteToken()
 }

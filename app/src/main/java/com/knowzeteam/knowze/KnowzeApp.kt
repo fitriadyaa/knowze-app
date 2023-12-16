@@ -22,18 +22,12 @@ import com.knowzeteam.knowze.ui.screen.welcome.IntroThridScreen
 import com.knowzeteam.knowze.ui.screen.welcome.SplashScreen
 
 @Composable
-fun KnowzeApp(viewModelFactory: ViewModelProvider.Factory, isLoggedIn: Boolean) {
+fun KnowzeApp(viewModelFactory: ViewModelProvider.Factory) {
 
     val navController = rememberNavController()
     val loginViewModel: LoginViewModel = viewModel(factory = viewModelFactory)
 
-    val startDestination = if (isLoggedIn) {
-        Screen.Home.route
-    } else {
-        Screen.Splash.route
-    }
-
-    NavHost(navController = navController, startDestination = startDestination) {
+    NavHost(navController = navController, startDestination = Screen.Splash.route) {
         composable(Screen.Splash.route) {
             SplashScreen(navController)
         }
