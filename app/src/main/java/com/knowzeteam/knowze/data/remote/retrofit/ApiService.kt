@@ -17,6 +17,7 @@ interface ApiService {
 
     @POST("/api/generate/")
     suspend fun postGenerate(@Body generateRequest: GenerateRequest): Response<GenerateResponse>
+
     @GET("/api/course/{course_id}")
     suspend fun getCourseDetails(@Path("course_id") courseId: String): Response<CourseResponse>
 }

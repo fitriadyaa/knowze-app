@@ -185,57 +185,50 @@ fun HomeContent(
         }
     }
 
-    Box(
-        modifier = modifier
+    Column(
+        modifier = Modifier
             .fillMaxSize()
-            .background(color = MaterialTheme.colorScheme.secondaryContainer)
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Column(
+        Row(
+            horizontalArrangement = Arrangement.Start,
+            verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 30.dp)
         ) {
-            Row(
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 30.dp)
-            ) {
-                IconButton(
-                    onClick = {
-                        openDrawer = true
-                    }
-                ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.ic_menu),
-                        contentDescription = "image description",
-                        contentScale = ContentScale.None,
-                    )
+            IconButton(
+                onClick = {
+                    openDrawer = true
                 }
-                Spacer(modifier = Modifier.width(30.dp))
-                Text(
-                    text = stringResource(id = R.string.selamat) + " " + userName,
-                    style = MaterialTheme.typography.titleLarge.copy(
-                        fontWeight = FontWeight.Bold,
-                        color = Color.Black
-                    )
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_menu),
+                    contentDescription = "image description",
+                    contentScale = ContentScale.None,
                 )
             }
-            ClickableSearchBar(
-                placeholderText = stringResource(R.string.search_value),
-                onSearchBarClick = {
-                    navController.navigate("${Screen.HomeS.route}/focus")
-                }
+            Spacer(modifier = Modifier.width(30.dp))
+            Text(
+                text = stringResource(id = R.string.selamat) + " " + userName,
+                style = MaterialTheme.typography.titleLarge.copy(
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black
+                )
             )
-            Spacer(modifier = Modifier.height(16.dp))
-            SuggestionBox(text = "Cara makan rumput")
         }
+        ClickableSearchBar(
+            placeholderText = stringResource(R.string.search_value),
+            onSearchBarClick = {
+                navController.navigate("${Screen.HomeS.route}/focus")
+            }
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+        SuggestionBox(text = "Cara makan rumput")
         Spacer(modifier = Modifier.height(40.dp))
         Box(
             modifier = Modifier
-                .align(Alignment.BottomStart)
                 .background(
                     color = Color.White,
                     shape = RoundedCornerShape(topEnd = 20.dp, topStart = 20.dp)
@@ -277,7 +270,7 @@ fun HomeContent(
                         subText = stringResource(id = R.string.menu_galeri_detail),
                         imageResId = R.drawable.ic_gallery,
                         boxColor = MaterialTheme.colorScheme.primary,
-                        onClick = { navController.navigate(Screen.GalleryCourse.route)}
+                        onClick = { navController.navigate(Screen.GalleryCourse.route) }
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     Divider(
