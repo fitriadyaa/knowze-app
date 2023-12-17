@@ -60,6 +60,7 @@ import com.knowzeteam.knowze.ui.component.SearchBar
 import com.knowzeteam.knowze.ui.screen.auth.login.LoginViewModel
 import androidx.navigation.NavController
 import com.google.accompanist.coil.rememberCoilPainter
+import com.google.firebase.auth.FirebaseAuth
 import com.knowzeteam.knowze.ui.navigation.Screen
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -71,10 +72,12 @@ fun HomeScreen(
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val showLogoutDialog = remember { mutableStateOf(false) }
 
+    val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
+
     val loginState by viewModel.loginState.collectAsState()
-    val userName by viewModel.userName.collectAsState() // Observe the user's name
-    val userEmail by viewModel.userEmail.collectAsState() // Observe the user's email
-    val userPhotoUrl by viewModel.userPhotoUrl.collectAsState() // Observe the user's photo URL
+    val userName = firebaseAuth.currentUser?.displayName.toString()// Observe the user's name
+    val userEmail = firebaseAuth.currentUser?.email.toString() // Observe the user's email
+    val userPhotoUrl = firebaseAuth.currentUser?.photoUrl.toString() // Observe the user's photo URL
 
     if (loginState is LoginViewModel.LoginState.Logout) {
         navController.navigate(Screen.Login.route)

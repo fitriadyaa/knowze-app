@@ -6,8 +6,8 @@ import com.knowzeteam.knowze.data.remote.response.courseResponse.GenerateRespons
 import com.knowzeteam.knowze.data.remote.retrofit.ApiService
 
 class GenerateRepository(private val apiService: ApiService) {
-    suspend fun postGenerateQuery(prompt: String): GenerateResponse? {
-        val response = apiService.postGenerate(GenerateRequest(prompt))
+    suspend fun postGenerateQuery(idToken: String, prompt: String): GenerateResponse? {
+        val response = apiService.postGenerate(idToken, GenerateRequest(prompt))
         return if (response.isSuccessful) response.body() else null
     }
 

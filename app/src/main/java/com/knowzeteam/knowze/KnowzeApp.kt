@@ -8,6 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.google.firebase.auth.FirebaseAuth
 import com.knowzeteam.knowze.ui.navigation.Screen
 import com.knowzeteam.knowze.ui.screen.auth.login.LoginScreen
 import com.knowzeteam.knowze.ui.screen.auth.login.LoginViewModel
@@ -27,7 +28,11 @@ fun KnowzeApp(viewModelFactory: ViewModelProvider.Factory) {
     val navController = rememberNavController()
     val loginViewModel: LoginViewModel = viewModel(factory = viewModelFactory)
 
-    NavHost(navController = navController, startDestination = Screen.Splash.route) {
+    val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
+
+    val startDestination = if (firebaseAuth.currentUser != null) Screen.Home.route else Screen.Splash.route
+
+    NavHost(navController = navController, startDestination = startDestination) {
         composable(Screen.Splash.route) {
             SplashScreen(navController)
         }

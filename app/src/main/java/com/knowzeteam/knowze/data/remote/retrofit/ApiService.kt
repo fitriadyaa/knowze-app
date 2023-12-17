@@ -16,8 +16,14 @@ interface ApiService {
     suspend fun getDashboardData(@Header("Authorization") idToken: String): Response<DashboardResponse>
 
     @POST("/api/generate/")
-    suspend fun postGenerate(@Body generateRequest: GenerateRequest): Response<GenerateResponse>
+    suspend fun postGenerate(
+        @Header("Authorization") idToken: String,
+        @Body generateRequest: GenerateRequest
+    ): Response<GenerateResponse>
 
     @GET("/api/course/{course_id}")
-    suspend fun getCourseDetails(@Path("course_id") courseId: String): Response<CourseResponse>
+    suspend fun getCourseDetails(
+
+        @Path("course_id") courseId: String
+    ): Response<CourseResponse>
 }
