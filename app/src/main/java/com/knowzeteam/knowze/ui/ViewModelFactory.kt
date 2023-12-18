@@ -3,7 +3,6 @@ package com.knowzeteam.knowze.ui
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.knowzeteam.knowze.data.remote.retrofit.ApiService
 import com.knowzeteam.knowze.di.ServiceLocator
 import com.knowzeteam.knowze.ui.screen.auth.login.LoginViewModel
 import com.knowzeteam.knowze.ui.screen.home.GenerateViewModel
