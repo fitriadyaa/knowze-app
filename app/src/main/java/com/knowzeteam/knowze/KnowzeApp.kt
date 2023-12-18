@@ -1,25 +1,38 @@
 package com.knowzeteam.knowze
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
-import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.google.firebase.auth.FirebaseAuth
 import com.knowzeteam.knowze.ui.navigation.Screen
-import com.knowzeteam.knowze.ui.screen.auth.LoginScreen
+import com.knowzeteam.knowze.ui.screen.auth.login.LoginScreen
+import com.knowzeteam.knowze.ui.screen.auth.login.LoginViewModel
+import com.knowzeteam.knowze.ui.screen.auth.login.LoginWithEmailScreen
+import com.knowzeteam.knowze.ui.screen.auth.register.RegisterScreen
+import com.knowzeteam.knowze.ui.screen.gallery.CourseThemeGallery
 import com.knowzeteam.knowze.ui.screen.home.HomeScreen
+import com.knowzeteam.knowze.ui.screen.home.HomeSearch
 import com.knowzeteam.knowze.ui.screen.welcome.IntroOneScreen
 import com.knowzeteam.knowze.ui.screen.welcome.IntroSecondScreen
 import com.knowzeteam.knowze.ui.screen.welcome.IntroThridScreen
 import com.knowzeteam.knowze.ui.screen.welcome.SplashScreen
 
 @Composable
-fun KnowzeApp() {
-    val navController = rememberNavController()
-    val context = LocalContext.current
+fun KnowzeApp(viewModelFactory: ViewModelProvider.Factory) {
 
-    NavHost(navController = navController, startDestination = Screen.Splash.route) {
+    val navController = rememberNavController()
+    val loginViewModel: LoginViewModel = viewModel(factory = viewModelFactory)
+
+    val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
+
+    val startDestination = if (firebaseAuth.currentUser != null) Screen.Home.route else Screen.Splash.route
+
+    NavHost(navController = navController, startDestination = startDestination) {
         composable(Screen.Splash.route) {
             SplashScreen(navController)
         }
@@ -43,14 +56,42 @@ fun KnowzeApp() {
         }
 
         composable(Screen.Login.route) {
-            LoginScreen(
-                navController = navController
-            )
+
+            LoginScreen(navController = navController, viewModel = loginViewModel)
+        }
+
+        composable(Screen.EmailLogin.route) {
+            LoginWithEmailScreen(navController = navController)
+        }
+
+        composable(Screen.Register.route) {
+            // Create the RegisterScreen composable and pass the navController
+            RegisterScreen(navController = navController)
         }
 
         composable(Screen.Home.route){
             HomeScreen(
-                navController = navController
+                navController = navController,
+                viewModel = loginViewModel
+            )
+        }
+
+        composable(Screen.GalleryCourse.route){
+            CourseThemeGallery(
+                onBack = { navController.popBackStack() },
+            )
+        }
+
+        composable(
+            "${Screen.HomeS.route}/{focus}",
+            arguments = listOf(navArgument("focus") { defaultValue = "nofocus"; type = NavType.StringType })
+        ) { backStackEntry ->
+            val focus = backStackEntry.arguments?.getString("focus") ?: "nofocus"
+            HomeSearch(
+                navController= navController,
+                onBack = { navController.popBackStack() },
+                initialSearchText = "",
+                shouldFocus = focus == "focus",
             )
         }
     }

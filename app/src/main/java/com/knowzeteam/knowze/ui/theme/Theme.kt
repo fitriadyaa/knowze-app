@@ -23,7 +23,7 @@ private val LightColorScheme = lightColorScheme(
     background = Background,
     onBackground = Color.Black,
     secondary = MainColor,
-    error = Color.Red
+    error = CancelColor
 )
 
 private val DarkColorScheme = darkColorScheme(
@@ -33,7 +33,7 @@ private val DarkColorScheme = darkColorScheme(
     background = Background,
     onBackground = Color.White,
     secondary = MainColor,
-    error = Color.Red
+    error = CancelColor
 )
 @Composable
 fun KnowzeTheme(

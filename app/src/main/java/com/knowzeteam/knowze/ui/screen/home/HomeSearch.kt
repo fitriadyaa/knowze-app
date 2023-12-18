@@ -1,5 +1,6 @@
 package com.knowzeteam.knowze.ui.screen.home
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -22,28 +23,67 @@ import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import com.knowzeteam.knowze.ui.ViewModelFactory
 import com.knowzeteam.knowze.ui.component.SearchBar
-import com.knowzeteam.knowze.ui.theme.KnowzeTheme
+import com.knowzeteam.knowze.ui.navigation.Screen
 
 @Composable
 fun HomeSearch(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    navController: NavController,
+    onBack: () -> Unit,
+    initialSearchText: String,
+    shouldFocus: Boolean = false,
 ){
+    val context = LocalContext.current
+    val focusRequester = remember { FocusRequester() }
+    val viewModel: GenerateViewModel = viewModel(
+        factory = ViewModelFactory(context)
+    )
+
+    val response by viewModel.response.observeAsState()
+
+    LaunchedEffect(response) {
+        response?.courseId?.let { courseId ->
+            val route = Screen.AboutCourse.route.replace("{courseId}", courseId)
+            navController.navigate(route)
+        }
+    }
+
+
+    LaunchedEffect(response) {
+        response?.let {
+            Log.d("APIResponse", "Response: $it")
+        }
+    }
+
+    LaunchedEffect(shouldFocus) {
+        if (shouldFocus) {
+            focusRequester.requestFocus()
+        }
+    }
+
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(color = MaterialTheme.colorScheme.secondaryContainer)
+            .background(color = MaterialTheme.colorScheme.surface)
     ) {
         Column(
             modifier = Modifier
@@ -51,19 +91,26 @@ fun HomeSearch(
                 .padding(16.dp),
             horizontalAlignment = Alignment.Start,
         ) {
-            Spacer(modifier = Modifier.height(30.dp))
+            Spacer(modifier = Modifier.height(10.dp))
             Row(
                 modifier = Modifier
                     .fillMaxWidth(),
                 horizontalArrangement = Arrangement.Start
             ) {
-                IconButton(onClick = {}) {
+                IconButton(onClick = { onBack() }) {
                     Icon(
                         imageVector = Icons.Filled.KeyboardArrowLeft,
                         contentDescription = "Back"
                     )
                 }
-                SearchBar()
+                SearchBar(
+                    initialText = initialSearchText,
+                    onSearchAction = { query ->
+                        viewModel.postGenerateQuery(query)
+                        navController.navigate(Screen.GeneratingScreen.route)
+                    },
+                    focusRequester = focusRequester,
+                )
             }
             Spacer(modifier = Modifier.height(20.dp))
             RecommendationContent()
@@ -102,7 +149,7 @@ fun BoxWithText(
     BoxWithConstraints(modifier = modifier.padding(bottom = 10.dp)) {
         Box(
             modifier = Modifier
-                .background(color = MaterialTheme.colorScheme.surface, RoundedCornerShape(12.dp))
+                .background(color = Color.White, RoundedCornerShape(12.dp))
                 .padding(14.dp)
                 .widthIn(max = maxWidth)
                 .height(20.dp)
@@ -179,10 +226,10 @@ fun SettingDuration(
     }
 }
 
-@Preview
-@Composable
-fun HomeSearchPreview() {
-    KnowzeTheme {
-        HomeSearch()
-    }
-}
+//@Preview
+//@Composable
+//fun HomeSearchPreview() {
+//    KnowzeTheme {
+//        HomeSearch()
+//    }
+//}

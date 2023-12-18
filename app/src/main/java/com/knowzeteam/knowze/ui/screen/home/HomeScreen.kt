@@ -2,6 +2,7 @@ package com.knowzeteam.knowze.ui.screen.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,12 +18,9 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.BottomSheetValue
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.Divider
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.rememberBottomSheetState
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.DrawerState
@@ -62,6 +60,7 @@ import com.knowzeteam.knowze.ui.component.SearchBar
 import com.knowzeteam.knowze.ui.screen.auth.login.LoginViewModel
 import androidx.navigation.NavController
 import com.google.accompanist.coil.rememberCoilPainter
+import com.google.firebase.auth.FirebaseAuth
 import com.knowzeteam.knowze.ui.navigation.Screen
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -73,10 +72,12 @@ fun HomeScreen(
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val showLogoutDialog = remember { mutableStateOf(false) }
 
+    val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
+
     val loginState by viewModel.loginState.collectAsState()
-    val userName by viewModel.userName.collectAsState() // Observe the user's name
-    val userEmail by viewModel.userEmail.collectAsState() // Observe the user's email
-    val userPhotoUrl by viewModel.userPhotoUrl.collectAsState() // Observe the user's photo URL
+    val userName = firebaseAuth.currentUser?.displayName.toString()// Observe the user's name
+    val userEmail = firebaseAuth.currentUser?.email.toString() // Observe the user's email
+    val userPhotoUrl = firebaseAuth.currentUser?.photoUrl.toString() // Observe the user's photo URL
 
     if (loginState is LoginViewModel.LoginState.Logout) {
         navController.navigate(Screen.Login.route)
@@ -167,7 +168,7 @@ fun DrawerItem(text: String, icon: ImageVector) {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeContent(
     drawerState: DrawerState,
@@ -187,57 +188,55 @@ fun HomeContent(
         }
     }
 
-    Box(
-        modifier = modifier
+    Column(
+        modifier = Modifier
             .fillMaxSize()
-            .background(color = MaterialTheme.colorScheme.secondaryContainer)
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Column(
+        Row(
+            horizontalArrangement = Arrangement.Start,
+            verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 30.dp)
         ) {
-            Row(
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 30.dp)
-            ) {
-                IconButton(
-                    onClick = {
-                        openDrawer = true
-                    }
-                ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.ic_menu),
-                        contentDescription = "image description",
-                        contentScale = ContentScale.None,
-                    )
+            IconButton(
+                onClick = {
+                    openDrawer = true
                 }
-                Spacer(modifier = Modifier.width(30.dp))
-                Text(
-                    text = stringResource(id = R.string.selamat) + " " + userName,
-                    style = MaterialTheme.typography.titleLarge.copy(
-                        fontWeight = FontWeight.Bold,
-                        color = Color.Black
-                    )
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_menu),
+                    contentDescription = "image description",
+                    contentScale = ContentScale.None,
                 )
             }
-            SearchBar()
-            Spacer(modifier = Modifier.height(16.dp))
-            SuggestionBox(text = "Cara makan rumput")
+            Spacer(modifier = Modifier.width(30.dp))
+            Text(
+                text = stringResource(id = R.string.selamat) + " " + userName,
+                style = MaterialTheme.typography.titleLarge.copy(
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black
+                )
+            )
         }
+        ClickableSearchBar(
+            placeholderText = stringResource(R.string.search_value),
+            onSearchBarClick = {
+                navController.navigate("${Screen.HomeS.route}/focus")
+            }
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+        SuggestionBox(text = "Belajar edit video memakai capcut")
         Spacer(modifier = Modifier.height(16.dp))
         Box(
             modifier = Modifier
-                .align(Alignment.BottomStart)
+                .fillMaxWidth()
                 .background(
                     color = Color.White,
                     shape = RoundedCornerShape(topEnd = 20.dp, topStart = 20.dp)
                 )
-                .fillMaxWidth()
                 .padding(16.dp)
         ) {
             LazyColumn(
@@ -274,7 +273,7 @@ fun HomeContent(
                         subText = stringResource(id = R.string.menu_galeri_detail),
                         imageResId = R.drawable.ic_gallery,
                         boxColor = MaterialTheme.colorScheme.primary,
-                        onClick = { navController.navigate(Screen.GalleryCourse.route)}
+                        onClick = { navController.navigate(Screen.GalleryCourse.route) }
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     Divider(
@@ -327,6 +326,38 @@ fun HomeContent(
 }
 
 @Composable
+fun ClickableSearchBar(
+    placeholderText: String,
+    onSearchBarClick: () -> Unit
+) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(50.dp)
+            .background(Color.White, RoundedCornerShape(12.dp))
+            .clickable { onSearchBarClick() }
+            .padding(horizontal = 16.dp),
+        contentAlignment = Alignment.CenterStart
+    ) {
+        Text(
+            text = placeholderText,
+            color = MaterialTheme.colorScheme.primary,
+            modifier = Modifier.padding(start = 16.dp),
+        )
+        Image(
+            painter = painterResource(id = R.drawable.ic_search),
+            contentDescription = "Search Icon",
+            contentScale = ContentScale.None,
+            modifier = Modifier
+                .size(32.dp)
+                .align(Alignment.CenterEnd)
+                .padding(end = 10.dp)
+        )
+    }
+}
+
+
+@Composable
 fun LogoutDialog(showLogoutDialog: MutableState<Boolean>, onConfirmLogout: () -> Unit) {
     AlertDialog(
         onDismissRequest = { showLogoutDialog.value = false },
@@ -353,7 +384,7 @@ fun SuggestionBox(
     text: String,
     modifier: Modifier = Modifier
 ) {
-    Column {
+    Column() {
         Text(
             text = stringResource(id = R.string.coba_ini),
             style = MaterialTheme.typography.bodyMedium
@@ -361,7 +392,7 @@ fun SuggestionBox(
         Spacer(modifier = Modifier.height(10.dp))
         Box(
             modifier = modifier
-                .background(MaterialTheme.colorScheme.surface, RoundedCornerShape(12.dp))
+                .background(Color.White, RoundedCornerShape(12.dp))
                 .padding(16.dp)
                 .height(20.dp)
         ) {

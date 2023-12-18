@@ -28,6 +28,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.knowzeteam.knowze.R
 import kotlinx.coroutines.delay
 
@@ -89,7 +90,7 @@ fun SplashScreen(navController: NavController) {
             Spacer(modifier = Modifier.height(60.dp))
 
             Text(
-                text = stringResource(id = R.string.knowzee),
+                text = stringResource(id = R.string.app_name),
                 style = MaterialTheme.typography.titleLarge.copy(
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold,
@@ -102,4 +103,3 @@ fun SplashScreen(navController: NavController) {
         }
     }
 }
-

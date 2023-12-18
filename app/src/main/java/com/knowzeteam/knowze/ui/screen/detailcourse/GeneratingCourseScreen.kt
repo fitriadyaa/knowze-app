@@ -1,5 +1,11 @@
 package com.knowzeteam.knowze.ui.screen.detailcourse
 
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -17,6 +23,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -28,29 +35,36 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.sp
 import com.knowzeteam.knowze.R
+import com.knowzeteam.knowze.ui.component.CategoryButton
 import com.knowzeteam.knowze.ui.theme.BorderColor
 import com.knowzeteam.knowze.ui.theme.KnowzeTheme
 import com.valentinilk.shimmer.shimmer
 
 @Composable
-fun GeneratingCourseScreen() {
+fun GeneratingCourseScreen(
+    modifier: Modifier = Modifier
+) {
         Column(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxSize()
+                .padding(16.dp)
         ) {
+            Spacer(modifier = modifier.height(30.dp))
             GenerateCourseItem()
             Spacer(modifier = Modifier.height(25.dp))
             BannerGenerateCourse()
-
             Box(
-                modifier = Modifier
+                modifier = modifier
                     .background(
                         color = Color.White,
                         shape = RoundedCornerShape(topEnd = 40.dp, topStart = 40.dp)
@@ -59,169 +73,82 @@ fun GeneratingCourseScreen() {
                     .fillMaxSize()
             ) {
                 Column(
-                    modifier = Modifier
+                    modifier = modifier
                         .verticalScroll(rememberScrollState())
                         .padding(bottom = 16.dp)
                 ) {
                     Row(
                         horizontalArrangement = Arrangement.Start,
                         verticalAlignment = Alignment.Top,
-                        modifier = Modifier
+                        modifier = modifier
                             .fillMaxWidth()
                             .padding(top = 10.dp, end = 10.dp)
                     ) {
-                        // Course Category: Photography
-                        Button(
-                            onClick = { /*TODO*/ },
-                            colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary),
-                            shape = RoundedCornerShape(25.dp),
-                            modifier = Modifier
-                                .size(109.dp, 25.dp)
-                                .shimmer()
-                        ) {
-                            Text(
-                                text = "Photography",
-                                style = MaterialTheme.typography.labelMedium.copy(
-                                    fontSize = 14.sp,
-                                    fontWeight = FontWeight.Bold,
-                                )
-                            )
-                        }
-
-                        Spacer(modifier = Modifier.width(10.dp))
-
-                        // Course Category: Indoor
-                        Button(
-                            onClick = { /*TODO*/ },
-                            shape = RoundedCornerShape(25.dp),
-                            modifier = Modifier
-                                .size(109.dp, 25.dp)
-                                .shimmer()
-                        ) {
-                            Text(
-                                text = "indoor",
-                                style = MaterialTheme.typography.labelMedium.copy(
-                                    fontSize = 14.sp,
-                                    fontWeight = FontWeight.Bold,
-                                )
-                            )
-                        }
+                        ShimmerCategoryButton(categoryText = "", onClick = { /*TODO*/ })
+                        Spacer(modifier = modifier.width(10.dp))
+                        ShimmerCategoryButton(categoryText = "", onClick = { /*TODO*/ })
                     }
-
-                    Spacer(modifier = Modifier.height(25.dp))
-
-                    Column(
-                        horizontalAlignment = Alignment.Start,
-                        modifier = Modifier
-                            .fillMaxSize()
-                    ) {
-                        // Judul Course
-                        Text(
-                            text = stringResource(id = R.string.course_title),
-                            style = MaterialTheme.typography.titleLarge.copy(
-                                fontSize = 24.sp,
-                                textAlign = TextAlign.Start,
-                                fontWeight = FontWeight.Bold
-                            ),
+                    Spacer(modifier = modifier.height(25.dp))
+                    ShimmerAnimation { brush ->
+                        Box(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .shimmer()
+                                .height(20.dp)
+                                .background(brush)
                         )
-
-                        Row(
-                            horizontalArrangement = Arrangement.Start,
-                            verticalAlignment = Alignment.CenterVertically,
+                    }
+                    Spacer(modifier = Modifier.height(25.dp))
+                    ShimmerAnimation { brush ->
+                        Box(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(top = 10.dp, end = 10.dp)
-                                .shimmer()
-                        ) {
-                            // Rating Course //
-                            Image(
-                                painter = painterResource(id = R.drawable.ic_star),
-                                contentDescription = "Course Time",
-                            )
+                                .height(20.dp)
+                                .background(brush)
+                        )
+                    }
+                    Divider()
+                    ShimmerAnimation { brush ->
+                        // For the title
+                        Box(modifier = Modifier
+                            .fillMaxWidth()
+                            .height(24.dp)
+                            .background(brush))
 
-                            Spacer(modifier = Modifier.width(4.dp))
+                        Spacer(Modifier.height(8.dp))
 
-                            Text(
-                                text = stringResource(id = R.string.course_rating)
-                            )
-                            // Rating Course //
+                        // For the description
+                        Box(modifier = Modifier
+                            .fillMaxWidth()
+                            .height(16.dp)
+                            .background(brush))
 
-                            Spacer(modifier = Modifier.width(10.dp))
+                        Spacer(Modifier.height(8.dp))
 
-                            // Course Time //
-                            Image(
-                                painter = painterResource(id = R.drawable.ic_time),
-                                contentDescription = "Course Time",
-                            )
-
-                            Spacer(modifier = Modifier.width(4.dp))
-
-                            Text(
-                                text = stringResource(id = R.string.course_time)
-                            )
-                            // Course Time //
-                        }
-
-                        Divider(modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp))
-
-                        Column(
-                            horizontalAlignment = Alignment.Start,
-                            modifier = Modifier
-                                .fillMaxSize()
-                        ) {
-                            // Deskripsi Course
-                            Text(
-                                text = stringResource(id = R.string.desc_title),
-                                style = MaterialTheme.typography.titleLarge.copy(
-                                    fontSize = 16.sp,
-                                    textAlign = TextAlign.Start,
-                                    fontWeight = FontWeight.Bold
-                                ),
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .shimmer()
-                            )
-
-                            Spacer(modifier = Modifier.height(10.dp))
-
-                            Text(
-                                text = stringResource(id = R.string.desc),
-                                style = MaterialTheme.typography.bodyMedium.copy(
-                                    fontSize = 14.sp,
-                                    textAlign = TextAlign.Start,
-                                    fontWeight = FontWeight.Light
-                                ),
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .shimmer()
-                            )
-
-                            Spacer(modifier = Modifier.height(60.dp))
-
-                            // Button Batal Generate
-                            Button(
-                                onClick = { /*TODO*/ },
-                                shape = RoundedCornerShape(10.dp),
-                                colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary),
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .size(327.dp, 60.dp)
-                            ) {
-                                Text(
-                                    text = stringResource(id = R.string.cancel),
-                                    style = MaterialTheme.typography.titleMedium.copy(
-                                        fontSize = 16.sp,
-                                        textAlign = TextAlign.Center,
-                                        fontWeight = FontWeight.Bold
-                                    ),
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                )
-                            }
-                        }
+                        // For additional content
+                        Box(modifier = Modifier
+                            .fillMaxWidth()
+                            .height(16.dp)
+                            .background(brush))
+                    }
+                    Spacer(modifier = modifier.height(60.dp))
+                    Button(
+                        onClick = {  },
+                        shape = RoundedCornerShape(10.dp),
+                        colors = ButtonDefaults.buttonColors(Color.LightGray),
+                        modifier = modifier
+                            .fillMaxWidth()
+                            .size(327.dp, 60.dp)
+                    ) {
+                        Text(
+                            text = "Mulai Sekarang",
+                            style = MaterialTheme.typography.titleMedium.copy(
+                                fontSize = 16.sp,
+                                textAlign = TextAlign.Center,
+                                fontWeight = FontWeight.Bold,
+                            ),
+                            modifier = modifier
+                                .fillMaxWidth()
+                        )
                     }
                 }
             }
@@ -233,30 +160,28 @@ fun GenerateCourseItem() {
     Box(
         modifier = Modifier
             .background(
-                color = BorderColor,
+                color = MaterialTheme.colorScheme.primary,
                 shape = RoundedCornerShape(10.dp)
             )
             .padding(16.dp)
             .fillMaxWidth()
     ) {
-        Row{
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight(Alignment.CenterVertically),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
             CircularProgressIndicator(
                 modifier = Modifier
-                    .width(64.dp),
-                color = MaterialTheme.colorScheme.secondary,
+                    .width(30.dp),
+                color = Color.White
             )
-
             Spacer(modifier = Modifier.width(35.dp))
-
             Text(
                 text = "Generating...",
-                style = MaterialTheme.typography.titleLarge.copy(
-                    fontSize = 15.sp,
-                    fontWeight = FontWeight.Bold
-                ),
-                modifier = Modifier
-                    .align(CenterVertically)
-                    .weight(1f)
+                style = MaterialTheme.typography.titleMedium,
+                color = Color.White
             )
         }
     }
@@ -293,6 +218,57 @@ fun BannerGenerateCourse() {
         )
     }
 }
+
+@Composable
+fun ShimmerCategoryButton(categoryText: String, onClick: () -> Unit) {
+    Button(
+        onClick = onClick,
+        colors = ButtonDefaults.buttonColors(Color.LightGray),
+        shape = RoundedCornerShape(12.dp),
+        modifier = Modifier.height(28.dp)
+    ) {
+        Text(
+            text = categoryText,
+            style = MaterialTheme.typography.labelMedium.copy(
+                fontSize = 10.sp, // Adjust the font size as needed
+                fontWeight = FontWeight.Bold
+            ),
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier.padding(horizontal = 4.dp)
+        )
+    }
+}
+
+@Composable
+fun ShimmerAnimation(
+    content: @Composable (brush: Brush) -> Unit
+) {
+    val shimmerColors = listOf(
+        Color.LightGray.copy(alpha = 0.9f),
+        Color.LightGray.copy(alpha = 0.2f),
+        Color.LightGray.copy(alpha = 0.9f)
+    )
+
+    val transition = rememberInfiniteTransition(label = "")
+    val translateAnim = transition.animateFloat(
+        initialValue = 0f,
+        targetValue = 1000f,
+        animationSpec = infiniteRepeatable(
+            tween(durationMillis = 1200, easing = LinearEasing),
+            RepeatMode.Restart
+        ), label = ""
+    )
+
+    val brush = Brush.linearGradient(
+        colors = shimmerColors,
+        start = Offset.Zero,
+        end = Offset(x = translateAnim.value, y = translateAnim.value)
+    )
+
+    content(brush)
+}
+
 
 @Preview(showBackground = true)
 @Composable

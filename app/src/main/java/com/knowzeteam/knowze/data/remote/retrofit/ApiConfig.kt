@@ -23,7 +23,7 @@ object ApiConfig {
         }.build()
 
         return Retrofit.Builder()
-            .baseUrl("https://8c5f-103-169-9-45.ngrok-free.app/")
+            .baseUrl("http://34.122.11.96:5000")
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
             .build()
