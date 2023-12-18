@@ -19,6 +19,7 @@ class CourseViewModel(private val generateRepository: GenerateRepository) : View
     val courseDetails: LiveData<CourseResponse> = _courseDetails
     private val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
 
+
     private suspend fun getFirebaseAuthToken(): String? {
         return try {
             val mUser = firebaseAuth.currentUser

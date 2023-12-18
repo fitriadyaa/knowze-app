@@ -33,126 +33,154 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.knowzeteam.knowze.R
+import com.knowzeteam.knowze.ui.ViewModelFactory
 import com.knowzeteam.knowze.ui.component.CategoryButton
+import com.knowzeteam.knowze.ui.navigation.Screen
+import com.knowzeteam.knowze.ui.screen.home.GenerateViewModel
 import com.knowzeteam.knowze.ui.theme.BorderColor
 import com.knowzeteam.knowze.ui.theme.KnowzeTheme
 import com.valentinilk.shimmer.shimmer
 
 @Composable
 fun GeneratingCourseScreen(
-    modifier: Modifier = Modifier
+    navController: NavController,
+    modifier: Modifier = Modifier,
 ) {
-        Column(
-            modifier = modifier
-                .fillMaxSize()
-                .padding(16.dp)
-        ) {
-            Spacer(modifier = modifier.height(30.dp))
-            GenerateCourseItem()
-            Spacer(modifier = Modifier.height(25.dp))
-            BannerGenerateCourse()
-            Box(
-                modifier = modifier
-                    .background(
-                        color = Color.White,
-                        shape = RoundedCornerShape(topEnd = 40.dp, topStart = 40.dp)
-                    )
-                    .padding(16.dp)
-                    .fillMaxSize()
-            ) {
-                Column(
-                    modifier = modifier
-                        .verticalScroll(rememberScrollState())
-                        .padding(bottom = 16.dp)
-                ) {
-                    Row(
-                        horizontalArrangement = Arrangement.Start,
-                        verticalAlignment = Alignment.Top,
-                        modifier = modifier
-                            .fillMaxWidth()
-                            .padding(top = 10.dp, end = 10.dp)
-                    ) {
-                        ShimmerCategoryButton(categoryText = "", onClick = { /*TODO*/ })
-                        Spacer(modifier = modifier.width(10.dp))
-                        ShimmerCategoryButton(categoryText = "", onClick = { /*TODO*/ })
-                    }
-                    Spacer(modifier = modifier.height(25.dp))
-                    ShimmerAnimation { brush ->
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(20.dp)
-                                .background(brush)
-                        )
-                    }
-                    Spacer(modifier = Modifier.height(25.dp))
-                    ShimmerAnimation { brush ->
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(20.dp)
-                                .background(brush)
-                        )
-                    }
-                    Divider()
-                    ShimmerAnimation { brush ->
-                        // For the title
-                        Box(modifier = Modifier
-                            .fillMaxWidth()
-                            .height(24.dp)
-                            .background(brush))
+    val context = LocalContext.current
+    val viewModel: GenerateViewModel = viewModel(
+        factory = ViewModelFactory(context)
+    )
+    val response by viewModel.response.observeAsState()
 
-                        Spacer(Modifier.height(8.dp))
-
-                        // For the description
-                        Box(modifier = Modifier
-                            .fillMaxWidth()
-                            .height(16.dp)
-                            .background(brush))
-
-                        Spacer(Modifier.height(8.dp))
-
-                        // For additional content
-                        Box(modifier = Modifier
-                            .fillMaxWidth()
-                            .height(16.dp)
-                            .background(brush))
-                    }
-                    Spacer(modifier = modifier.height(60.dp))
-                    Button(
-                        onClick = {  },
-                        shape = RoundedCornerShape(10.dp),
-                        colors = ButtonDefaults.buttonColors(Color.LightGray),
-                        modifier = modifier
-                            .fillMaxWidth()
-                            .size(327.dp, 60.dp)
-                    ) {
-                        Text(
-                            text = "Mulai Sekarang",
-                            style = MaterialTheme.typography.titleMedium.copy(
-                                fontSize = 16.sp,
-                                textAlign = TextAlign.Center,
-                                fontWeight = FontWeight.Bold,
-                            ),
-                            modifier = modifier
-                                .fillMaxWidth()
-                        )
-                    }
+    LaunchedEffect(response) {
+        response?.courseId?.let { courseId ->
+            // Navigate to AboutCourseScreen with the courseId
+            navController.navigate("${Screen.AboutCourse.route}/$courseId") {
+                // Clears the back stack up to the start destination of the navigation graph
+                popUpTo(navController.graph.startDestinationId) {
+                    inclusive = true
                 }
             }
         }
+    }
+
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(16.dp)
+    ) {
+        Spacer(modifier = modifier.height(30.dp))
+        GenerateCourseItem()
+        Spacer(modifier = Modifier.height(25.dp))
+        BannerGenerateCourse()
+        Box(
+            modifier = modifier
+                .background(
+                    color = Color.White,
+                    shape = RoundedCornerShape(topEnd = 40.dp, topStart = 40.dp)
+                )
+                .padding(16.dp)
+                .fillMaxSize()
+        ) {
+            Column(
+                modifier = modifier
+                    .verticalScroll(rememberScrollState())
+                    .padding(bottom = 16.dp)
+            ) {
+                Row(
+                    horizontalArrangement = Arrangement.Start,
+                    verticalAlignment = Alignment.Top,
+                    modifier = modifier
+                        .fillMaxWidth()
+                        .padding(top = 10.dp, end = 10.dp)
+                ) {
+                    ShimmerCategoryButton(categoryText = "", onClick = { /*TODO*/ })
+                    Spacer(modifier = modifier.width(10.dp))
+                    ShimmerCategoryButton(categoryText = "", onClick = { /*TODO*/ })
+                }
+                Spacer(modifier = modifier.height(25.dp))
+                ShimmerAnimation { brush ->
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(20.dp)
+                            .background(brush)
+                    )
+                }
+                Spacer(modifier = Modifier.height(25.dp))
+                ShimmerAnimation { brush ->
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(20.dp)
+                            .background(brush)
+                    )
+                }
+                Divider()
+                ShimmerAnimation { brush ->
+                    // For the title
+                    Box(modifier = Modifier
+                        .fillMaxWidth()
+                        .height(24.dp)
+                        .background(brush))
+
+                    Spacer(Modifier.height(8.dp))
+
+                    // For the description
+                    Box(modifier = Modifier
+                        .fillMaxWidth()
+                        .height(16.dp)
+                        .background(brush))
+
+                    Spacer(Modifier.height(8.dp))
+
+                    // For additional content
+                    Box(modifier = Modifier
+                        .fillMaxWidth()
+                        .height(16.dp)
+                        .background(brush))
+                }
+                Spacer(modifier = modifier.height(60.dp))
+                Button(
+                    onClick = {  },
+                    shape = RoundedCornerShape(10.dp),
+                    colors = ButtonDefaults.buttonColors(Color.LightGray),
+                    modifier = modifier
+                        .fillMaxWidth()
+                        .size(327.dp, 60.dp)
+                ) {
+                    Text(
+                        text = "Mulai Sekarang",
+                        style = MaterialTheme.typography.titleMedium.copy(
+                            fontSize = 16.sp,
+                            textAlign = TextAlign.Center,
+                            fontWeight = FontWeight.Bold,
+                        ),
+                        modifier = modifier
+                            .fillMaxWidth()
+                    )
+                }
+            }
+        }
+    }
 }
 
 @Composable
@@ -270,10 +298,10 @@ fun ShimmerAnimation(
 }
 
 
-@Preview(showBackground = true)
-@Composable
-fun GeneratingCoursePreview() {
-    KnowzeTheme {
-        GeneratingCourseScreen()
-    }
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun GeneratingCoursePreview() {
+//    KnowzeTheme {
+//        GeneratingCourseScreen()
+//    }
+//}

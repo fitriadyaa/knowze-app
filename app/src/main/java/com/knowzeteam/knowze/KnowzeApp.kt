@@ -100,11 +100,18 @@ fun KnowzeApp(viewModelFactory: ViewModelProvider.Factory) {
             )
         }
 
-        composable(Screen.AboutCourse.route){
+        composable(
+            route = "${Screen.AboutCourse.route}/{courseId}",
+            arguments = listOf(navArgument("courseId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            // Extract the courseId from the backStackEntry
+            val courseId = backStackEntry.arguments?.getString("courseId") ?: "default_course_id"
+
             AboutCourseScreen(
-                courseId = "TODO HERE",
-                onBackClick = { /*TODO*/ },
-                onButtonClick = { /*TODO*/ })
+                courseId = courseId,
+                onBackClick = { navController.popBackStack() },
+                onButtonClick = { /* TODO: Implement the button click action */ }
+            )
         }
 
         composable(Screen.AboutContent.route){
@@ -120,7 +127,9 @@ fun KnowzeApp(viewModelFactory: ViewModelProvider.Factory) {
         }
 
         composable(Screen.GeneratingScreen.route){
-            GeneratingCourseScreen()
+            GeneratingCourseScreen(
+                navController= navController,
+            )
         }
     }
 }

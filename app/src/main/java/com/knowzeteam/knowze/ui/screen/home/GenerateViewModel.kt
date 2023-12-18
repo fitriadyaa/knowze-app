@@ -56,7 +56,6 @@ class GenerateViewModel(private val generateRepository: GenerateRepository) : Vi
             val token = getFirebaseAuthToken()
             if (token.isNullOrEmpty()) {
                 Log.e("GenerateViewModel", "Firebase token is empty or null")
-                // Handle the case where Firebase token is not available
                 _response.postValue(null)
                 return@launch
             }
@@ -72,4 +71,5 @@ class GenerateViewModel(private val generateRepository: GenerateRepository) : Vi
             }
         }
     }
+
 }
