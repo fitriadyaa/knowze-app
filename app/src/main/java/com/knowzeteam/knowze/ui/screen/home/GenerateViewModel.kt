@@ -12,6 +12,7 @@ import com.knowzeteam.knowze.data.remote.response.courseResponse.GenerateRespons
 import com.knowzeteam.knowze.repository.GenerateRepository
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import java.net.SocketTimeoutException
 
 class GenerateViewModel(private val generateRepository: GenerateRepository) : ViewModel() {
     // LiveData for API response
@@ -21,18 +22,6 @@ class GenerateViewModel(private val generateRepository: GenerateRepository) : Vi
     // LiveData for Course Details
     private val _courseDetails = MutableLiveData<CourseResponse?>()
     val courseDetails: LiveData<CourseResponse?> = _courseDetails
-
-    private fun getCourseDetails(courseId: String) {
-        viewModelScope.launch {
-            try {
-                val courseResult = generateRepository.getCourseDetails(courseId)
-                _courseDetails.postValue(courseResult)
-            } catch (e: Exception) {
-                _courseDetails.postValue(null)
-                Log.e("GenerateViewModel", "Error fetching course details: ${e.message}")
-            }
-        }
-    }
 
     private suspend fun getFirebaseAuthToken(): String? {
         return try {
@@ -65,14 +54,22 @@ class GenerateViewModel(private val generateRepository: GenerateRepository) : Vi
     fun postGenerateQuery(prompt: String) {
         viewModelScope.launch {
             val token = getFirebaseAuthToken()
+            if (token.isNullOrEmpty()) {
+                Log.e("GenerateViewModel", "Firebase token is empty or null")
+                // Handle the case where Firebase token is not available
+                _response.postValue(null)
+                return@launch
+            }
             try {
-                val result = generateRepository.postGenerateQuery("Bearer ${token.orEmpty()}", prompt)
+                val result = generateRepository.postGenerateQuery("Bearer $token", prompt)
                 _response.postValue(result)
+            } catch (e: SocketTimeoutException) {
+                Log.e("GenerateViewModel", "Network request timed out: ${e.message}")
+                _response.postValue(null) // Handle the timeout specifically
             } catch (e: Exception) {
-                _response.postValue(null) // Or handle the error differently
                 Log.e("GenerateViewModel", "Error: ${e.message}")
+                _response.postValue(null) // Handle other errors
             }
         }
     }
-
 }

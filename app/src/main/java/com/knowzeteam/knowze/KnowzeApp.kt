@@ -14,7 +14,12 @@ import com.knowzeteam.knowze.ui.screen.auth.login.LoginScreen
 import com.knowzeteam.knowze.ui.screen.auth.login.LoginViewModel
 import com.knowzeteam.knowze.ui.screen.auth.login.LoginWithEmailScreen
 import com.knowzeteam.knowze.ui.screen.auth.register.RegisterScreen
+import com.knowzeteam.knowze.ui.screen.detailcourse.AboutContentScreen
+import com.knowzeteam.knowze.ui.screen.detailcourse.AboutCourseScreen
+import com.knowzeteam.knowze.ui.screen.detailcourse.DetailCourseScreen
+import com.knowzeteam.knowze.ui.screen.detailcourse.GeneratingCourseScreen
 import com.knowzeteam.knowze.ui.screen.gallery.CourseThemeGallery
+import com.knowzeteam.knowze.ui.screen.gallery.TrendingKeywordScreen
 import com.knowzeteam.knowze.ui.screen.home.HomeScreen
 import com.knowzeteam.knowze.ui.screen.home.HomeSearch
 import com.knowzeteam.knowze.ui.screen.welcome.IntroOneScreen
@@ -93,6 +98,29 @@ fun KnowzeApp(viewModelFactory: ViewModelProvider.Factory) {
                 initialSearchText = "",
                 shouldFocus = focus == "focus",
             )
+        }
+
+        composable(Screen.AboutCourse.route){
+            AboutCourseScreen(
+                courseId = "TODO HERE",
+                onBackClick = { /*TODO*/ },
+                onButtonClick = { /*TODO*/ })
+        }
+
+        composable(Screen.AboutContent.route){
+            AboutContentScreen()
+        }
+
+        composable(Screen.DetailCourse.route){
+            DetailCourseScreen()
+        }
+
+        composable(Screen.TrendingKeyword.route){
+            TrendingKeywordScreen()
+        }
+
+        composable(Screen.GeneratingScreen.route){
+            GeneratingCourseScreen()
         }
     }
 }

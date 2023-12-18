@@ -58,7 +58,7 @@ fun CourseThemeGallery(
                     )
                 },
                 navigationIcon = {
-                    IconButton(onClick = { onBack }) {
+                    IconButton(onClick = { onBack() }) {
                         Icon(
                             imageVector = Icons.Filled.KeyboardArrowLeft,
                             contentDescription = "Localized description",

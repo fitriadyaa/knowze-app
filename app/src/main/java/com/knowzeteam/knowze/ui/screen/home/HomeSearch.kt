@@ -60,14 +60,13 @@ fun HomeSearch(
 
     val response by viewModel.response.observeAsState()
 
-    // Navigate to AboutCourseScreen when course_id is available
     LaunchedEffect(response) {
         response?.courseId?.let { courseId ->
-            // Ensure the route format matches the navigation graph setup
             val route = Screen.AboutCourse.route.replace("{courseId}", courseId)
             navController.navigate(route)
         }
     }
+
 
     LaunchedEffect(response) {
         response?.let {
@@ -84,7 +83,7 @@ fun HomeSearch(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(color = MaterialTheme.colorScheme.secondaryContainer)
+            .background(color = MaterialTheme.colorScheme.surface)
     ) {
         Column(
             modifier = Modifier
@@ -92,7 +91,7 @@ fun HomeSearch(
                 .padding(16.dp),
             horizontalAlignment = Alignment.Start,
         ) {
-            Spacer(modifier = Modifier.height(30.dp))
+            Spacer(modifier = Modifier.height(10.dp))
             Row(
                 modifier = Modifier
                     .fillMaxWidth(),
@@ -108,6 +107,7 @@ fun HomeSearch(
                     initialText = initialSearchText,
                     onSearchAction = { query ->
                         viewModel.postGenerateQuery(query)
+                        navController.navigate(Screen.GeneratingScreen.route)
                     },
                     focusRequester = focusRequester,
                 )

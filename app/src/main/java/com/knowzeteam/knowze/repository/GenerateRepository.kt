@@ -11,8 +11,8 @@ class GenerateRepository(private val apiService: ApiService) {
         return if (response.isSuccessful) response.body() else null
     }
 
-    suspend fun getCourseDetails(courseId: String): CourseResponse? {
-        val response = apiService.getCourseDetails(courseId)
+    suspend fun getCourseDetails(idToken: String, courseId: String): CourseResponse? {
+        val response = apiService.getCourseDetails(idToken, courseId)
         return if (response.isSuccessful) response.body() else null
     }
 }

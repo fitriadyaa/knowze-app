@@ -228,15 +228,15 @@ fun HomeContent(
             }
         )
         Spacer(modifier = Modifier.height(16.dp))
-        SuggestionBox(text = "Cara makan rumput")
-        Spacer(modifier = Modifier.height(40.dp))
+        SuggestionBox(text = "Belajar edit video memakai capcut")
+        Spacer(modifier = Modifier.height(16.dp))
         Box(
             modifier = Modifier
+                .fillMaxWidth()
                 .background(
                     color = Color.White,
                     shape = RoundedCornerShape(topEnd = 20.dp, topStart = 20.dp)
                 )
-                .fillMaxWidth()
                 .padding(16.dp)
         ) {
             LazyColumn(
@@ -384,7 +384,7 @@ fun SuggestionBox(
     text: String,
     modifier: Modifier = Modifier
 ) {
-    Column {
+    Column() {
         Text(
             text = stringResource(id = R.string.coba_ini),
             style = MaterialTheme.typography.bodyMedium
@@ -392,7 +392,7 @@ fun SuggestionBox(
         Spacer(modifier = Modifier.height(10.dp))
         Box(
             modifier = modifier
-                .background(MaterialTheme.colorScheme.surface, RoundedCornerShape(12.dp))
+                .background(Color.White, RoundedCornerShape(12.dp))
                 .padding(16.dp)
                 .height(20.dp)
         ) {

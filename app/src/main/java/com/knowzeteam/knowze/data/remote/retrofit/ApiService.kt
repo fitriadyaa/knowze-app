@@ -23,7 +23,7 @@ interface ApiService {
 
     @GET("/api/course/{course_id}")
     suspend fun getCourseDetails(
-
+        @Header("Authorization") idToken: String,
         @Path("course_id") courseId: String
     ): Response<CourseResponse>
 }
