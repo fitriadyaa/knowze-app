@@ -61,13 +61,15 @@ fun HomeSearch(
     val response by viewModel.response.observeAsState()
 
     LaunchedEffect(response) {
-        response?.courseId?.let { courseId ->
-            Log.d("HomeSearch", "Navigating to AboutCourse with courseId: $courseId")
-            val route = "${Screen.AboutCourse.route}/$courseId"
-            navController.navigate(route)
-        } ?: Log.d("HomeSearch", "Response or courseId is null")
+        if (response?.courseId != null) {
+            navController.navigate("${Screen.AboutCourse.route}/${response?.courseId.toString()}") {
+                // Clears the back stack up to the start destination of the navigation graph
+                popUpTo(navController.graph.startDestinationId) {
+                    inclusive = true
+                }
+            }
+        }
     }
-
 
     LaunchedEffect(response) {
         response?.let {
@@ -108,7 +110,6 @@ fun HomeSearch(
                     initialText = initialSearchText,
                     onSearchAction = { query ->
                         viewModel.postGenerateQuery(query)
-                        navController.navigate(Screen.GeneratingScreen.route)
                     },
                     focusRequester = focusRequester,
                 )
