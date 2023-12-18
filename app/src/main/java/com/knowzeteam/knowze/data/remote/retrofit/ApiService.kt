@@ -5,6 +5,7 @@ import com.knowzeteam.knowze.data.remote.response.courseResponse.GenerateRequest
 import com.knowzeteam.knowze.data.remote.response.courseResponse.GenerateResponse
 import com.knowzeteam.knowze.data.remote.response.dashboard.DashboardResponse
 import com.knowzeteam.knowze.data.remote.response.keywordresponse.KeywordResponse
+import com.knowzeteam.knowze.data.remote.response.recommendationresponse.RecommendationResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -32,4 +33,9 @@ interface ApiService {
     suspend fun getKeywordTrending(
         @Header("Authorization") idToken: String,
     ): Response<KeywordResponse>
+
+    @GET("/api/recommendation")
+    suspend fun getRecommendation(
+        @Header("Authorization") idToken: String,
+    ): Response<RecommendationResponse>
 }

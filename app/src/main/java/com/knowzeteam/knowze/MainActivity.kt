@@ -13,7 +13,6 @@ import com.knowzeteam.knowze.data.remote.retrofit.ApiConfig
 import com.knowzeteam.knowze.data.remote.retrofit.ApiService
 import com.knowzeteam.knowze.ui.ViewModelFactory
 import com.knowzeteam.knowze.ui.theme.KnowzeTheme
-import com.knowzeteam.knowze.utils.Preference.checkLoginStatus
 
 class MainActivity : ComponentActivity() {
     private lateinit var apiService: ApiService
