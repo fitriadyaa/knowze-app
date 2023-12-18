@@ -196,7 +196,7 @@ fun CourseContent(
                 Spacer(modifier = modifier.height(10.dp))
 
                 Text(
-                    text = course.desc ?: "Description",
+                    text = course.title ?: "Description",
                     style = MaterialTheme.typography.bodyMedium.copy(
                         fontSize = 14.sp,
                         textAlign = TextAlign.Start,

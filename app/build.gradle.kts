@@ -76,7 +76,6 @@ dependencies {
     implementation("com.google.accompanist:accompanist-pager:0.13.0")
     implementation("com.google.accompanist:accompanist-pager-indicators:0.13.0")
 
-
     // Live Data
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")
