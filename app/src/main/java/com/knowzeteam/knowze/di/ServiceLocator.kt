@@ -7,6 +7,7 @@ import com.knowzeteam.knowze.data.local.UserProfileDao
 import com.knowzeteam.knowze.data.remote.retrofit.ApiConfig
 import com.knowzeteam.knowze.data.remote.retrofit.ApiService
 import com.knowzeteam.knowze.repository.GenerateRepository
+import com.knowzeteam.knowze.repository.KeywordRepository
 import com.knowzeteam.knowze.repository.TokenRepository
 import com.knowzeteam.knowze.repository.UserRepository
 
@@ -44,5 +45,9 @@ object ServiceLocator {
 
     fun provideGenerateRepository(context: Context): GenerateRepository {
         return GenerateRepository(provideApiService(context))
+    }
+
+    fun provideKeywordRepository(context: Context): KeywordRepository {
+        return KeywordRepository(provideApiService(context))
     }
 }

@@ -263,7 +263,7 @@ fun HomeContent(
                         subText = stringResource(id = R.string.menu_keyword_detail),
                         imageResId = R.drawable.ic_trending_keyword,
                         boxColor = MaterialTheme.colorScheme.primary,
-                        onClick = {}
+                        onClick = { navController.navigate(Screen.TrendingKeyword.route)}
                     )
                 }
                 item {
