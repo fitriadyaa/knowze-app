@@ -14,7 +14,12 @@ import com.knowzeteam.knowze.ui.screen.auth.login.LoginScreen
 import com.knowzeteam.knowze.ui.screen.auth.login.LoginViewModel
 import com.knowzeteam.knowze.ui.screen.auth.login.LoginWithEmailScreen
 import com.knowzeteam.knowze.ui.screen.auth.register.RegisterScreen
+import com.knowzeteam.knowze.ui.screen.detailcourse.AboutContentScreen
+import com.knowzeteam.knowze.ui.screen.detailcourse.AboutCourseScreen
+import com.knowzeteam.knowze.ui.screen.detailcourse.DetailCourseScreen
+import com.knowzeteam.knowze.ui.screen.detailcourse.GeneratingCourseScreen
 import com.knowzeteam.knowze.ui.screen.gallery.CourseThemeGallery
+import com.knowzeteam.knowze.ui.screen.gallery.TrendingKeywordScreen
 import com.knowzeteam.knowze.ui.screen.home.HomeScreen
 import com.knowzeteam.knowze.ui.screen.home.HomeSearch
 import com.knowzeteam.knowze.ui.screen.welcome.IntroOneScreen
@@ -92,6 +97,38 @@ fun KnowzeApp(viewModelFactory: ViewModelProvider.Factory) {
                 onBack = { navController.popBackStack() },
                 initialSearchText = "",
                 shouldFocus = focus == "focus",
+            )
+        }
+
+        composable(
+            route = "${Screen.AboutCourse.route}/{courseId}",
+            arguments = listOf(navArgument("courseId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            // Extract the courseId from the backStackEntry
+            val courseId = backStackEntry.arguments?.getString("courseId") ?: "default_course_id"
+
+            AboutCourseScreen(
+                courseId = courseId,
+                onBackClick = { navController.popBackStack() },
+                onButtonClick = { /* TODO: Implement the button click action */ }
+            )
+        }
+
+        composable(Screen.AboutContent.route){
+            AboutContentScreen()
+        }
+
+        composable(Screen.DetailCourse.route){
+            DetailCourseScreen()
+        }
+
+        composable(Screen.TrendingKeyword.route){
+            TrendingKeywordScreen()
+        }
+
+        composable(Screen.GeneratingScreen.route){
+            GeneratingCourseScreen(
+                navController= navController,
             )
         }
     }

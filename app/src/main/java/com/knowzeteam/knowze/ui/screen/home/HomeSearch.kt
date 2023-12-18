@@ -62,9 +62,10 @@ fun HomeSearch(
 
     LaunchedEffect(response) {
         response?.courseId?.let { courseId ->
-            val route = Screen.AboutCourse.route.replace("{courseId}", courseId)
+            Log.d("HomeSearch", "Navigating to AboutCourse with courseId: $courseId")
+            val route = "${Screen.AboutCourse.route}/$courseId"
             navController.navigate(route)
-        }
+        } ?: Log.d("HomeSearch", "Response or courseId is null")
     }
 
 
