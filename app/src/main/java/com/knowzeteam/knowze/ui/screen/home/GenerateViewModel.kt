@@ -56,18 +56,18 @@ class GenerateViewModel(private val generateRepository: GenerateRepository) : Vi
             val token = getFirebaseAuthToken()
             if (token.isNullOrEmpty()) {
                 Log.e("GenerateViewModel", "Firebase token is empty or null")
-                _response.postValue(null)
+                _response.value = null
                 return@launch
             }
             try {
                 val result = generateRepository.postGenerateQuery("Bearer $token", prompt)
-                _response.postValue(result)
+                _response.value = result
             } catch (e: SocketTimeoutException) {
                 Log.e("GenerateViewModel", "Network request timed out: ${e.message}")
-                _response.postValue(null) // Handle the timeout specifically
+                _response.value = null// Handle the timeout specifically
             } catch (e: Exception) {
                 Log.e("GenerateViewModel", "Error: ${e.message}")
-                _response.postValue(null) // Handle other errors
+                _response.value = null // Handle other errors
             }
         }
     }

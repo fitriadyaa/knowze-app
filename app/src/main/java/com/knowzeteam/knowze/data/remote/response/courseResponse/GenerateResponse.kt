@@ -5,8 +5,8 @@ import com.google.gson.annotations.SerializedName
 data class GenerateResponse(
 
 	@field:SerializedName("course_id")
-	val courseId: String? = null,
+	var courseId: String? = "",
 
 	@field:SerializedName("message")
-	val message: String? = null
+	var message: String? = ""
 )

@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.knowzeteam.knowze.di.ServiceLocator
 import com.knowzeteam.knowze.ui.screen.auth.login.LoginViewModel
+import com.knowzeteam.knowze.ui.screen.detailcourse.CourseViewModel
 import com.knowzeteam.knowze.ui.screen.home.GenerateViewModel
 import com.knowzeteam.knowze.ui.screen.keyword.KeywordViewModel
 
@@ -31,6 +32,11 @@ class ViewModelFactory(private val context: Context) : ViewModelProvider.Factory
             @Suppress("UNCHECKED_CAST")
             val keywordRepository = ServiceLocator.provideKeywordRepository(context)
             return KeywordViewModel(keywordRepository) as T
+        }
+        if (modelClass.isAssignableFrom(CourseViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            val keywordRepository = ServiceLocator.provideGenerateRepository(context)
+            return CourseViewModel(keywordRepository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
