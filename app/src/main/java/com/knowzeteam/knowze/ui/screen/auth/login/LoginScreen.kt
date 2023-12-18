@@ -34,30 +34,42 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.knowzeteam.knowze.R
-import com.knowzeteam.knowze.data.remote.retrofit.ApiConfig
-import com.knowzeteam.knowze.ui.ViewModelFactory
 import com.knowzeteam.knowze.ui.navigation.Screen
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.knowzeteam.knowze.repository.DashboardRepository
-import com.knowzeteam.knowze.repository.DashboardRepositoryImpl
-import com.knowzeteam.knowze.utils.UserPreferencesRepository
-
 
 @Composable
 fun LoginScreen(
     navController: NavHostController,
-    viewModel: LoginViewModel = viewModel(),
+    viewModel: LoginViewModel,
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
+    val loginState by viewModel.loginState.collectAsState()
 
-    // Configure Google Sign In
+    when (loginState) {
+        is LoginViewModel.LoginState.Success -> {
+            // Navigate to home screen or show success message
+            navController.navigate(Screen.Home.route)
+        }
+        is LoginViewModel.LoginState.Error -> {
+            LaunchedEffect(key1 = loginState) {
+                Toast.makeText(context, (loginState as LoginViewModel.LoginState.Error).message, Toast.LENGTH_LONG).show()
+            }
+        }
+        LoginViewModel.LoginState.Loading -> {
+            LoadingIndicator() // Show loading indicator
+        }
+        LoginViewModel.LoginState.Idle -> {
+            // Handle idle state if needed
+        }
+        else -> {}
+    }
+
     val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
         .requestIdToken(context.getString(R.string.default_web_client_id))
         .requestEmail()
@@ -70,23 +82,10 @@ fun LoginScreen(
         val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
         try {
             val account = task.getResult(ApiException::class.java)
-            // Notify ViewModel for Google auth
-            viewModel.firebaseAuthWithGoogle()
+            viewModel.googleLogin(account)
         } catch (e: ApiException) {
             Log.e("LoginScreen", "Google Sign-In failed", e)
         }
-    }
-
-    val dashboardData by viewModel.dashboardData.observeAsState()
-    LaunchedEffect(dashboardData) {
-        dashboardData?.let {
-            navController.navigate(Screen.Home.route)
-        }
-    }
-
-    // Show a toast on error
-    error?.let {
-        Toast.makeText(context, "Error: ${it.message}", Toast.LENGTH_LONG).show()
     }
 
     Box(
@@ -116,27 +115,35 @@ fun LoginScreen(
                 launcher.launch(signInIntent)
             })
 
-            // Observe ViewModel states
-            val isLoading by viewModel.isLoading.collectAsState()
-            val idToken by viewModel.idToken.observeAsState()
-            val error by viewModel.error.observeAsState()
 
-            // UI response to ViewModel states...
-            if (isLoading) {
-                CircularProgressIndicator()
-            }
+            Spacer(modifier = Modifier.weight(0.1f))
 
-            idToken?.let {
-                // Navigate to next screen
-                navController.navigate(Screen.Home.route) {
-                    popUpTo(Screen.Login.route) { inclusive = true }
+            EmailLoginButton(
+                onClick = {
+                    navController.navigate(Screen.EmailLogin.route)
                 }
-            }
+            )
 
-            error?.let {
-                Toast.makeText(context, "Login failed, please try again or check your internet connection", Toast.LENGTH_LONG).show()
-            }
+            Spacer(modifier = Modifier.weight(0.1f))
+
+            ClickableText(
+                onClick = {navController.navigate(Screen.Register.route)},
+                text = AnnotatedString(stringResource(id = R.string.register_message)),
+                style = MaterialTheme.typography.bodyMedium.copy(
+                    fontSize = 12.sp,
+                    textAlign = TextAlign.Center,
+                    color = MaterialTheme.colorScheme.primary
+                ),
+                modifier = Modifier.fillMaxWidth()
+            )
         }
+    }
+}
+
+@Composable
+fun LoadingIndicator() {
+    Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
+        CircularProgressIndicator()
     }
 }
 @Composable

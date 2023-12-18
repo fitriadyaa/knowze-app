@@ -19,9 +19,9 @@ import com.knowzeteam.knowze.ui.screen.detailcourse.AboutCourseScreen
 import com.knowzeteam.knowze.ui.screen.detailcourse.DetailCourseScreen
 import com.knowzeteam.knowze.ui.screen.detailcourse.GeneratingCourseScreen
 import com.knowzeteam.knowze.ui.screen.gallery.CourseThemeGallery
-import com.knowzeteam.knowze.ui.screen.gallery.TrendingKeywordScreen
 import com.knowzeteam.knowze.ui.screen.home.HomeScreen
 import com.knowzeteam.knowze.ui.screen.home.HomeSearch
+import com.knowzeteam.knowze.ui.screen.keyword.TrendingKeywordScreen
 import com.knowzeteam.knowze.ui.screen.welcome.IntroOneScreen
 import com.knowzeteam.knowze.ui.screen.welcome.IntroSecondScreen
 import com.knowzeteam.knowze.ui.screen.welcome.IntroThridScreen
@@ -122,8 +122,10 @@ fun KnowzeApp(viewModelFactory: ViewModelProvider.Factory) {
             DetailCourseScreen()
         }
 
-        composable(Screen.TrendingKeyword.route){
-            TrendingKeywordScreen()
+        composable(Screen.TrendingKeyword.route) {
+            TrendingKeywordScreen(
+                onBack = { navController.popBackStack() },
+            )
         }
 
         composable(Screen.GeneratingScreen.route){
