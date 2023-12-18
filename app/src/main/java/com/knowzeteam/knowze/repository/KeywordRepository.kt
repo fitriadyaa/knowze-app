@@ -6,8 +6,8 @@ import com.knowzeteam.knowze.data.remote.response.keywordresponse.KeywordRespons
 import com.knowzeteam.knowze.data.remote.retrofit.ApiService
 
 class KeywordRepository(private val apiService: ApiService) {
-    suspend fun getKeywordTrending(idToken: String): KeywordResponse? {
-        val response = apiService.getKeywordTrending(idToken)
+    suspend fun getKeywordTrending(): KeywordResponse? {
+        val response = apiService.getKeywordTrending()
         Log.d(ContentValues.TAG, "API Response: $response")
         return if (response.isSuccessful) {
             response.body()?.let { keywordResponse ->
