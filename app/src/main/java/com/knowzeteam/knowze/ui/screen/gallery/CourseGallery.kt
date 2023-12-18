@@ -130,16 +130,15 @@ fun CardItem(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 CategoryRow()
-                Spacer(modifier = Modifier.width(60.dp))
+                Spacer(modifier = Modifier.width(40.dp))
                 RatingRow(ratingCourse)
             }
             Spacer(modifier = Modifier.height(20.dp))
             Text(
                 text = titleCourse,
-                style = MaterialTheme.typography.bodyLarge.copy(
-                    color = Color.White,
+                style = MaterialTheme.typography.titleLarge.copy(
                     fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp
+                    color = Color.White
                 )
             )
         }
@@ -150,7 +149,7 @@ fun CardItem(
 fun CategoryRow() {
     Row {
         CategoryButton(categoryText = "Olahraga", onClick = { /*TODO*/ })
-        Spacer(modifier = Modifier.width(10.dp))
+        Spacer(modifier = Modifier.width(4.dp))
         CategoryButton(categoryText = "Outdoor", onClick = { /*TODO*/ })
     }
 }

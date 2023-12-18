@@ -56,7 +56,6 @@ import androidx.compose.ui.unit.sp
 import com.knowzeteam.knowze.R
 import com.knowzeteam.knowze.ui.component.MenuItem
 import com.knowzeteam.knowze.ui.component.MiniMenuItem
-import com.knowzeteam.knowze.ui.component.SearchBar
 import com.knowzeteam.knowze.ui.screen.auth.login.LoginViewModel
 import androidx.navigation.NavController
 import com.google.accompanist.coil.rememberCoilPainter
@@ -189,7 +188,7 @@ fun HomeContent(
     }
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -197,7 +196,7 @@ fun HomeContent(
         Row(
             horizontalArrangement = Arrangement.Start,
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp, vertical = 30.dp)
         ) {
@@ -212,7 +211,7 @@ fun HomeContent(
                     contentScale = ContentScale.None,
                 )
             }
-            Spacer(modifier = Modifier.width(30.dp))
+            Spacer(modifier = modifier.width(30.dp))
             Text(
                 text = stringResource(id = R.string.selamat) + " " + userName,
                 style = MaterialTheme.typography.titleLarge.copy(
@@ -227,11 +226,11 @@ fun HomeContent(
                 navController.navigate("${Screen.HomeS.route}/focus")
             }
         )
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = modifier.height(16.dp))
         SuggestionBox(text = "Belajar edit video memakai capcut")
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = modifier.height(16.dp))
         Box(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxWidth()
                 .background(
                     color = Color.White,
@@ -240,15 +239,15 @@ fun HomeContent(
                 .padding(16.dp)
         ) {
             LazyColumn(
-                modifier = Modifier.height(520.dp)
+                modifier = modifier.height(520.dp)
             ) {
                 item {
                     Divider(
-                        modifier = Modifier
+                        modifier = modifier
                             .height(4.dp)
                             .clip(RoundedCornerShape(10.dp))
                     )
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = modifier.height(16.dp))
                     MenuItem(
                         text = stringResource(id = R.string.menu_rekomendasi),
                         imageResId = R.drawable.ic_cari_rekomendasi,
@@ -257,7 +256,7 @@ fun HomeContent(
                     )
                 }
                 item {
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = modifier.height(16.dp))
                     MenuItem(
                         text = stringResource(id = R.string.menu_keyword),
                         subText = stringResource(id = R.string.menu_keyword_detail),
@@ -267,23 +266,23 @@ fun HomeContent(
                     )
                 }
                 item {
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = modifier.height(16.dp))
                     MenuItem(
                         text = stringResource(id = R.string.menu_galeri),
                         subText = stringResource(id = R.string.menu_galeri_detail),
                         imageResId = R.drawable.ic_gallery,
                         boxColor = MaterialTheme.colorScheme.primary,
-                        onClick = { navController.navigate(Screen.GalleryCourse.route) }
+                        onClick = {navController.navigate(Screen.CourseGallery.route) }
                     )
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = modifier.height(16.dp))
                     Divider(
-                        modifier = Modifier
+                        modifier = modifier
                             .height(4.dp)
                             .clip(RoundedCornerShape(10.dp))
                     )
                 }
                 item {
-                    Spacer(modifier = Modifier.height(25.dp))
+                    Spacer(modifier = modifier.height(25.dp))
                     Text(
                         text = stringResource(id = R.string.title_menu_mini),
                         style = MaterialTheme.typography.titleMedium.copy(
@@ -292,12 +291,12 @@ fun HomeContent(
                             textAlign = TextAlign.Center,
                             color = Color(0xFF3334CC)
                         ),
-                        modifier = Modifier
+                        modifier = modifier
                             .fillMaxWidth()
                     )
                 }
                 item {
-                    Spacer(modifier = Modifier.height(10.dp))
+                    Spacer(modifier = modifier.height(10.dp))
                     MiniMenuItem(
                         text = stringResource(id = R.string.menu_1),
                         boxColor = Color(0xFF3334CC),
@@ -305,7 +304,7 @@ fun HomeContent(
                     )
                 }
                 item {
-                    Spacer(modifier = Modifier.height(10.dp))
+                    Spacer(modifier = modifier.height(10.dp))
                     MiniMenuItem(
                         text = stringResource(id = R.string.menu_2),
                         boxColor = Color(0xFF3334CC),
@@ -313,7 +312,7 @@ fun HomeContent(
                     )
                 }
                 item {
-                    Spacer(modifier = Modifier.height(10.dp))
+                    Spacer(modifier = modifier.height(10.dp))
                     MiniMenuItem(
                         text = stringResource(id = R.string.menu_3),
                         boxColor = Color(0xFF3334CC),
@@ -328,10 +327,11 @@ fun HomeContent(
 @Composable
 fun ClickableSearchBar(
     placeholderText: String,
-    onSearchBarClick: () -> Unit
+    onSearchBarClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .height(50.dp)
             .background(Color.White, RoundedCornerShape(12.dp))
@@ -342,13 +342,13 @@ fun ClickableSearchBar(
         Text(
             text = placeholderText,
             color = MaterialTheme.colorScheme.primary,
-            modifier = Modifier.padding(start = 16.dp),
+            modifier = modifier.padding(start = 16.dp),
         )
         Image(
             painter = painterResource(id = R.drawable.ic_search),
             contentDescription = "Search Icon",
             contentScale = ContentScale.None,
-            modifier = Modifier
+            modifier = modifier
                 .size(32.dp)
                 .align(Alignment.CenterEnd)
                 .padding(end = 10.dp)
@@ -384,7 +384,7 @@ fun SuggestionBox(
     text: String,
     modifier: Modifier = Modifier
 ) {
-    Column() {
+    Column {
         Text(
             text = stringResource(id = R.string.coba_ini),
             style = MaterialTheme.typography.bodyMedium

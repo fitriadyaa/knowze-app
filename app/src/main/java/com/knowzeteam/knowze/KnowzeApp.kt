@@ -18,6 +18,7 @@ import com.knowzeteam.knowze.ui.screen.detailcourse.AboutContentScreen
 import com.knowzeteam.knowze.ui.screen.detailcourse.AboutCourseScreen
 import com.knowzeteam.knowze.ui.screen.detailcourse.DetailCourseScreen
 import com.knowzeteam.knowze.ui.screen.detailcourse.GeneratingCourseScreen
+import com.knowzeteam.knowze.ui.screen.gallery.CourseGallery
 import com.knowzeteam.knowze.ui.screen.gallery.CourseThemeGallery
 import com.knowzeteam.knowze.ui.screen.home.HomeScreen
 import com.knowzeteam.knowze.ui.screen.home.HomeSearch
@@ -81,12 +82,6 @@ fun KnowzeApp(viewModelFactory: ViewModelProvider.Factory) {
             )
         }
 
-        composable(Screen.GalleryCourse.route){
-            CourseThemeGallery(
-                onBack = { navController.popBackStack() },
-            )
-        }
-
         composable(
             "${Screen.HomeS.route}/{focus}",
             arguments = listOf(navArgument("focus") { defaultValue = "nofocus"; type = NavType.StringType })
@@ -132,6 +127,10 @@ fun KnowzeApp(viewModelFactory: ViewModelProvider.Factory) {
             GeneratingCourseScreen(
                 navController= navController,
             )
+        }
+
+        composable(Screen.CourseGallery.route){
+            CourseGallery()
         }
     }
 }
