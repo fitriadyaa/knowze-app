@@ -30,9 +30,7 @@ interface ApiService {
     ): Response<CourseResponse>
 
     @GET("/api/keyword-trending")
-    suspend fun getKeywordTrending(
-        @Header("Authorization") idToken: String,
-    ): Response<KeywordResponse>
+    suspend fun getKeywordTrending(): Response<KeywordResponse>
 
     @GET("/api/recommendation")
     suspend fun getRecommendation(
