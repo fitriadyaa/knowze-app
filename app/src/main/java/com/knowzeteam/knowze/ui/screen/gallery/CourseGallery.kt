@@ -134,19 +134,17 @@ fun CardItem(
 ) {
     Box(
         modifier = modifier
-            .height(130.dp)
+            .height(120.dp)
             .clip(RoundedCornerShape(10.dp))
             .clickable { onClick() }
             .background(MaterialTheme.colorScheme.surfaceVariant)
     ) {
-        Box {
-            Image(
-                painter = painterResource(id = imgCourseTheme),
-                contentDescription = stringResource(R.string.theme_course_pict),
-                contentScale = ContentScale.Crop,
-            )
-            BoxContentOverlay(modifier = Modifier.fillMaxSize())
-        }
+        Image(
+            painter = painterResource(id = imgCourseTheme),
+            contentDescription = stringResource(R.string.theme_course_pict),
+            contentScale = ContentScale.Crop,
+        )
+        BoxContentOverlay(modifier = Modifier.fillMaxSize())
         Column(
             modifier = Modifier
                 .padding(16.dp)
