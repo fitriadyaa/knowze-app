@@ -41,6 +41,7 @@ fun IntroThridScreen(
             contentDescription = stringResource(R.string.icon_welcome),
             modifier = modifier
                 .size(324.dp, 316.dp)
+                .padding(horizontal = 16.dp)
         )
 
         Spacer(modifier = Modifier.height(50.dp))

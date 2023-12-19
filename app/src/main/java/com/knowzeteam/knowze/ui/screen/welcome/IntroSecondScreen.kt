@@ -38,10 +38,11 @@ fun IntroSecondScreen(
         modifier = modifier.fillMaxSize()
     ) {
         Image(
-            painter = painterResource(R.drawable.ic_intro2),
+            painter = painterResource(R.drawable.ic_belajar),
             contentDescription = stringResource(R.string.icon_welcome),
             modifier = modifier
-                .size(324.dp, 316.dp)
+                .size(300.dp, 300.dp)
+                .padding(horizontal = 16.dp)
         )
 
         Spacer(modifier = Modifier.height(50.dp))
