@@ -51,12 +51,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.knowzeteam.knowze.R
 import com.knowzeteam.knowze.ui.component.MenuItem
 import com.knowzeteam.knowze.ui.component.MiniMenuItem
@@ -65,6 +67,8 @@ import androidx.navigation.NavController
 import com.google.accompanist.coil.rememberCoilPainter
 import com.google.firebase.auth.FirebaseAuth
 import com.knowzeteam.knowze.data.remote.response.dashboard.CoursesItem
+import com.knowzeteam.knowze.data.remote.response.newsresponse.NewsResponseItem
+import com.knowzeteam.knowze.ui.ViewModelFactory
 import com.knowzeteam.knowze.ui.component.CategoryButton
 import com.knowzeteam.knowze.ui.navigation.Screen
 import com.knowzeteam.knowze.ui.screen.detailcourse.BoxContentOverlay
@@ -74,6 +78,7 @@ import com.knowzeteam.knowze.ui.screen.detailcourse.BoxContentOverlay
 fun HomeScreen(
     navController: NavController,
     viewModel: LoginViewModel,
+    viewModelFactory: ViewModelFactory = ViewModelFactory(LocalContext.current)
 ) {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val showLogoutDialog = remember { mutableStateOf(false) }
@@ -81,12 +86,18 @@ fun HomeScreen(
     val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
 
     val newestCourses by viewModel.newestCourses.collectAsState()
+    val newsViewModel: NewsViewModel = viewModel(factory = viewModelFactory)
+
+    val newsItems by newsViewModel.newsItems.collectAsState()
 
     val loginState by viewModel.loginState.collectAsState()
     val userName = firebaseAuth.currentUser?.displayName.toString()// Observe the user's name
     val userEmail = firebaseAuth.currentUser?.email.toString() // Observe the user's email
     val userPhotoUrl = firebaseAuth.currentUser?.photoUrl.toString() // Observe
 
+    LaunchedEffect(Unit) {
+        newsViewModel.fetchNews()
+    }
 
     if (loginState is LoginViewModel.LoginState.Logout) {
         navController.navigate(Screen.Login.route)
@@ -99,7 +110,7 @@ fun HomeScreen(
                 DrawerContent(showLogoutDialog, viewModel, userName, userEmail, userPhotoUrl)
             }
         ) {
-            HomeContent(drawerState = drawerState, userName, navController, newestCourses)
+            HomeContent(drawerState = drawerState, userName, navController, newestCourses, newsItems)
         }
     }
 }
@@ -184,6 +195,7 @@ fun HomeContent(
     userName: String?,
     navController: NavController,
     newestCourses: List<CoursesItem?>?,
+    newsItems: List<NewsResponseItem>,
     modifier: Modifier = Modifier
 ){
 
@@ -273,7 +285,7 @@ fun HomeContent(
                     .padding(16.dp)
             ) {
                 LazyColumn(
-                    modifier = modifier.height(520.dp)
+                    modifier = Modifier.fillMaxSize()
                 ) {
                     item {
                         Divider(
@@ -328,30 +340,13 @@ fun HomeContent(
                             modifier = modifier
                                 .fillMaxWidth()
                         )
-                    }
-                    item {
                         Spacer(modifier = modifier.height(10.dp))
-                        MiniMenuItem(
-                            text = stringResource(id = R.string.menu_1),
-                            boxColor = Color(0xFF3334CC),
-                            onClick = { /*TODO*/ }
-                        )
                     }
-                    item {
-                        Spacer(modifier = modifier.height(10.dp))
+                    items(newsItems) { newsItem ->
                         MiniMenuItem(
-                            text = stringResource(id = R.string.menu_2),
-                            boxColor = Color(0xFF3334CC),
-                            onClick = { /*TODO*/ }
+                            newsResponseItem = newsItem,
                         )
-                    }
-                    item {
                         Spacer(modifier = modifier.height(10.dp))
-                        MiniMenuItem(
-                            text = stringResource(id = R.string.menu_3),
-                            boxColor = Color(0xFF3334CC),
-                            onClick = { /*TODO*/ }
-                        )
                     }
                 }
             }

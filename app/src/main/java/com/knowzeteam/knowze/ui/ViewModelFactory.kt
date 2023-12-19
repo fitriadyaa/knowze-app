@@ -8,6 +8,7 @@ import com.knowzeteam.knowze.ui.screen.auth.login.LoginViewModel
 import com.knowzeteam.knowze.ui.screen.detailcourse.CourseViewModel
 import com.knowzeteam.knowze.ui.screen.gallery.CourseGalleryViewModel
 import com.knowzeteam.knowze.ui.screen.home.GenerateViewModel
+import com.knowzeteam.knowze.ui.screen.home.NewsViewModel
 import com.knowzeteam.knowze.ui.screen.keyword.KeywordViewModel
 
 class ViewModelFactory(private val context: Context) : ViewModelProvider.Factory {
@@ -40,6 +41,11 @@ class ViewModelFactory(private val context: Context) : ViewModelProvider.Factory
             @Suppress("UNCHECKED_CAST")
             val allCourseResponse = ServiceLocator.provideAllCourseRepository(context)
             return CourseGalleryViewModel(allCourseResponse) as T
+        }
+        if(modelClass.isAssignableFrom(NewsViewModel::class.java)){
+                @Suppress("UNCHECKED_CAST")
+                val newsResponse = ServiceLocator.provideNewsRepository(context)
+                return NewsViewModel(newsResponse) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

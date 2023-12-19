@@ -6,6 +6,8 @@ import com.knowzeteam.knowze.data.remote.response.courseResponse.GenerateRequest
 import com.knowzeteam.knowze.data.remote.response.courseResponse.GenerateResponse
 import com.knowzeteam.knowze.data.remote.response.dashboard.DashboardResponse
 import com.knowzeteam.knowze.data.remote.response.keywordresponse.KeywordResponse
+import com.knowzeteam.knowze.data.remote.response.newsresponse.NewsResponse
+import com.knowzeteam.knowze.data.remote.response.newsresponse.NewsResponseItem
 import com.knowzeteam.knowze.data.remote.response.recommendationresponse.RecommendationResponse
 import retrofit2.Response
 import retrofit2.http.Body
@@ -44,4 +46,9 @@ interface ApiService {
         @Query("page") page: Int,
         @Query("page_size") pageSize: Int
     ): Response<AllCourseResponse>
+
+    @GET("/api/trending-news")
+    suspend fun getNews(
+        @Header("Authorization") idToken: String,
+    ): Response<List<NewsResponseItem>>
 }
