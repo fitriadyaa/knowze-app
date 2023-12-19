@@ -4,35 +4,26 @@ import com.google.gson.annotations.SerializedName
 
 data class CourseResponse(
 
-    @field:SerializedName("duration")
+	@field:SerializedName("duration")
 	val duration: String? = null,
 
-    @field:SerializedName("subtitles")
+	@field:SerializedName("subtitles")
 	val subtitles: List<SubtitlesItem?>? = null,
 
-    @field:SerializedName("title")
+	@field:SerializedName("type_activity")
+	val typeActivity: String? = null,
+
+	@field:SerializedName("title")
 	val title: String? = null,
 
-    @field:SerializedName("desc")
+	@field:SerializedName("theme_activity")
+	val themeActivity: String? = null,
+
+	@field:SerializedName("desc")
 	val desc: String? = null,
 
-    @field:SerializedName("lessons")
+	@field:SerializedName("lessons")
 	val lessons: Int? = null
-)
-
-data class Content(
-
-	@field:SerializedName("closing")
-	val closing: String? = null,
-
-	@field:SerializedName("id")
-	val id: String? = null,
-
-	@field:SerializedName("opening")
-	val opening: String? = null,
-
-	@field:SerializedName("steps")
-	val steps: List<String?>? = null
 )
 
 data class SubtitlesItem(
@@ -51,4 +42,19 @@ data class SubtitlesItem(
 
 	@field:SerializedName("content")
 	val content: Content? = null
+)
+
+data class Content(
+
+	@field:SerializedName("closing")
+	val closing: String? = null,
+
+	@field:SerializedName("id")
+	val id: String? = null,
+
+	@field:SerializedName("opening")
+	val opening: String? = null,
+
+	@field:SerializedName("steps")
+	val steps: List<String?>? = null
 )

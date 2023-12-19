@@ -102,7 +102,6 @@ fun CourseGallery(
                     course?.let {
                         CardItem(
                             titleCourse = it.title ?: "Unknown Title",
-                            imgCourseTheme = R.drawable.img_hike, // Replace with actual image resource
                             onClick = { /* Handle card click */ }
                         )
                         Spacer(modifier = Modifier.height(10.dp))
@@ -128,40 +127,31 @@ fun CourseGallery(
 @Composable
 fun CardItem(
     titleCourse: String,
-    imgCourseTheme: Int,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Box(
         modifier = modifier
-            .height(120.dp)
+            .height(100.dp)
             .clip(RoundedCornerShape(10.dp))
             .clickable { onClick() }
             .background(MaterialTheme.colorScheme.surfaceVariant)
     ) {
         Image(
-            painter = painterResource(id = imgCourseTheme),
+            painter = painterResource(R.drawable.bg_knowze),
             contentDescription = stringResource(R.string.theme_course_pict),
             contentScale = ContentScale.Crop,
         )
-        BoxContentOverlay(modifier = Modifier.fillMaxSize())
+//        BoxContentOverlay(modifier = Modifier.fillMaxSize())
         Column(
             modifier = Modifier
                 .padding(16.dp)
         ) {
-            Row {
-                CategoryButton(categoryText = "Olahraga", onClick = { /*TODO*/ })
-                Spacer(modifier = Modifier.width(4.dp))
-                CategoryButton(categoryText = "Outdoor", onClick = { /*TODO*/ })
-
-
-            }
-            Spacer(modifier = Modifier.height(20.dp))
             Text(
                 text = titleCourse,
                 style = MaterialTheme.typography.titleMedium.copy(
                     fontWeight = FontWeight.Bold,
-                    color = Color.White
+                    color = Color.Black
                 )
             )
         }
