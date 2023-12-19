@@ -53,7 +53,7 @@ fun LoginWithEmailScreen(
             CenterAlignedTopAppBar(
                 title = {
                     androidx.compose.material3.Text(
-                        text = stringResource(id = R.string.login_here),
+                        text = stringResource(id = R.string.login),
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
