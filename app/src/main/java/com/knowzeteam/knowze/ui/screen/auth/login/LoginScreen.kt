@@ -168,6 +168,7 @@ fun GoogleLoginButton(
         )
         Text(
             text = stringResource(R.string.login_with_google),
+            style = MaterialTheme.typography.bodyMedium,
             modifier = modifier.padding(start = 8.dp)
         )
     }
@@ -195,6 +196,7 @@ fun EmailLoginButton(
         )
         Text(
             text = stringResource(R.string.login_with_email),
+            style = MaterialTheme.typography.bodyMedium,
             modifier = modifier.padding(start = 8.dp)
         )
     }
