@@ -1,6 +1,8 @@
 package com.knowzeteam.knowze
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
@@ -77,7 +79,7 @@ fun KnowzeApp(viewModelFactory: ViewModelProvider.Factory) {
         composable(Screen.Home.route){
             HomeScreen(
                 navController = navController,
-                viewModel = loginViewModel
+                viewModel = loginViewModel,
             )
         }
 

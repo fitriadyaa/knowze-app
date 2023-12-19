@@ -33,11 +33,18 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.knowzeteam.knowze.data.remote.response.courseResponse.CourseResponse
+import com.knowzeteam.knowze.ui.ViewModelFactory
 import com.knowzeteam.knowze.ui.component.CategoryButton
 import com.knowzeteam.knowze.ui.component.CourseItem
 
@@ -45,76 +52,90 @@ import com.knowzeteam.knowze.ui.component.CourseItem
 fun AboutContentScreen(
     modifier: Modifier = Modifier
 ) {
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-    ) {
-        BannerContent()
 
-        Box(
-            modifier = modifier
-                .background(
-                    color = Color.White,
-                    shape = RoundedCornerShape(topEnd = 40.dp, topStart = 40.dp)
-                )
-                .padding(16.dp)
-                .fillMaxSize()
-        ) {
-            Column(
-                horizontalAlignment = Alignment.Start,
+    val context = LocalContext.current
+
+    val viewModel: CourseViewModel = viewModel(
+        factory = ViewModelFactory(context)
+    )
+    // Observe course details
+    val courseDetails by viewModel.courseDetails.observeAsState()
+    val subtitleItem by viewModel.subtitlesItem.observeAsState()
+
+    // Check if course details are available
+    if (subtitleItem != null) {
+        // Your existing UI code, now using 'courseDetails'
+        Column(modifier = modifier.fillMaxSize()) {
+            BannerContent(course = courseDetails!!, modifier = modifier)
+
+            Box(
+                modifier = modifier
+                    .background(
+                        color = Color.White,
+                        shape = RoundedCornerShape(topEnd = 40.dp, topStart = 40.dp)
+                    )
+                    .padding(16.dp)
+                    .fillMaxSize()
             ) {
-                Row(
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = modifier
-                        .fillMaxWidth()
+                Column(
+                    horizontalAlignment = Alignment.Start,
                 ) {
-                    Text(
-                        text = stringResource(id = R.string.course_content),
-                        style = MaterialTheme.typography.titleLarge.copy(
-                            fontSize = 20.sp,
-                            fontWeight = FontWeight.Bold
-                        ),
+                    Row(
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically,
                         modifier = modifier
-                            .padding(top = 20.dp)
-                    )
+                            .fillMaxWidth()
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.course_content),
+                            style = MaterialTheme.typography.titleLarge.copy(
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight.Bold
+                            ),
+                            modifier = modifier
+                                .padding(top = 20.dp)
+                        )
 
-                    Text(
-                        text = stringResource(id = R.string.topic),
-                        style = MaterialTheme.typography.titleSmall.copy(
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.Light
-                        ),
-                        modifier = modifier
-                            .padding(top = 20.dp, end = 10.dp)
-                    )
-                }
+                        Text(
+                            text = stringResource(id = R.string.topic),
+                            style = MaterialTheme.typography.titleSmall.copy(
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.Light
+                            ),
+                            modifier = modifier
+                                .padding(top = 20.dp, end = 10.dp)
+                        )
+                    }
 
-                Divider(modifier = modifier.padding(horizontal = 16.dp, vertical = 16.dp))
+                    Divider(modifier = modifier.padding(horizontal = 16.dp, vertical = 16.dp))
 
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(end = 16.dp, bottom = 10.dp)
-                ) {
-                    LazyColumn {
-                        item {
-                            CourseItem(
-                                courseTitle = "1. Intro to Photography",
-                                courseDuration = "1min",
-                                imageResId = R.drawable.ex_pict_course
-                            )
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(end = 16.dp, bottom = 10.dp)
+                    ) {
+                        LazyColumn {
+                            item {
+                                subtitleItem?.let {
+                                    CourseItem(
+                                        subtitle = it
+                                    )
+                                }
+                            }
                         }
                     }
-                }
 
+                }
             }
         }
+    } else {
+        // Show loading or empty state
     }
 }
 
 @Composable
 fun BannerContent(
+    course: CourseResponse,
     modifier: Modifier = Modifier
 ) {
     Box(modifier = Modifier) {
@@ -184,7 +205,7 @@ fun BannerContent(
             ) {
                 // Judul Course
                 Text(
-                    text = stringResource(id = R.string.course_title),
+                    text = course.title ?: "Default Title",
                     style = MaterialTheme.typography.titleLarge.copy(
                         fontSize = 24.sp,
                         textAlign = TextAlign.Start,
@@ -234,7 +255,7 @@ fun BannerContent(
                     Spacer(modifier = modifier.width(4.dp))
 
                     Text(
-                        text = stringResource(id = R.string.course_time),
+                        text = course.duration ?: "days",
                         style = MaterialTheme.typography.bodyMedium.copy(
                             color = Color.White
                         ),
@@ -254,10 +275,10 @@ fun BoxContentOverlay(modifier: Modifier = Modifier) {
     )
 }
 
-@Preview
-@Composable
-fun AboutContentScreenPreview() {
-    KnowzeTheme {
-        AboutContentScreen()
-    }
-}
+//@Preview
+//@Composable
+//fun AboutContentScreenPreview() {
+//    KnowzeTheme {
+//        AboutContentScreen()
+//    }
+//}

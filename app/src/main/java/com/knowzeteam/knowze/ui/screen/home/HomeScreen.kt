@@ -6,6 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -16,6 +17,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Divider
@@ -31,6 +34,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
@@ -60,23 +64,29 @@ import com.knowzeteam.knowze.ui.screen.auth.login.LoginViewModel
 import androidx.navigation.NavController
 import com.google.accompanist.coil.rememberCoilPainter
 import com.google.firebase.auth.FirebaseAuth
+import com.knowzeteam.knowze.data.remote.response.dashboard.CoursesItem
+import com.knowzeteam.knowze.ui.component.CategoryButton
 import com.knowzeteam.knowze.ui.navigation.Screen
+import com.knowzeteam.knowze.ui.screen.detailcourse.BoxContentOverlay
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     navController: NavController,
-    viewModel: LoginViewModel
+    viewModel: LoginViewModel,
 ) {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val showLogoutDialog = remember { mutableStateOf(false) }
 
     val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
 
+    val newestCourses by viewModel.newestCourses.collectAsState()
+
     val loginState by viewModel.loginState.collectAsState()
     val userName = firebaseAuth.currentUser?.displayName.toString()// Observe the user's name
     val userEmail = firebaseAuth.currentUser?.email.toString() // Observe the user's email
-    val userPhotoUrl = firebaseAuth.currentUser?.photoUrl.toString() // Observe the user's photo URL
+    val userPhotoUrl = firebaseAuth.currentUser?.photoUrl.toString() // Observe
+
 
     if (loginState is LoginViewModel.LoginState.Logout) {
         navController.navigate(Screen.Login.route)
@@ -89,7 +99,7 @@ fun HomeScreen(
                 DrawerContent(showLogoutDialog, viewModel, userName, userEmail, userPhotoUrl)
             }
         ) {
-            HomeContent(drawerState = drawerState, userName, navController)
+            HomeContent(drawerState = drawerState, userName, navController, newestCourses)
         }
     }
 }
@@ -173,6 +183,7 @@ fun HomeContent(
     drawerState: DrawerState,
     userName: String?,
     navController: NavController,
+    newestCourses: List<CoursesItem?>?,
     modifier: Modifier = Modifier
 ){
 
@@ -189,9 +200,8 @@ fun HomeContent(
 
     Column(
         modifier = modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+            .fillMaxSize(),
+        horizontalAlignment = Alignment.Start,
     ) {
         Row(
             horizontalArrangement = Arrangement.Start,
@@ -211,113 +221,138 @@ fun HomeContent(
                     contentScale = ContentScale.None,
                 )
             }
-            Spacer(modifier = modifier.width(30.dp))
+            Spacer(modifier = modifier.width(10.dp))
             Text(
-                text = stringResource(id = R.string.selamat) + " " + userName,
+                text = stringResource(id = R.string.selamat) + "\n" + userName,
                 style = MaterialTheme.typography.titleLarge.copy(
                     fontWeight = FontWeight.Bold,
                     color = Color.Black
                 )
             )
         }
-        ClickableSearchBar(
-            placeholderText = stringResource(R.string.search_value),
-            onSearchBarClick = {
-                navController.navigate("${Screen.HomeS.route}/focus")
-            }
-        )
-        Spacer(modifier = modifier.height(16.dp))
-        SuggestionBox(text = "Belajar edit video memakai capcut")
-        Spacer(modifier = modifier.height(16.dp))
-        Box(
-            modifier = modifier
-                .fillMaxWidth()
-                .background(
-                    color = Color.White,
-                    shape = RoundedCornerShape(topEnd = 20.dp, topStart = 20.dp)
-                )
-                .padding(16.dp)
+
+        Column(
+            modifier.padding(horizontal = 16.dp)
         ) {
-            LazyColumn(
-                modifier = modifier.height(520.dp)
+            ClickableSearchBar(
+                placeholderText = stringResource(R.string.search_value),
+                onSearchBarClick = {
+                    navController.navigate("${Screen.HomeS.route}/focus")
+                }
+            )
+            Spacer(modifier = modifier.height(10.dp))
+            SuggestionBox(text = "Belajar edit video memakai capcut")
+            Spacer(modifier = modifier.height(16.dp))
+
+        }
+        Column {
+//            LazyRow(
+//                contentPadding = PaddingValues(start = 16.dp, end = 16.dp),
+//                horizontalArrangement = Arrangement.spacedBy(16.dp),
+//            ) {
+//                items(newestCourses?.take(2) ?: emptyList()) { course ->
+//                    CardCourseItem(course = course)
+//                }
+//            }
+            LazyRow(
+                contentPadding = PaddingValues(start = 16.dp, end = 16.dp),
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
             ) {
-                item {
-                    Divider(
-                        modifier = modifier
-                            .height(4.dp)
-                            .clip(RoundedCornerShape(10.dp))
-                    )
-                    Spacer(modifier = modifier.height(16.dp))
-                    MenuItem(
-                        text = stringResource(id = R.string.menu_rekomendasi),
-                        imageResId = R.drawable.ic_cari_rekomendasi,
-                        boxColor = Color(0xFF43936C),
-                        onClick = {}
-                    )
+                items(newestCourses ?: emptyList()) { course ->
+                    CardCourseItem(course = course)
                 }
-                item {
-                    Spacer(modifier = modifier.height(16.dp))
-                    MenuItem(
-                        text = stringResource(id = R.string.menu_keyword),
-                        subText = stringResource(id = R.string.menu_keyword_detail),
-                        imageResId = R.drawable.ic_trending_keyword,
-                        boxColor = MaterialTheme.colorScheme.primary,
-                        onClick = { navController.navigate(Screen.TrendingKeyword.route)}
+            }
+            Spacer(modifier = modifier.height(16.dp))
+            Column(
+                modifier = modifier
+                    .fillMaxWidth()
+                    .background(
+                        color = Color.White,
+                        shape = RoundedCornerShape(topEnd = 20.dp, topStart = 20.dp)
                     )
-                }
-                item {
-                    Spacer(modifier = modifier.height(16.dp))
-                    MenuItem(
-                        text = stringResource(id = R.string.menu_galeri),
-                        subText = stringResource(id = R.string.menu_galeri_detail),
-                        imageResId = R.drawable.ic_gallery,
-                        boxColor = MaterialTheme.colorScheme.primary,
-                        onClick = {navController.navigate(Screen.CourseGallery.route) }
-                    )
-                    Spacer(modifier = modifier.height(16.dp))
-                    Divider(
-                        modifier = modifier
-                            .height(4.dp)
-                            .clip(RoundedCornerShape(10.dp))
-                    )
-                }
-                item {
-                    Spacer(modifier = modifier.height(25.dp))
-                    Text(
-                        text = stringResource(id = R.string.title_menu_mini),
-                        style = MaterialTheme.typography.titleMedium.copy(
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.Bold,
-                            textAlign = TextAlign.Center,
-                            color = Color(0xFF3334CC)
-                        ),
-                        modifier = modifier
-                            .fillMaxWidth()
-                    )
-                }
-                item {
-                    Spacer(modifier = modifier.height(10.dp))
-                    MiniMenuItem(
-                        text = stringResource(id = R.string.menu_1),
-                        boxColor = Color(0xFF3334CC),
-                        onClick = { /*TODO*/ }
-                    )
-                }
-                item {
-                    Spacer(modifier = modifier.height(10.dp))
-                    MiniMenuItem(
-                        text = stringResource(id = R.string.menu_2),
-                        boxColor = Color(0xFF3334CC),
-                        onClick = { /*TODO*/ }
-                    )
-                }
-                item {
-                    Spacer(modifier = modifier.height(10.dp))
-                    MiniMenuItem(
-                        text = stringResource(id = R.string.menu_3),
-                        boxColor = Color(0xFF3334CC),
-                        onClick = { /*TODO*/ }
-                    )
+                    .padding(16.dp)
+            ) {
+                LazyColumn(
+                    modifier = modifier.height(520.dp)
+                ) {
+                    item {
+                        Divider(
+                            modifier = modifier
+                                .height(4.dp)
+                                .clip(RoundedCornerShape(10.dp))
+                        )
+                        Spacer(modifier = modifier.height(16.dp))
+                        MenuItem(
+                            text = stringResource(id = R.string.menu_rekomendasi),
+                            imageResId = R.drawable.ic_cari_rekomendasi,
+                            boxColor = Color(0xFF43936C),
+                            onClick = {}
+                        )
+                    }
+                    item {
+                        Spacer(modifier = modifier.height(16.dp))
+                        MenuItem(
+                            text = stringResource(id = R.string.menu_keyword),
+                            subText = stringResource(id = R.string.menu_keyword_detail),
+                            imageResId = R.drawable.ic_trending_keyword,
+                            boxColor = MaterialTheme.colorScheme.primary,
+                            onClick = { navController.navigate(Screen.TrendingKeyword.route)}
+                        )
+                    }
+                    item {
+                        Spacer(modifier = modifier.height(16.dp))
+                        MenuItem(
+                            text = stringResource(id = R.string.menu_galeri),
+                            subText = stringResource(id = R.string.menu_galeri_detail),
+                            imageResId = R.drawable.ic_gallery,
+                            boxColor = MaterialTheme.colorScheme.primary,
+                            onClick = {navController.navigate(Screen.CourseGallery.route) }
+                        )
+                        Spacer(modifier = modifier.height(16.dp))
+                        Divider(
+                            modifier = modifier
+                                .height(4.dp)
+                                .clip(RoundedCornerShape(10.dp))
+                        )
+                    }
+                    item {
+                        Spacer(modifier = modifier.height(25.dp))
+                        Text(
+                            text = stringResource(id = R.string.title_menu_mini),
+                            style = MaterialTheme.typography.titleMedium.copy(
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.Bold,
+                                textAlign = TextAlign.Center,
+                                color = Color(0xFF3334CC)
+                            ),
+                            modifier = modifier
+                                .fillMaxWidth()
+                        )
+                    }
+                    item {
+                        Spacer(modifier = modifier.height(10.dp))
+                        MiniMenuItem(
+                            text = stringResource(id = R.string.menu_1),
+                            boxColor = Color(0xFF3334CC),
+                            onClick = { /*TODO*/ }
+                        )
+                    }
+                    item {
+                        Spacer(modifier = modifier.height(10.dp))
+                        MiniMenuItem(
+                            text = stringResource(id = R.string.menu_2),
+                            boxColor = Color(0xFF3334CC),
+                            onClick = { /*TODO*/ }
+                        )
+                    }
+                    item {
+                        Spacer(modifier = modifier.height(10.dp))
+                        MiniMenuItem(
+                            text = stringResource(id = R.string.menu_3),
+                            boxColor = Color(0xFF3334CC),
+                            onClick = { /*TODO*/ }
+                        )
+                    }
                 }
             }
         }
@@ -384,22 +419,54 @@ fun SuggestionBox(
     text: String,
     modifier: Modifier = Modifier
 ) {
-    Column {
+    Column{
         Text(
             text = stringResource(id = R.string.coba_ini),
             style = MaterialTheme.typography.bodyMedium
         )
-        Spacer(modifier = Modifier.height(10.dp))
+        Spacer(modifier = Modifier.height(8.dp))
         Box(
             modifier = modifier
                 .background(Color.White, RoundedCornerShape(12.dp))
-                .padding(16.dp)
-                .height(20.dp)
+                .padding(10.dp)
+                .height(16.dp)
         ) {
             Text(
                 text = text,
                 style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.fillMaxWidth()
+            )
+        }
+    }
+}
+
+@Composable
+fun CardCourseItem(
+    course: CoursesItem?,
+    modifier: Modifier = Modifier
+) {
+    Box(
+        modifier = modifier
+            .height(80.dp)
+            .width(240.dp)
+            .clip(RoundedCornerShape(10.dp))
+            .clickable { }
+            .background(MaterialTheme.colorScheme.surfaceVariant)
+    ) {
+        Image(
+            painter = painterResource(R.drawable.bg_knowze),
+            contentDescription = stringResource(R.string.theme_course_pict),
+            contentScale = ContentScale.Crop,
+        )
+//        BoxContentOverlay(modifier = Modifier.fillMaxSize())
+        Column(
+            modifier = Modifier
+                .padding(16.dp)
+        ) {
+            Text(
+                text = course?.title ?: "title",
+                style = MaterialTheme.typography.titleMedium,
+                color = Color.Black
             )
         }
     }

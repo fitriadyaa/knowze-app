@@ -1,9 +1,11 @@
 package com.knowzeteam.knowze.repository
 
+import com.knowzeteam.knowze.data.remote.response.courseResponse.AllCourseResponse
 import com.knowzeteam.knowze.data.remote.response.courseResponse.CourseResponse
 import com.knowzeteam.knowze.data.remote.response.courseResponse.GenerateRequest
 import com.knowzeteam.knowze.data.remote.response.courseResponse.GenerateResponse
 import com.knowzeteam.knowze.data.remote.retrofit.ApiService
+import retrofit2.Response
 
 class GenerateRepository(private val apiService: ApiService) {
     suspend fun postGenerateQuery(idToken: String, prompt: String): GenerateResponse? {

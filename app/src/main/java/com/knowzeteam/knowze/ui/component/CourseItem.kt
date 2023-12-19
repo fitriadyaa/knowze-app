@@ -26,14 +26,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.knowzeteam.knowze.R
+import com.knowzeteam.knowze.data.remote.response.courseResponse.SubtitlesItem
 import com.knowzeteam.knowze.ui.theme.BorderColor
 import com.knowzeteam.knowze.ui.theme.KnowzeTheme
 
 @Composable
 fun CourseItem(
-    courseTitle: String,
-    courseDuration: String,
-    imageResId: Int
+    subtitle : SubtitlesItem,
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -47,7 +46,7 @@ fun CourseItem(
     ) {
         Box {
             Image(
-                painter = painterResource(imageResId),
+                painter = painterResource(R.drawable.ic_knowze),
                 contentDescription = "Gambar Course",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -68,7 +67,7 @@ fun CourseItem(
 
         Column {
             Text(
-                text = courseTitle,
+                text = subtitle.topic ?: "topic",
                 style = MaterialTheme.typography.titleLarge.copy(
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Bold
@@ -78,7 +77,7 @@ fun CourseItem(
             Spacer(modifier = Modifier.height(20.dp))
 
             Text(
-                text = courseDuration,
+                text = "1 minute",
                 style = MaterialTheme.typography.bodyLarge.copy(
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Light
@@ -88,14 +87,14 @@ fun CourseItem(
     }
 }
 
-@Preview
-@Composable
-fun CourseItemPreview() {
-    KnowzeTheme {
-        CourseItem(
-            courseTitle = "1. Intro to Photography",
-            courseDuration = "1min",
-            imageResId = R.drawable.ex_pict_course
-        )
-    }
-}
+//@Preview
+//@Composable
+//fun CourseItemPreview() {
+//    KnowzeTheme {
+//        CourseItem(
+//            courseTitle = "1. Intro to Photography",
+//            courseDuration = "1min",
+//            imageResId = R.drawable.ex_pict_course
+//        )
+//    }
+//}

@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.knowzeteam.knowze.data.remote.response.courseResponse.CourseResponse
+import com.knowzeteam.knowze.data.remote.response.courseResponse.SubtitlesItem
 import com.knowzeteam.knowze.repository.GenerateRepository
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
@@ -17,6 +18,10 @@ class CourseViewModel(private val generateRepository: GenerateRepository) : View
     // LiveData to hold course details
     private val _courseDetails = MutableLiveData<CourseResponse>()
     val courseDetails: LiveData<CourseResponse> = _courseDetails
+
+    private val _subtitleItem = MutableLiveData<SubtitlesItem>()
+    val subtitlesItem: LiveData<SubtitlesItem> = _subtitleItem
+
     private val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
 
 
