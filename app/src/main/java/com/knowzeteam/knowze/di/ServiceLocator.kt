@@ -6,6 +6,7 @@ import com.knowzeteam.knowze.data.local.AppDatabase
 import com.knowzeteam.knowze.data.local.UserProfileDao
 import com.knowzeteam.knowze.data.remote.retrofit.ApiConfig
 import com.knowzeteam.knowze.data.remote.retrofit.ApiService
+import com.knowzeteam.knowze.repository.AllCourseRepository
 import com.knowzeteam.knowze.repository.GenerateRepository
 import com.knowzeteam.knowze.repository.KeywordRepository
 import com.knowzeteam.knowze.repository.TokenRepository
@@ -49,5 +50,8 @@ object ServiceLocator {
 
     fun provideKeywordRepository(context: Context): KeywordRepository {
         return KeywordRepository(provideApiService(context))
+    }
+    fun provideAllCourseRepository(context: Context): AllCourseRepository{
+        return AllCourseRepository(provideApiService(context))
     }
 }

@@ -3,7 +3,6 @@ package com.knowzeteam.knowze.ui.screen.gallery
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,12 +12,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -27,27 +27,43 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.paging.LoadState
+import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.items
 import com.knowzeteam.knowze.R
+import com.knowzeteam.knowze.ui.ViewModelFactory
 import com.knowzeteam.knowze.ui.component.CategoryButton
 import com.knowzeteam.knowze.ui.screen.detailcourse.BoxContentOverlay
+import com.knowzeteam.knowze.ui.screen.detailcourse.CourseViewModel
 import com.knowzeteam.knowze.ui.theme.KnowzeTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CourseGallery() {
+fun CourseGallery(
+    onBack: () -> Unit,
+) {
+    val context = LocalContext.current
+    val viewModel: CourseGalleryViewModel = viewModel(
+        factory = ViewModelFactory(context)
+    )
+    // Using collectAsLazyPagingItems for PagingData
+    val coursesFlow = viewModel.allCourses.collectAsLazyPagingItems()
+
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -65,7 +81,7 @@ fun CourseGallery() {
                     )
                 },
                 navigationIcon = {
-                    IconButton(onClick = { }) {
+                    IconButton(onClick = {onBack() }) {
                         Icon(
                             imageVector = Icons.Filled.KeyboardArrowLeft,
                             contentDescription = "Localized description",
@@ -78,18 +94,34 @@ fun CourseGallery() {
         Column(
             modifier = Modifier
                 .padding(padding)
-                .padding(horizontal = 16.dp)
-                .fillMaxWidth()
-                .fillMaxHeight(),
+                .padding(horizontal = 16.dp, vertical = 20.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Spacer(modifier = Modifier.height(20.dp))
-            CardItem(
-                titleCourse = stringResource(id = R.string.course_theme_detail_1),
-                imgCourseTheme = R.drawable.img_hike,
-                ratingCourse = stringResource(id = R.string.course_rating),
-                onClick = { /*TODO*/ }
-            )
+            LazyColumn {
+                items(coursesFlow) { course ->
+                    course?.let {
+                        CardItem(
+                            titleCourse = it.title ?: "Unknown Title",
+                            imgCourseTheme = R.drawable.img_hike, // Replace with actual image resource
+                            onClick = { /* Handle card click */ }
+                        )
+                        Spacer(modifier = Modifier.height(10.dp))
+                    }
+                }
+                coursesFlow.apply {
+                    when {
+                        loadState.refresh is LoadState.Loading -> {
+                            item { LoadingItem() }
+                        }
+                        loadState.append is LoadState.Loading -> {
+                            item { LoadingItem() }
+                        }
+                    }
+                }
+            }
+            if (coursesFlow.itemCount == 0 && coursesFlow.loadState.refresh is LoadState.NotLoading) {
+                Text("No courses available", style = MaterialTheme.typography.bodyMedium)
+            }
         }
     }
 }
@@ -97,46 +129,39 @@ fun CourseGallery() {
 fun CardItem(
     titleCourse: String,
     imgCourseTheme: Int,
-    ratingCourse: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Box(
         modifier = modifier
-            .height(140.dp)
+            .height(130.dp)
             .clip(RoundedCornerShape(10.dp))
             .clickable { onClick() }
-            .fillMaxSize()
-            .fillMaxWidth()
             .background(MaterialTheme.colorScheme.surfaceVariant)
-            .shadow(4.dp, RoundedCornerShape(10.dp))
     ) {
         Box {
             Image(
                 painter = painterResource(id = imgCourseTheme),
                 contentDescription = stringResource(R.string.theme_course_pict),
                 contentScale = ContentScale.Crop,
-                modifier = Modifier.fillMaxSize()
             )
             BoxContentOverlay(modifier = Modifier.fillMaxSize())
         }
         Column(
             modifier = Modifier
-                .fillMaxSize()
                 .padding(16.dp)
         ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                CategoryRow()
-                Spacer(modifier = Modifier.width(40.dp))
-                RatingRow(ratingCourse)
+            Row {
+                CategoryButton(categoryText = "Olahraga", onClick = { /*TODO*/ })
+                Spacer(modifier = Modifier.width(4.dp))
+                CategoryButton(categoryText = "Outdoor", onClick = { /*TODO*/ })
+
+
             }
             Spacer(modifier = Modifier.height(20.dp))
             Text(
                 text = titleCourse,
-                style = MaterialTheme.typography.titleLarge.copy(
+                style = MaterialTheme.typography.titleMedium.copy(
                     fontWeight = FontWeight.Bold,
                     color = Color.White
                 )
@@ -146,40 +171,24 @@ fun CardItem(
 }
 
 @Composable
-fun CategoryRow() {
-    Row {
-        CategoryButton(categoryText = "Olahraga", onClick = { /*TODO*/ })
-        Spacer(modifier = Modifier.width(4.dp))
-        CategoryButton(categoryText = "Outdoor", onClick = { /*TODO*/ })
+fun LoadingItem() {
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+    ) {
+        CircularProgressIndicator()
     }
 }
 
-@Composable
-fun RatingRow(ratingCourse: String) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Image(
-            painter = painterResource(id = R.drawable.ic_star),
-            contentDescription = "Course Time",
-            modifier = Modifier.size(24.dp) // Adjusted size for better proportion
-        )
-        Spacer(modifier = Modifier.width(4.dp))
-        Text(
-            text = ratingCourse,
-            style = MaterialTheme.typography.bodyMedium.copy(
-                fontSize = 12.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.White // Changed to white for better readability
-            ),
-        )
-    }
-}
 
 @Preview
 @Composable
 fun CourseGalleryPreview() {
     KnowzeTheme {
-        CourseGallery()
+        CourseGallery(
+            onBack = {}
+        )
     }
 }

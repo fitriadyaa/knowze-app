@@ -19,7 +19,6 @@ import com.knowzeteam.knowze.ui.screen.detailcourse.AboutCourseScreen
 import com.knowzeteam.knowze.ui.screen.detailcourse.DetailCourseScreen
 import com.knowzeteam.knowze.ui.screen.detailcourse.GeneratingCourseScreen
 import com.knowzeteam.knowze.ui.screen.gallery.CourseGallery
-import com.knowzeteam.knowze.ui.screen.gallery.CourseThemeGallery
 import com.knowzeteam.knowze.ui.screen.home.HomeScreen
 import com.knowzeteam.knowze.ui.screen.home.HomeSearch
 import com.knowzeteam.knowze.ui.screen.keyword.TrendingKeywordScreen
@@ -104,8 +103,7 @@ fun KnowzeApp(viewModelFactory: ViewModelProvider.Factory) {
 
             AboutCourseScreen(
                 courseId = courseId,
-                onBackClick = { navController.popBackStack() },
-                onButtonClick = { /* TODO: Implement the button click action */ }
+                navController = navController,
             )
         }
 
@@ -130,7 +128,9 @@ fun KnowzeApp(viewModelFactory: ViewModelProvider.Factory) {
         }
 
         composable(Screen.CourseGallery.route){
-            CourseGallery()
+            CourseGallery(
+                onBack = { navController.popBackStack() },
+            )
         }
     }
 }

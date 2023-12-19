@@ -1,5 +1,6 @@
 package com.knowzeteam.knowze.data.remote.retrofit
 
+import com.knowzeteam.knowze.data.remote.response.courseResponse.AllCourseResponse
 import com.knowzeteam.knowze.data.remote.response.courseResponse.CourseResponse
 import com.knowzeteam.knowze.data.remote.response.courseResponse.GenerateRequest
 import com.knowzeteam.knowze.data.remote.response.courseResponse.GenerateResponse
@@ -12,6 +13,7 @@ import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface ApiService {
     @GET("/api/dashboard/")
@@ -36,4 +38,10 @@ interface ApiService {
     suspend fun getRecommendation(
         @Header("Authorization") idToken: String,
     ): Response<RecommendationResponse>
+
+    @GET("/api/course")
+    suspend fun getAllCourse(
+        @Query("page") page: Int,
+        @Query("page_size") pageSize: Int
+    ): Response<AllCourseResponse>
 }
