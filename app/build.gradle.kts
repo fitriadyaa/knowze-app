@@ -4,7 +4,6 @@ plugins {
     id("com.google.gms.google-services")
     id("kotlin-parcelize")
     kotlin("kapt")
-    id("com.google.devtools.ksp").version("1.6.10-1.0.4")
 }
 
 android {
@@ -127,6 +126,4 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
-    implementation("com.squareup.moshi:moshi:1.14.0")
-    ksp("com.squareup.moshi:moshi-kotlin-codegen:1.13.0")
 }
