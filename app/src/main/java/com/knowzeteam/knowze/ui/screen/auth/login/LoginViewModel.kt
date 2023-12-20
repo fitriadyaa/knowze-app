@@ -178,6 +178,33 @@ class LoginViewModel(
         }
     }
 
+    init {
+        fetchCourses()
+    }
+
+    private fun fetchCourses() {
+        viewModelScope.launch {
+            val token = getFirebaseAuthToken()
+            if (token != null) {
+                try {
+                    val response = apiService.getDashboardData("Bearer $token")
+                    if (response.isSuccessful) {
+                        val dashboardResponse = response.body()
+                        dashboardResponse?.let { dashboard ->
+                            _newestCourses.value = dashboard.courses
+                        }
+                    } else {
+                        Log.e(TAG, "API call failed: ${response.errorBody()?.string()}")
+                    }
+                } catch (e: Exception) {
+                    Log.e(TAG, "Error fetching courses: ${e.message}")
+                }
+            } else {
+                Log.e(TAG, "Failed to get Firebase token")
+            }
+        }
+    }
+
     sealed class LoginState {
         object Idle : LoginState()
         object Loading : LoginState() // Add loading state
