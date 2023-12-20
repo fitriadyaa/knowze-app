@@ -1,5 +1,6 @@
 package com.knowzeteam.knowze.ui.screen.home
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -34,7 +35,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
@@ -69,9 +69,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.knowzeteam.knowze.data.remote.response.dashboard.CoursesItem
 import com.knowzeteam.knowze.data.remote.response.newsresponse.NewsResponseItem
 import com.knowzeteam.knowze.ui.ViewModelFactory
-import com.knowzeteam.knowze.ui.component.CategoryButton
 import com.knowzeteam.knowze.ui.navigation.Screen
-import com.knowzeteam.knowze.ui.screen.detailcourse.BoxContentOverlay
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -131,7 +129,7 @@ fun DrawerContent(
     ) {
         Column {
             DrawerHeader(userName, userEmail, userPhotoUrl)
-            DrawerItem("Profile", Icons.Default.Person)
+            DrawerItem("Edit Profile", Icons.Default.Person)
             Spacer(Modifier.height(20.dp))
             Button(
                 onClick = { showLogoutDialog.value = true },
@@ -199,6 +197,7 @@ fun HomeContent(
     modifier: Modifier = Modifier
 ){
 
+    val context = LocalContext.current
     // State to track if the drawer should open
     var openDrawer by remember { mutableStateOf(false) }
 
@@ -235,7 +234,7 @@ fun HomeContent(
             }
             Spacer(modifier = modifier.width(10.dp))
             Text(
-                text = stringResource(id = R.string.selamat) + "\n" + userName,
+                text = stringResource(id = R.string.selamat) + " " + userName + "?",
                 style = MaterialTheme.typography.titleLarge.copy(
                     fontWeight = FontWeight.Bold,
                     color = Color.Black
@@ -298,7 +297,9 @@ fun HomeContent(
                             text = stringResource(id = R.string.menu_rekomendasi),
                             imageResId = R.drawable.ic_cari_rekomendasi,
                             boxColor = Color(0xFF43936C),
-                            onClick = {}
+                            onClick = {
+                                Toast.makeText(context, "Maaf, fitur dalam proses pengembangan", Toast.LENGTH_SHORT).show()
+                            }
                         )
                     }
                     item {
