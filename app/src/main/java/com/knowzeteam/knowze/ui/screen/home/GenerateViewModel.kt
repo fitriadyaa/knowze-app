@@ -109,48 +109,13 @@ class GenerateViewModel(
         }
     }
 
-    // LiveData to hold the list of videos
-    private val _videos = MutableLiveData<List<VideosItem>>()
-    val videos: LiveData<List<VideosItem>> = _videos
-
-    // Function to fetch videos
-    private fun fetchVideos(prompt: String) {
-        viewModelScope.launch {
-            _isLoading.value = true
-            _error.value = null
-            val tokenResult = getFirebaseAuthToken()
-            if (tokenResult != null) {
-                try {
-                    val videoRequest = VideoRequest(prompt)
-                    val result = videoRepository.getVideos("Bearer $tokenResult", videoRequest)
-                    if (result.isSuccess) {
-                        result.getOrNull()?.let {
-                            _videos.value = it.videos?.filterNotNull() ?: emptyList()
-                        } ?: run {
-                            _error.value = "No videos found"
-                        }
-                    } else {
-                        _error.value = result.exceptionOrNull()?.message ?: "Unknown error occurred"
-                    }
-                } catch (e: Exception) {
-                    _error.value = "Exception occurred: ${e.message}"
-                } finally {
-                    _isLoading.value = false
-                }
-            } else {
-                _error.value = "Authentication token is null or empty"
-                _isLoading.value = false
-            }
-        }
-    }
-
     fun onSearch(prompt: String) {
         viewModelScope.launch {
             // Posting the generate query
             postGenerateQuery(prompt)
 
             // Fetching videos
-            fetchVideos(prompt)
+//            fetchVideos(prompt)
         }
     }
 }

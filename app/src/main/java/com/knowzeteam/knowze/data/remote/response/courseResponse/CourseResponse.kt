@@ -1,10 +1,13 @@
 package com.knowzeteam.knowze.data.remote.response.courseResponse
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.JsonClass
+import kotlinx.parcelize.Parcelize
 
 data class CourseResponse(
 
-	val id: String,
+	var id: String? = null,
 
 	@field:SerializedName("duration")
 	val duration: String? = null,
@@ -27,7 +30,6 @@ data class CourseResponse(
 	@field:SerializedName("lessons")
 	val lessons: Int? = null
 )
-
 data class SubtitlesItem(
 
 	@field:SerializedName("is_done")
@@ -45,7 +47,6 @@ data class SubtitlesItem(
 	@field:SerializedName("content")
 	val content: Content? = null
 )
-
 data class Content(
 
 	@field:SerializedName("closing")

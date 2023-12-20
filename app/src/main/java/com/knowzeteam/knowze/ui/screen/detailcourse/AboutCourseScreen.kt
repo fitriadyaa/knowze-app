@@ -1,5 +1,6 @@
 package com.knowzeteam.knowze.ui.screen.detailcourse
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -41,6 +42,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.google.gson.Gson
+import com.knowzeteam.knowze.data.local.AboutContentData
 import com.knowzeteam.knowze.data.remote.response.courseResponse.CourseResponse
 import com.knowzeteam.knowze.ui.ViewModelFactory
 import com.knowzeteam.knowze.ui.component.CategoryButton
@@ -82,7 +85,7 @@ fun AboutCourseScreen(
                         .padding(16.dp)
                         .fillMaxSize()
                 ) {
-                    CourseContent(course, navController, modifier)
+                    CourseContent(course, navController, modifier, courseId)
                 }
             } ?: run {
                 Box(
@@ -198,9 +201,10 @@ fun AboutCourseScreen(
 
 @Composable
 fun CourseContent(
-    course: CourseResponse,
+    courseData: CourseResponse,
     navController: NavController,
-    modifier: Modifier
+    modifier: Modifier,
+    courseId: String,
 ) {
     Column(
         modifier = modifier
@@ -216,9 +220,9 @@ fun CourseContent(
                 .padding(top = 10.dp, end = 10.dp)
         ) {
             // Course Category: Photography
-            CategoryButton(categoryText = course.themeActivity ?: "Tema", onClick = { /*TODO*/ }, colors = MaterialTheme.colorScheme.primary)
+            CategoryButton(categoryText = courseData.themeActivity ?: "Tema", onClick = { /*TODO*/ }, colors = MaterialTheme.colorScheme.primary)
             Spacer(modifier = modifier.width(10.dp))
-            CategoryButton(categoryText = course.typeActivity ?: "Tipe", onClick = { /*TODO*/ }, colors = Color(0xFFFF9900))
+            CategoryButton(categoryText = courseData.typeActivity ?: "Tipe", onClick = { /*TODO*/ }, colors = Color(0xFFFF9900))
         }
         Spacer(modifier = modifier.height(25.dp))
 
@@ -229,7 +233,7 @@ fun CourseContent(
         ) {
             // Judul Course
             Text(
-                text = course.title ?: "Default Title",
+                text = courseData.title ?: "Default Title",
                 style = MaterialTheme.typography.titleLarge.copy(
                     fontSize = 24.sp,
                     textAlign = TextAlign.Start,
@@ -257,7 +261,7 @@ fun CourseContent(
                 Spacer(modifier = modifier.width(4.dp))
 
                 Text(
-                    text = course.lessons.toString() + " Topic",
+                    text = courseData.lessons.toString() + " Topic",
                     color = Color.Black
                 )
 
@@ -273,7 +277,7 @@ fun CourseContent(
                 Spacer(modifier = modifier.width(4.dp))
 
                 Text(
-                    text = course.duration ?: "00.00",
+                    text = courseData.duration ?: "00.00",
                     color = Color.Black
                 )
             }
@@ -301,7 +305,7 @@ fun CourseContent(
                 Spacer(modifier = modifier.height(10.dp))
 
                 Text(
-                    text = course.desc ?: "Description",
+                    text = courseData.desc ?: "Description",
                     style = MaterialTheme.typography.bodyMedium.copy(
                         fontSize = 14.sp,
                         textAlign = TextAlign.Start,
@@ -316,7 +320,18 @@ fun CourseContent(
             // Button Mulai
             Button(
                 onClick = {
-                    navController.navigate("${Screen.AboutContent.route}/${course.id}")
+
+                    courseData.id = courseId
+
+                    val dataAbout = AboutContentData(courseData)
+
+                    val gson = Gson()
+                    val course = gson.toJson(dataAbout)
+
+                    Log.d("jsonString", course)
+                    println("jsonString_print $course")
+
+                    navController.navigate("${Screen.AboutContent.route}/${course}")
                 },
                 shape = RoundedCornerShape(10.dp),
                 colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary),

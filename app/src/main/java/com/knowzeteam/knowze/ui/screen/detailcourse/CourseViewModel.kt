@@ -9,11 +9,15 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.knowzeteam.knowze.data.remote.response.courseResponse.CourseResponse
 import com.knowzeteam.knowze.data.remote.response.courseResponse.SubtitlesItem
+import com.knowzeteam.knowze.data.remote.response.videoresponse.VideoRequest
+import com.knowzeteam.knowze.data.remote.response.videoresponse.VideoResponse
+import com.knowzeteam.knowze.data.remote.response.videoresponse.VideosItem
 import com.knowzeteam.knowze.repository.GenerateRepository
+import com.knowzeteam.knowze.repository.VideoRepository
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
-class CourseViewModel(private val generateRepository: GenerateRepository) : ViewModel() {
+class CourseViewModel(private val generateRepository: GenerateRepository, private val videoRepository: VideoRepository) : ViewModel() {
 
     // LiveData to hold course details
     private val _courseDetails = MutableLiveData<CourseResponse>()
@@ -53,6 +57,48 @@ class CourseViewModel(private val generateRepository: GenerateRepository) : View
         }
     }
 
+    // LiveData to hold the list of videos
+    private val _videos = MutableLiveData<VideoResponse>()
+    val videos: LiveData<VideoResponse> = _videos
+
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData<Boolean> = _isLoading
+
+    private val _error = MutableLiveData<String?>()
+    val error: MutableLiveData<String?> = _error
+
+
+    // Function to fetch videos
+    fun fetchVideos(prompt: String) {
+        viewModelScope.launch {
+            _isLoading.value = true
+            _error.value = null
+            val tokenResult = getFirebaseAuthToken()
+            if (tokenResult != null) {
+                try {
+                    val videoRequest = VideoRequest(prompt)
+                    val result = videoRepository.getVideos("Bearer $tokenResult", videoRequest)
+                    if (result.isSuccess) {
+                        result.getOrNull()?.let {
+                            _videos.value = it
+                        } ?: run {
+                            _error.value = "No videos found"
+                        }
+                    } else {
+                        _error.value = result.exceptionOrNull()?.message ?: "Unknown error occurred"
+                    }
+                } catch (e: Exception) {
+                    _error.value = "Exception occurred: ${e.message}"
+                } finally {
+                    _isLoading.value = false
+                }
+            } else {
+                _error.value = "Authentication token is null or empty"
+                _isLoading.value = false
+            }
+        }
+    }
+
     // Function to fetch course details
     fun fetchCourseDetails(courseId: String) {
         viewModelScope.launch {
@@ -60,7 +106,7 @@ class CourseViewModel(private val generateRepository: GenerateRepository) : View
             try {
                 val response = generateRepository.getCourseDetails("Bearer ${token.orEmpty()}", courseId)
                 response?.let {
-                    _courseDetails.postValue(it)
+                    _courseDetails.value = it
                 }
             } catch (e: Exception) {
                 // Handle the exception

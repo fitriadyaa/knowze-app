@@ -1,5 +1,6 @@
 package com.knowzeteam.knowze.ui.screen.detailcourse
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -33,6 +34,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.graphics.Color
@@ -40,17 +42,21 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.knowzeteam.knowze.data.local.AboutContentData
 import com.knowzeteam.knowze.data.remote.response.courseResponse.CourseResponse
 import com.knowzeteam.knowze.ui.ViewModelFactory
 import com.knowzeteam.knowze.ui.component.CategoryButton
 import com.knowzeteam.knowze.ui.component.CourseItem
+import com.knowzeteam.knowze.ui.component.VideoItem
+import com.knowzeteam.knowze.ui.theme.KnowzeTheme
 
 @Composable
 fun AboutContentScreen(
-    course: CourseResponse,
+    course: AboutContentData,
     navController: NavController,
     modifier: Modifier = Modifier
 ) {
@@ -60,7 +66,18 @@ fun AboutContentScreen(
         factory = ViewModelFactory(context)
     )
 
+    LaunchedEffect(course) {
+        course.id?.let { viewModel.fetchCourseDetails(it) }
+        course.title?.let { viewModel.fetchVideos(it) }
+    }
+
+    val videoData by viewModel.videos.observeAsState()
     val courseDetails by viewModel.courseDetails.observeAsState()
+
+    Log.d("courseDetails_id", course.id.orEmpty())
+
+
+    Log.d("courseDetails", courseDetails?.subtitles.toString())
 
     Column(modifier = modifier.fillMaxSize()) {
         BannerContent(course = course, modifier = modifier, navController = navController )
@@ -112,11 +129,23 @@ fun AboutContentScreen(
                 ) {
                     LazyColumn {
                         // Check if the subtitles list is not null and not empty
-                        course.subtitles?.let { subtitles ->
+                        courseDetails?.subtitles?.let { subtitles ->
                             items(subtitles) { subtitle ->
                                 // Only create a CourseItem if the subtitle is not null
                                 subtitle?.let {
                                     CourseItem(subtitle = it)
+                                }
+                            }
+                        }
+                    }
+
+                    LazyColumn {
+                        // Check if the subtitles list is not null and not empty
+                        videoData?.videos?.let { subtitles ->
+                            items(subtitles) { subtitle ->
+                                // Only create a CourseItem if the subtitle is not null
+                                subtitle?.let {
+                                    VideoItem(subtitle = it)
                                 }
                             }
                         }
@@ -129,7 +158,7 @@ fun AboutContentScreen(
 
 @Composable
 fun BannerContent(
-    course: CourseResponse,
+    course: AboutContentData,
     navController: NavController,
     modifier: Modifier = Modifier
 ) {
@@ -272,6 +301,18 @@ fun BoxContentOverlay(modifier: Modifier = Modifier) {
 //@Composable
 //fun AboutContentScreenPreview() {
 //    KnowzeTheme {
-//        AboutContentScreen()
+//        AboutContentScreen(
+//            course = CourseResponse(
+//                id ="1",
+//                duration = "2 Jam",
+//                subtitles = emptyList(),
+//                typeActivity = "Belajar",
+//                title = "belajar",
+//                themeActivity = "Siang",
+//                desc = "belajar dulu",
+//                lessons = 1
+//            ),
+//            navController = NavController(context = LocalContext.current)
+//        )
 //    }
 //}

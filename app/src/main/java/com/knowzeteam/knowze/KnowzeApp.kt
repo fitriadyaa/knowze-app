@@ -1,8 +1,6 @@
 package com.knowzeteam.knowze
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
@@ -11,7 +9,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.google.firebase.auth.FirebaseAuth
+import com.google.gson.Gson
+import com.google.gson.annotations.SerializedName
+import com.google.gson.stream.JsonReader
+import com.knowzeteam.knowze.data.local.AboutContentData
 import com.knowzeteam.knowze.data.remote.response.courseResponse.CourseResponse
+import com.knowzeteam.knowze.data.remote.response.courseResponse.SubtitlesItem
 import com.knowzeteam.knowze.ui.navigation.Screen
 import com.knowzeteam.knowze.ui.screen.auth.login.LoginScreen
 import com.knowzeteam.knowze.ui.screen.auth.login.LoginViewModel
@@ -29,6 +32,9 @@ import com.knowzeteam.knowze.ui.screen.welcome.IntroOneScreen
 import com.knowzeteam.knowze.ui.screen.welcome.IntroSecondScreen
 import com.knowzeteam.knowze.ui.screen.welcome.IntroThridScreen
 import com.knowzeteam.knowze.ui.screen.welcome.SplashScreen
+import com.squareup.moshi.Moshi
+import java.io.StringReader
+
 
 @Composable
 fun KnowzeApp(viewModelFactory: ViewModelProvider.Factory) {
@@ -110,13 +116,33 @@ fun KnowzeApp(viewModelFactory: ViewModelProvider.Factory) {
             )
         }
 
-        composable("${Screen.AboutContent.route}/{courseId}") { backStackEntry ->
-            val courseId = backStackEntry.arguments?.getString("courseId") ?: return@composable
-            AboutContentScreen(
-                course = CourseResponse(id = courseId),
-                navController = navController,
-            )
+        composable(
+            route = "${Screen.AboutContent.route}/{course}",
+            arguments = listOf(navArgument("course") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val gson = Gson()
+
+            val courseJson = backStackEntry.arguments?.getString("course")
+            val course = gson.fromJson(courseJson, AboutContentData::class.java)
+
+            if (courseJson != null) {
+                AboutContentScreen(
+                    course = course,
+                    navController = navController,
+                )
+            }
         }
+
+//        composable(
+//            route = "${Screen.AboutContent.route}/{course}",
+//            arguments = listOf(navArgument("course") { type = NavType.ParcelableType(CourseResponse::class.java)})
+//        ) { backStackEntry ->
+//            val course = backStackEntry.arguments?.getParcelable<CourseResponse>("course")
+//                AboutContentScreen(
+//                    course = course!!,
+//                    navController = navController,
+//                )
+//        }
         composable(Screen.DetailCourse.route){
             DetailCourseScreen()
         }

@@ -27,6 +27,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.knowzeteam.knowze.R
 import com.knowzeteam.knowze.data.remote.response.courseResponse.SubtitlesItem
+import com.knowzeteam.knowze.data.remote.response.videoresponse.VideoResponse
+import com.knowzeteam.knowze.data.remote.response.videoresponse.VideosItem
 import com.knowzeteam.knowze.ui.theme.BorderColor
 import com.knowzeteam.knowze.ui.theme.KnowzeTheme
 
@@ -78,6 +80,63 @@ fun CourseItem(
 
             Text(
                 text = "1 minute",
+                style = MaterialTheme.typography.bodyLarge.copy(
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Light
+                )
+            )
+        }
+    }
+}
+
+@Composable
+fun VideoItem(
+    subtitle : VideosItem,
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .background(
+                color = BorderColor,
+                shape = RoundedCornerShape(15.dp)
+            )
+            .padding(16.dp)
+            .fillMaxWidth()
+    ) {
+        Box {
+            Image(
+                painter = painterResource(R.drawable.ic_knowze),
+                contentDescription = "Gambar Course",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .clip(RoundedCornerShape(10.dp))
+                    .size(70.dp, 70.dp)
+            )
+
+            Icon(
+                painter = painterResource(id = R.drawable.ic_play),
+                contentDescription = "Icon Play Course",
+                modifier = Modifier
+                    .size(24.dp, 24.dp)
+                    .align(Alignment.Center)
+            )
+        }
+
+        Spacer(modifier = Modifier.width(20.dp))
+
+        Column {
+            Text(
+                text = subtitle.title ?: "topic",
+                style = MaterialTheme.typography.titleLarge.copy(
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            )
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            Text(
+                text = subtitle.link.toString(),
                 style = MaterialTheme.typography.bodyLarge.copy(
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Light
