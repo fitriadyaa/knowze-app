@@ -13,6 +13,7 @@ import com.knowzeteam.knowze.repository.NewsRepository
 import com.knowzeteam.knowze.repository.RecommendationRepository
 import com.knowzeteam.knowze.repository.TokenRepository
 import com.knowzeteam.knowze.repository.UserRepository
+import com.knowzeteam.knowze.repository.VideoRepository
 
 object ServiceLocator {
 
@@ -63,5 +64,9 @@ object ServiceLocator {
 
     fun provideRecommendationRepository(context: Context): RecommendationRepository {
         return RecommendationRepository(provideApiService(context))
+    }
+
+    fun provideVideoRepository(context: Context): VideoRepository{
+        return VideoRepository(provideApiService(context))
     }
 }

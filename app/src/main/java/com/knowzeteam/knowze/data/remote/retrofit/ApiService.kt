@@ -9,6 +9,8 @@ import com.knowzeteam.knowze.data.remote.response.keywordresponse.KeywordRespons
 import com.knowzeteam.knowze.data.remote.response.newsresponse.NewsResponse
 import com.knowzeteam.knowze.data.remote.response.newsresponse.NewsResponseItem
 import com.knowzeteam.knowze.data.remote.response.recommendationresponse.RecommendationResponse
+import com.knowzeteam.knowze.data.remote.response.videoresponse.VideoRequest
+import com.knowzeteam.knowze.data.remote.response.videoresponse.VideoResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -51,4 +53,10 @@ interface ApiService {
     suspend fun getNews(
         @Header("Authorization") idToken: String,
     ): Response<List<NewsResponseItem>>
+
+    @POST("/api/video/")
+    suspend fun getVideo(
+        @Header("Authorization") idToken: String,
+        @Body videoRequest: VideoRequest
+    ): Response<VideoResponse>
 }

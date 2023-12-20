@@ -126,7 +126,7 @@ fun HomeSearch(
                 SearchBar(
                     initialText = initialSearchText,
                     onSearchAction = { query ->
-                        viewModel.postGenerateQuery(query)
+                        viewModel.onSearch(query)
                     },
                     focusRequester = focusRequester,
                 )

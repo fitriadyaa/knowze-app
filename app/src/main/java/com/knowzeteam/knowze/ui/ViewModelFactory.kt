@@ -26,7 +26,8 @@ class ViewModelFactory(private val context: Context) : ViewModelProvider.Factory
             @Suppress("UNCHECKED_CAST")
             val generateRepository = ServiceLocator.provideGenerateRepository(context)
             val recommendationRepository = ServiceLocator.provideRecommendationRepository(context)
-            return GenerateViewModel(generateRepository, recommendationRepository) as T
+            val videoRepository = ServiceLocator.provideVideoRepository(context)
+            return GenerateViewModel(generateRepository, recommendationRepository, videoRepository) as T
         }
         if (modelClass.isAssignableFrom(KeywordViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")

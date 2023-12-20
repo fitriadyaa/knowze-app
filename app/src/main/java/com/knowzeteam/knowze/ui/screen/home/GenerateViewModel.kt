@@ -9,20 +9,25 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.knowzeteam.knowze.data.remote.response.courseResponse.CourseResponse
 import com.knowzeteam.knowze.data.remote.response.courseResponse.GenerateResponse
+import com.knowzeteam.knowze.data.remote.response.videoresponse.VideoRequest
+import com.knowzeteam.knowze.data.remote.response.videoresponse.VideosItem
 import com.knowzeteam.knowze.repository.GenerateRepository
 import com.knowzeteam.knowze.repository.RecommendationRepository
+import com.knowzeteam.knowze.repository.VideoRepository
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import java.net.SocketTimeoutException
 
 class GenerateViewModel(
     private val generateRepository: GenerateRepository,
-    private val recommendationRepository: RecommendationRepository
+    private val recommendationRepository: RecommendationRepository,
+    private val videoRepository: VideoRepository
 ) : ViewModel() {
     // LiveData for API response
     private val _response = MutableLiveData<GenerateResponse?>()
     val response: LiveData<GenerateResponse?> = _response
     private val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
+
 
     private suspend fun getFirebaseAuthToken(): String? {
         return try {
@@ -79,8 +84,8 @@ class GenerateViewModel(
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
-    private val _error = MutableLiveData<String>()
-    val error: LiveData<String> = _error
+    private val _error = MutableLiveData<String?>()
+    val error: MutableLiveData<String?> = _error
 
     fun fetchRecommendations() {
         viewModelScope.launch {
@@ -92,7 +97,8 @@ class GenerateViewModel(
                     _recommendations.value = response.body()
                 } else {
                     // Handle error response
-                    _error.value = "Error fetching recommendations: ${response.errorBody()?.string()}"
+                    _error.value =
+                        "Error fetching recommendations: ${response.errorBody()?.string()}"
                 }
             } catch (e: Exception) {
                 // Handle exceptions like network errors
@@ -100,6 +106,51 @@ class GenerateViewModel(
             } finally {
                 _isLoading.value = false
             }
+        }
+    }
+
+    // LiveData to hold the list of videos
+    private val _videos = MutableLiveData<List<VideosItem>>()
+    val videos: LiveData<List<VideosItem>> = _videos
+
+    // Function to fetch videos
+    private fun fetchVideos(prompt: String) {
+        viewModelScope.launch {
+            _isLoading.value = true
+            _error.value = null
+            val tokenResult = getFirebaseAuthToken()
+            if (tokenResult != null) {
+                try {
+                    val videoRequest = VideoRequest(prompt)
+                    val result = videoRepository.getVideos("Bearer $tokenResult", videoRequest)
+                    if (result.isSuccess) {
+                        result.getOrNull()?.let {
+                            _videos.value = it.videos?.filterNotNull() ?: emptyList()
+                        } ?: run {
+                            _error.value = "No videos found"
+                        }
+                    } else {
+                        _error.value = result.exceptionOrNull()?.message ?: "Unknown error occurred"
+                    }
+                } catch (e: Exception) {
+                    _error.value = "Exception occurred: ${e.message}"
+                } finally {
+                    _isLoading.value = false
+                }
+            } else {
+                _error.value = "Authentication token is null or empty"
+                _isLoading.value = false
+            }
+        }
+    }
+
+    fun onSearch(prompt: String) {
+        viewModelScope.launch {
+            // Posting the generate query
+            postGenerateQuery(prompt)
+
+            // Fetching videos
+            fetchVideos(prompt)
         }
     }
 }
