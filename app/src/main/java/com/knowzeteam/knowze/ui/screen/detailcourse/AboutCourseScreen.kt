@@ -72,7 +72,6 @@ fun AboutCourseScreen(
                 .fillMaxSize()
         ) {
             BannerCourse(navController)
-
             courseDetails?.let { course ->
                 Box(
                     modifier = modifier
@@ -216,9 +215,9 @@ fun CourseContent(
                 .padding(top = 10.dp, end = 10.dp)
         ) {
             // Course Category: Photography
-            CategoryButton(categoryText = course.themeActivity ?: "Tema", onClick = { /*TODO*/ })
+            CategoryButton(categoryText = course.themeActivity ?: "Tema", onClick = { /*TODO*/ }, colors = MaterialTheme.colorScheme.primary)
             Spacer(modifier = modifier.width(10.dp))
-            CategoryButton(categoryText = course.typeActivity ?: "Tipe", onClick = { /*TODO*/ })
+            CategoryButton(categoryText = course.typeActivity ?: "Tipe", onClick = { /*TODO*/ }, colors = Color(0xFFFF9900))
         }
         Spacer(modifier = modifier.height(25.dp))
 
@@ -306,31 +305,29 @@ fun CourseContent(
                     modifier = Modifier
                         .fillMaxWidth()
                 )
-
                 Spacer(modifier = modifier.height(60.dp))
-
-                // Button Mulai
-                Button(
-                    onClick = {
-                        navController.navigate(Screen.AboutContent.route)
-                    },
-                    shape = RoundedCornerShape(10.dp),
-                    colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary),
+            }
+            // Button Mulai
+            Button(
+                onClick = {
+                    navController.navigate("${Screen.AboutContent.route}/${course.id}")
+                },
+                shape = RoundedCornerShape(10.dp),
+                colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary),
+                modifier = modifier
+                    .fillMaxWidth()
+                    .size(327.dp, 60.dp)
+            ) {
+                Text(
+                    text = stringResource(id = R.string.start_now),
+                    style = MaterialTheme.typography.titleMedium.copy(
+                        fontSize = 16.sp,
+                        textAlign = TextAlign.Center,
+                        fontWeight = FontWeight.Bold
+                    ),
                     modifier = modifier
                         .fillMaxWidth()
-                        .size(327.dp, 60.dp)
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.start_now),
-                        style = MaterialTheme.typography.titleMedium.copy(
-                            fontSize = 16.sp,
-                            textAlign = TextAlign.Center,
-                            fontWeight = FontWeight.Bold
-                        ),
-                        modifier = modifier
-                            .fillMaxWidth()
-                    )
-                }
+                )
             }
         }
     }
@@ -345,27 +342,26 @@ fun BannerCourse(
 ) {
     Box(modifier = Modifier) {
         Image(
-            painter = painterResource(id = R.drawable.bg_knowze),
+            painter = painterResource(id = R.drawable.bg_course),
             contentDescription = "Gambar Course",
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .fillMaxWidth()
                 .height(180.dp)
         )
-
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
             modifier = modifier
                 .fillMaxWidth()
-                .padding(bottom = 60.dp, start = 10.dp, end = 30.dp)
+                .padding(top = 20.dp, bottom = 60.dp, start = 10.dp, end = 30.dp)
         ) {
             Surface(
                 modifier = Modifier
                     .padding(top = 10.dp)
                     .size(56.dp)
                     .clip(CircleShape),
-                color = MaterialTheme.colorScheme.surface
+                color = MaterialTheme.colorScheme.primary
             ) {
                 Icon(
                     imageVector = Icons.Default.KeyboardArrowLeft,

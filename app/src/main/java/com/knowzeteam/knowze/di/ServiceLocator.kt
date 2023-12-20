@@ -10,6 +10,7 @@ import com.knowzeteam.knowze.repository.AllCourseRepository
 import com.knowzeteam.knowze.repository.GenerateRepository
 import com.knowzeteam.knowze.repository.KeywordRepository
 import com.knowzeteam.knowze.repository.NewsRepository
+import com.knowzeteam.knowze.repository.RecommendationRepository
 import com.knowzeteam.knowze.repository.TokenRepository
 import com.knowzeteam.knowze.repository.UserRepository
 
@@ -58,5 +59,9 @@ object ServiceLocator {
 
     fun provideNewsRepository(context: Context): NewsRepository {
         return NewsRepository(provideApiService(context))
+    }
+
+    fun provideRecommendationRepository(context: Context): RecommendationRepository {
+        return RecommendationRepository(provideApiService(context))
     }
 }

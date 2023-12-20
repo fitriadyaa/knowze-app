@@ -10,18 +10,19 @@ import com.google.firebase.auth.FirebaseAuth
 import com.knowzeteam.knowze.data.remote.response.courseResponse.CourseResponse
 import com.knowzeteam.knowze.data.remote.response.courseResponse.GenerateResponse
 import com.knowzeteam.knowze.repository.GenerateRepository
+import com.knowzeteam.knowze.repository.RecommendationRepository
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import java.net.SocketTimeoutException
 
-class GenerateViewModel(private val generateRepository: GenerateRepository) : ViewModel() {
+class GenerateViewModel(
+    private val generateRepository: GenerateRepository,
+    private val recommendationRepository: RecommendationRepository
+) : ViewModel() {
     // LiveData for API response
     private val _response = MutableLiveData<GenerateResponse?>()
     val response: LiveData<GenerateResponse?> = _response
     private val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
-    // LiveData for Course Details
-    private val _courseDetails = MutableLiveData<CourseResponse?>()
-    val courseDetails: LiveData<CourseResponse?> = _courseDetails
 
     private suspend fun getFirebaseAuthToken(): String? {
         return try {
@@ -72,4 +73,33 @@ class GenerateViewModel(private val generateRepository: GenerateRepository) : Vi
         }
     }
 
+    private val _recommendations = MutableLiveData<List<String?>>()
+    val recommendations: LiveData<List<String?>> = _recommendations
+
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData<Boolean> = _isLoading
+
+    private val _error = MutableLiveData<String>()
+    val error: LiveData<String> = _error
+
+    fun fetchRecommendations() {
+        viewModelScope.launch {
+            val token = getFirebaseAuthToken()
+            try {
+                _isLoading.value = true
+                val response = recommendationRepository.getRecommendations("Bearer $token")
+                if (response.isSuccessful) {
+                    _recommendations.value = response.body()
+                } else {
+                    // Handle error response
+                    _error.value = "Error fetching recommendations: ${response.errorBody()?.string()}"
+                }
+            } catch (e: Exception) {
+                // Handle exceptions like network errors
+                _error.value = "Exception occurred: ${e.message}"
+            } finally {
+                _isLoading.value = false
+            }
+        }
+    }
 }

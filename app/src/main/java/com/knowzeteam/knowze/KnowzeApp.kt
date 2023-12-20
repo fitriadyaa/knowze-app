@@ -11,6 +11,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.google.firebase.auth.FirebaseAuth
+import com.knowzeteam.knowze.data.remote.response.courseResponse.CourseResponse
 import com.knowzeteam.knowze.ui.navigation.Screen
 import com.knowzeteam.knowze.ui.screen.auth.login.LoginScreen
 import com.knowzeteam.knowze.ui.screen.auth.login.LoginViewModel
@@ -109,10 +110,13 @@ fun KnowzeApp(viewModelFactory: ViewModelProvider.Factory) {
             )
         }
 
-        composable(Screen.AboutContent.route){
-            AboutContentScreen()
+        composable("${Screen.AboutContent.route}/{courseId}") { backStackEntry ->
+            val courseId = backStackEntry.arguments?.getString("courseId") ?: return@composable
+            AboutContentScreen(
+                course = CourseResponse(id = courseId),
+                navController = navController,
+            )
         }
-
         composable(Screen.DetailCourse.route){
             DetailCourseScreen()
         }

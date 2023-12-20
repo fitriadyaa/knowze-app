@@ -2,6 +2,7 @@ package com.knowzeteam.knowze.ui.screen.detailcourse
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,18 +23,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.knowzeteam.knowze.R
-import com.knowzeteam.knowze.ui.theme.KnowzeTheme
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.graphics.Color
@@ -43,6 +42,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.knowzeteam.knowze.data.remote.response.courseResponse.CourseResponse
 import com.knowzeteam.knowze.ui.ViewModelFactory
 import com.knowzeteam.knowze.ui.component.CategoryButton
@@ -50,92 +50,87 @@ import com.knowzeteam.knowze.ui.component.CourseItem
 
 @Composable
 fun AboutContentScreen(
+    course: CourseResponse,
+    navController: NavController,
     modifier: Modifier = Modifier
 ) {
-
     val context = LocalContext.current
 
     val viewModel: CourseViewModel = viewModel(
         factory = ViewModelFactory(context)
     )
-    // Observe course details
+
     val courseDetails by viewModel.courseDetails.observeAsState()
-    val subtitleItem by viewModel.subtitlesItem.observeAsState()
 
-    // Check if course details are available
-    if (subtitleItem != null) {
-        // Your existing UI code, now using 'courseDetails'
-        Column(modifier = modifier.fillMaxSize()) {
-            BannerContent(course = courseDetails!!, modifier = modifier)
-
-            Box(
-                modifier = modifier
-                    .background(
-                        color = Color.White,
-                        shape = RoundedCornerShape(topEnd = 40.dp, topStart = 40.dp)
-                    )
-                    .padding(16.dp)
-                    .fillMaxSize()
+    Column(modifier = modifier.fillMaxSize()) {
+        BannerContent(course = course, modifier = modifier, navController = navController )
+        Box(
+            modifier = modifier
+                .background(
+                    color = Color.White,
+                    shape = RoundedCornerShape(topEnd = 40.dp, topStart = 40.dp)
+                )
+                .padding(16.dp)
+                .fillMaxSize()
+        ) {
+            Column(
+                horizontalAlignment = Alignment.Start,
             ) {
-                Column(
-                    horizontalAlignment = Alignment.Start,
+                Row(
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = modifier
+                        .fillMaxWidth()
                 ) {
-                    Row(
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically,
+                    Text(
+                        text = stringResource(id = R.string.course_content),
+                        style = MaterialTheme.typography.titleLarge.copy(
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold
+                        ),
                         modifier = modifier
-                            .fillMaxWidth()
-                    ) {
-                        Text(
-                            text = stringResource(id = R.string.course_content),
-                            style = MaterialTheme.typography.titleLarge.copy(
-                                fontSize = 20.sp,
-                                fontWeight = FontWeight.Bold
-                            ),
-                            modifier = modifier
-                                .padding(top = 20.dp)
-                        )
+                            .padding(top = 20.dp)
+                    )
 
-                        Text(
-                            text = stringResource(id = R.string.topic),
-                            style = MaterialTheme.typography.titleSmall.copy(
-                                fontSize = 14.sp,
-                                fontWeight = FontWeight.Light
-                            ),
-                            modifier = modifier
-                                .padding(top = 20.dp, end = 10.dp)
-                        )
-                    }
+                    Text(
+                        text = stringResource(id = R.string.topic),
+                        style = MaterialTheme.typography.titleSmall.copy(
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Light
+                        ),
+                        modifier = modifier
+                            .padding(top = 20.dp, end = 10.dp)
+                    )
+                }
 
-                    Divider(modifier = modifier.padding(horizontal = 16.dp, vertical = 16.dp))
+                Divider(modifier = modifier.padding(horizontal = 16.dp, vertical = 16.dp))
 
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(end = 16.dp, bottom = 10.dp)
-                    ) {
-                        LazyColumn {
-                            item {
-                                subtitleItem?.let {
-                                    CourseItem(
-                                        subtitle = it
-                                    )
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(end = 16.dp, bottom = 10.dp)
+                ) {
+                    LazyColumn {
+                        // Check if the subtitles list is not null and not empty
+                        course.subtitles?.let { subtitles ->
+                            items(subtitles) { subtitle ->
+                                // Only create a CourseItem if the subtitle is not null
+                                subtitle?.let {
+                                    CourseItem(subtitle = it)
                                 }
                             }
                         }
                     }
-
                 }
             }
         }
-    } else {
-        // Show loading or empty state
     }
 }
 
 @Composable
 fun BannerContent(
     course: CourseResponse,
+    navController: NavController,
     modifier: Modifier = Modifier
 ) {
     Box(modifier = Modifier) {
@@ -151,9 +146,6 @@ fun BannerContent(
                 modifier = modifier
                     .fillMaxSize()
             )
-
-            // Overlay
-            BoxContentOverlay(modifier = modifier)
         }
 
         Column(
@@ -164,7 +156,7 @@ fun BannerContent(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = modifier
                     .fillMaxWidth()
-                    .padding(bottom = 10.dp, start = 10.dp, end = 30.dp)
+                    .padding(top = 20.dp, bottom = 10.dp, start = 10.dp, end = 30.dp)
             ) {
 
                 Surface(
@@ -180,6 +172,7 @@ fun BannerContent(
                         tint = MaterialTheme.colorScheme.onPrimary,
                         modifier = modifier
                             .padding(16.dp)
+                            .clickable(onClick = { navController.popBackStack() })
                     )
                 }
             }
@@ -193,9 +186,9 @@ fun BannerContent(
                     .fillMaxWidth()
                     .padding(start = 10.dp, top = 10.dp, end = 10.dp)
             ) {
-                CategoryButton(categoryText = "Photography", onClick = { /*TODO*/ })
+                CategoryButton(categoryText = "Photography", onClick = { /*TODO*/ }, colors = MaterialTheme.colorScheme.primary)
                 Spacer(modifier = modifier.width(10.dp))
-                CategoryButton(categoryText = "Indoor", onClick = { /*TODO*/ })
+                CategoryButton(categoryText = "Indoor", onClick = { /*TODO*/ }, colors = Color(0xFFFF9900))
             }
 
             Column(

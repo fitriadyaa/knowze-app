@@ -4,6 +4,8 @@ import com.google.gson.annotations.SerializedName
 
 data class CourseResponse(
 
+	val id: String,
+
 	@field:SerializedName("duration")
 	val duration: String? = null,
 

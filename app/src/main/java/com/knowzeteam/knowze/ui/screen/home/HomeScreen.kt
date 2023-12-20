@@ -1,9 +1,11 @@
 package com.knowzeteam.knowze.ui.screen.home
 
+import android.annotation.SuppressLint
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -257,20 +259,12 @@ fun HomeContent(
 
         }
         Column {
-//            LazyRow(
-//                contentPadding = PaddingValues(start = 16.dp, end = 16.dp),
-//                horizontalArrangement = Arrangement.spacedBy(16.dp),
-//            ) {
-//                items(newestCourses?.take(2) ?: emptyList()) { course ->
-//                    CardCourseItem(course = course)
-//                }
-//            }
             LazyRow(
                 contentPadding = PaddingValues(start = 16.dp, end = 16.dp),
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
             ) {
                 items(newestCourses ?: emptyList()) { course ->
-                    CardCourseItem(course = course)
+                    CardCourseItem(course = course, navController = navController)
                 }
             }
             Spacer(modifier = modifier.height(16.dp))
@@ -366,14 +360,16 @@ fun ClickableSearchBar(
             .fillMaxWidth()
             .height(50.dp)
             .background(Color.White, RoundedCornerShape(12.dp))
-            .clickable { onSearchBarClick() }
+            .clickable(
+                indication = null,
+                interactionSource = remember { MutableInteractionSource() }
+            ) { onSearchBarClick() }
             .padding(horizontal = 16.dp),
         contentAlignment = Alignment.CenterStart
     ) {
         Text(
             text = placeholderText,
             color = MaterialTheme.colorScheme.primary,
-            modifier = modifier.padding(start = 16.dp),
         )
         Image(
             painter = painterResource(id = R.drawable.ic_search),
@@ -382,7 +378,6 @@ fun ClickableSearchBar(
             modifier = modifier
                 .size(32.dp)
                 .align(Alignment.CenterEnd)
-                .padding(end = 10.dp)
         )
     }
 }
@@ -439,15 +434,20 @@ fun SuggestionBox(
 @Composable
 fun CardCourseItem(
     course: CoursesItem?,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    navController: NavController
 ) {
     Box(
         modifier = modifier
             .height(80.dp)
             .width(240.dp)
             .clip(RoundedCornerShape(10.dp))
-            .clickable { }
             .background(MaterialTheme.colorScheme.surfaceVariant)
+            .clickable {
+                if (course != null) {
+                    navController.navigate("${Screen.AboutCourse.route}/${course.id}")
+                }
+            }
     ) {
         Image(
             painter = painterResource(R.drawable.bg_knowze),

@@ -42,7 +42,7 @@ fun MiniMenuItem(
     Box(
         modifier = modifier
             .clip(RoundedCornerShape(10.dp))
-            .background(color = MaterialTheme.colorScheme.secondary)
+            .background(color = MaterialTheme.colorScheme.primary)
             .padding(16.dp)
     ) {
         Row(

@@ -46,7 +46,7 @@
     //HomeScreen
     <string name="selamat">Siap belajar, </string>
     <string name="coba_ini">Coba ini</string>
-    <string name="search_value">Cara membuka tutup kaleng...</string>
+    <string name="search_value">Cara membuat filter instagram AR...</string>
 
     <!-- Mini Menu Item -->
     <string name="title_menu_mini">Kursus Berdasarkan Berita Trending</string>

@@ -1,6 +1,12 @@
 package com.knowzeteam.knowze.ui.screen.home
 
 import android.util.Log
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -32,6 +38,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
@@ -77,6 +85,14 @@ fun HomeSearch(
         }
     }
 
+    LaunchedEffect(Unit) {
+        viewModel.fetchRecommendations()
+    }
+
+
+    val recommendations by viewModel.recommendations.observeAsState()
+
+
     LaunchedEffect(shouldFocus) {
         if (shouldFocus) {
             focusRequester.requestFocus()
@@ -115,7 +131,7 @@ fun HomeSearch(
                 )
             }
             Spacer(modifier = Modifier.height(20.dp))
-            RecommendationContent()
+            RecommendationContent(recommendations = recommendations)
             Spacer(modifier = Modifier.height(20.dp))
             SettingDuration()
         }
@@ -125,45 +141,47 @@ fun HomeSearch(
 
 @Composable
 fun RecommendationContent(
+    recommendations: List<String?>?,
     modifier: Modifier = Modifier
 ) {
     Column {
         Text(
             text = "Rekomendasi untuk anda",
-            style = MaterialTheme.typography.titleLarge.copy(
+            style = MaterialTheme.typography.titleMedium.copy(
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.primary
             )
         )
         Spacer(modifier = modifier.height(10.dp))
-        BoxWithText(text = "Cara menanam cabe di rumah")
-        BoxWithText(text = "Cara membuat bom nuklir")
-        BoxWithText(text = "Cara nyaleg jadi DPR")
-        BoxWithText(text = "Cara bikin layangan Garut")
+        recommendations?.forEach { recommendation ->
+            recommendation?.let {
+                BoxWithText(text = it)
+            }
+        }
     }
 }
 
 @Composable
 fun BoxWithText(
     text: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     BoxWithConstraints(modifier = modifier.padding(bottom = 10.dp)) {
         Box(
-            modifier = Modifier
-                .background(color = Color.White, RoundedCornerShape(12.dp))
-                .padding(14.dp)
-                .widthIn(max = maxWidth)
-                .height(20.dp)
+            modifier = modifier
+                .background(Color.White, RoundedCornerShape(12.dp))
+                .padding(10.dp)
+                .height(16.dp)
         ) {
             Text(
                 text = text,
-                fontSize = 14.sp,
+                style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.align(Alignment.Center)
             )
         }
     }
 }
+
 
 @Composable
 fun SettingDuration(
@@ -178,7 +196,7 @@ fun SettingDuration(
     Column {
         Text(
             text = "Atur Durasi Kursus",
-            style = MaterialTheme.typography.titleLarge.copy(
+            style = MaterialTheme.typography.titleMedium.copy(
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.primary
             )
@@ -204,7 +222,7 @@ fun SettingDuration(
                     colors = SliderDefaults.colors(
                         thumbColor = MaterialTheme.colorScheme.primary,
                         activeTrackColor = MaterialTheme.colorScheme.primary,
-                        inactiveTrackColor = MaterialTheme.colorScheme.secondary,
+                        inactiveTrackColor = Color.LightGray
                     ),
                 )
                 Row(
@@ -226,6 +244,30 @@ fun SettingDuration(
             }
         }
     }
+}
+
+@Composable
+fun shimmerAnimationEffect(
+    shimmerColor: Color = Color.LightGray.copy(alpha = 0.7f)
+): Brush {
+    val shimmerWidth = 0.2f
+    val infiniteTransition = rememberInfiniteTransition(label = "")
+    val animation = infiniteTransition.animateFloat(
+        initialValue = 0f,
+        targetValue = 1f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(durationMillis = 1000, easing = LinearEasing),
+            repeatMode = RepeatMode.Restart
+        ), label = ""
+    )
+
+    val xShimmer = animation.value
+
+    return Brush.linearGradient(
+        colors = listOf(shimmerColor, shimmerColor.copy(alpha = 0.2f), shimmerColor),
+        start = Offset.Zero,
+        end = Offset(xShimmer + shimmerWidth, 0f)
+    )
 }
 
 //@Preview
