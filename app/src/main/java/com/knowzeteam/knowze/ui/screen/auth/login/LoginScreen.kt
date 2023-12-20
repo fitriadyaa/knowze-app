@@ -28,6 +28,7 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -169,7 +170,8 @@ fun GoogleLoginButton(
         Text(
             text = stringResource(R.string.login_with_google),
             style = MaterialTheme.typography.bodyMedium,
-            modifier = modifier.padding(start = 8.dp)
+            modifier = modifier.padding(start = 8.dp),
+            color = Color.White
         )
     }
 }
@@ -197,7 +199,8 @@ fun EmailLoginButton(
         Text(
             text = stringResource(R.string.login_with_email),
             style = MaterialTheme.typography.bodyMedium,
-            modifier = modifier.padding(start = 8.dp)
+            modifier = modifier.padding(start = 8.dp),
+            color = Color.White
         )
     }
 }

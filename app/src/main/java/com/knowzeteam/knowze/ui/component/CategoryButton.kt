@@ -35,7 +35,8 @@ fun CategoryButton(
             text = categoryText,
             style = MaterialTheme.typography.labelMedium.copy(
                 fontSize = 10.sp, // Adjust the font size as needed
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                color = Color.White
             ),
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,

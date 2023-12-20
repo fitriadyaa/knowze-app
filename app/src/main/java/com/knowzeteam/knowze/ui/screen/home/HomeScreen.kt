@@ -29,6 +29,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -56,6 +57,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -139,7 +141,10 @@ fun DrawerContent(
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp)
             ) {
-                Text("Log Out")
+                Text(
+                    "Log Out",
+                    color = Color.White,
+                    )
             }
         }
     }
@@ -169,8 +174,8 @@ fun DrawerHeader(userName: String?, userEmail: String?, userPhotoUrl: String?) {
             )
         }
         Spacer(modifier = Modifier.height(8.dp))
-        Text( text = userName.orEmpty(), style = MaterialTheme.typography.titleMedium)
-        Text(text = userEmail.orEmpty(), style = MaterialTheme.typography.bodySmall)
+        Text( text = userName.orEmpty(), style = MaterialTheme.typography.titleMedium, color = Color.Black,)
+        Text(text = userEmail.orEmpty(), style = MaterialTheme.typography.bodySmall, color = Color.Black,)
     }
 }
 
@@ -182,9 +187,9 @@ fun DrawerItem(text: String, icon: ImageVector) {
             .fillMaxWidth()
             .padding(16.dp)
     ) {
-        Icon(icon, contentDescription = null)
+        Icon(icon, contentDescription = null, tint = Color.Black)
         Spacer(Modifier.width(16.dp))
-        Text(text, style = MaterialTheme.typography.bodyMedium)
+        Text(text, style = MaterialTheme.typography.bodyMedium, color = Color.Black,)
     }
 }
 
@@ -283,8 +288,9 @@ fun HomeContent(
                     item {
                         Divider(
                             modifier = modifier
-                                .height(4.dp)
-                                .clip(RoundedCornerShape(10.dp))
+                                .height(2.dp)
+                                .clip(RoundedCornerShape(10.dp)),
+                            color = Color.LightGray
                         )
                         Spacer(modifier = modifier.height(16.dp))
                         MenuItem(
@@ -318,8 +324,9 @@ fun HomeContent(
                         Spacer(modifier = modifier.height(16.dp))
                         Divider(
                             modifier = modifier
-                                .height(4.dp)
-                                .clip(RoundedCornerShape(10.dp))
+                                .height(2.dp)
+                                .clip(RoundedCornerShape(10.dp)),
+                            color = Color.LightGray
                         )
                     }
                     item {
@@ -387,14 +394,27 @@ fun ClickableSearchBar(
 fun LogoutDialog(showLogoutDialog: MutableState<Boolean>, onConfirmLogout: () -> Unit) {
     AlertDialog(
         onDismissRequest = { showLogoutDialog.value = false },
-        title = { Text("Konfirmasi Keluar") },
-        text = { Text("Apakah kamu yakin ingin keluar?") },
+        title = {
+            Text(
+                "Konfirmasi Keluar",
+                style = TextStyle(color = Color.Black) // Use style to set text color
+            )
+        },
+        text = {
+            Text(
+                "Apakah kamu yakin ingin keluar?",
+                style = TextStyle(color = Color.Black) // Use style to set text color
+            )
+        },
         confirmButton = {
-            Button(onClick = {
-                showLogoutDialog.value = false
-                onConfirmLogout()
-            }) {
-                Text("Keluar")
+            Button(
+                onClick = {
+                    showLogoutDialog.value = false
+                    onConfirmLogout()
+                },
+                colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
+            ) {
+                Text("Keluar", color = Color.White) // Set the text color to white
             }
         },
         dismissButton = {
@@ -413,7 +433,8 @@ fun SuggestionBox(
     Column{
         Text(
             text = stringResource(id = R.string.coba_ini),
-            style = MaterialTheme.typography.bodyMedium
+            style = MaterialTheme.typography.bodyMedium,
+            color = Color.Black,
         )
         Spacer(modifier = Modifier.height(8.dp))
         Box(
@@ -425,6 +446,7 @@ fun SuggestionBox(
             Text(
                 text = text,
                 style = MaterialTheme.typography.bodyMedium,
+                color = Color.Black,
                 modifier = Modifier.fillMaxWidth()
             )
         }

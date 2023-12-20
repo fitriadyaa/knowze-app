@@ -184,6 +184,7 @@ fun AboutCourseScreen(
                                 fontSize = 16.sp,
                                 textAlign = TextAlign.Center,
                                 fontWeight = FontWeight.Bold,
+                                color = Color.Gray
                             ),
                             modifier = modifier
                                 .fillMaxWidth()
@@ -232,7 +233,8 @@ fun CourseContent(
                 style = MaterialTheme.typography.titleLarge.copy(
                     fontSize = 24.sp,
                     textAlign = TextAlign.Start,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black
                 ),
                 modifier = modifier
                     .fillMaxWidth()
@@ -256,6 +258,7 @@ fun CourseContent(
 
                 Text(
                     text = course.lessons.toString() + " Topic",
+                    color = Color.Black
                 )
 
                 Spacer(modifier = modifier.width(10.dp))
@@ -271,6 +274,7 @@ fun CourseContent(
 
                 Text(
                     text = course.duration ?: "00.00",
+                    color = Color.Black
                 )
             }
 
@@ -287,7 +291,8 @@ fun CourseContent(
                     style = MaterialTheme.typography.titleLarge.copy(
                         fontSize = 16.sp,
                         textAlign = TextAlign.Start,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
+                        color = Color.Black
                     ),
                     modifier = modifier
                         .fillMaxWidth()
@@ -300,7 +305,8 @@ fun CourseContent(
                     style = MaterialTheme.typography.bodyMedium.copy(
                         fontSize = 14.sp,
                         textAlign = TextAlign.Start,
-                        fontWeight = FontWeight.Light
+                        fontWeight = FontWeight.Light,
+                        color = Color.Black
                     ),
                     modifier = Modifier
                         .fillMaxWidth()
@@ -323,7 +329,8 @@ fun CourseContent(
                     style = MaterialTheme.typography.titleMedium.copy(
                         fontSize = 16.sp,
                         textAlign = TextAlign.Center,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White
                     ),
                     modifier = modifier
                         .fillMaxWidth()
@@ -366,7 +373,7 @@ fun BannerCourse(
                 Icon(
                     imageVector = Icons.Default.KeyboardArrowLeft,
                     contentDescription = "Next",
-                    tint = MaterialTheme.colorScheme.onPrimary,
+                    tint = Color.White,
                     modifier = Modifier
                         .padding(16.dp)
                         .clickable(onClick = { navController.popBackStack() })

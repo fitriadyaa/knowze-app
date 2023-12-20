@@ -21,9 +21,11 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -50,23 +52,29 @@ fun RegisterScreen(
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    titleContentColor = Color.White,
+                    navigationIconContentColor = Color.White
+                ),
                 title = {
-                    Text(
+                    androidx.compose.material.Text(
                         text = stringResource(id = R.string.register),
                         maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
+                        overflow = TextOverflow.Ellipsis,
+                        color = Color.White
                     )
                 },
                 navigationIcon = {
-                    IconButton(onClick = { navController.navigate(Screen.Login.route) }) {
+                    IconButton(onClick = { navController.popBackStack() }) {
                         Icon(
                             imageVector = Icons.Filled.KeyboardArrowLeft,
-                            contentDescription = "Localized description"
+                            contentDescription = "Localized description",
                         )
                     }
                 }
             )
-        },
+        }
     ) {
         Box(
             modifier = modifier
@@ -86,7 +94,8 @@ fun RegisterScreen(
                             style = MaterialTheme.typography.bodyMedium.copy(
                                 fontSize = 14.sp,
                                 fontWeight = FontWeight.Light,
-                                textAlign = TextAlign.Start
+                                textAlign = TextAlign.Start,
+                                color = Color.Black
                             )
                         )
 
@@ -99,7 +108,8 @@ fun RegisterScreen(
                             style = MaterialTheme.typography.bodyMedium.copy(
                                 fontSize = 14.sp,
                                 fontWeight = FontWeight.Light,
-                                textAlign = TextAlign.Start
+                                textAlign = TextAlign.Start,
+                                color = Color.Black
                             )
                         )
 
@@ -112,7 +122,8 @@ fun RegisterScreen(
                             style = MaterialTheme.typography.bodyMedium.copy(
                                 fontSize = 14.sp,
                                 fontWeight = FontWeight.Light,
-                                textAlign = TextAlign.Start
+                                textAlign = TextAlign.Start,
+                                color = Color.Black
                             )
                         )
 
@@ -125,7 +136,8 @@ fun RegisterScreen(
                             style = MaterialTheme.typography.bodyMedium.copy(
                                 fontSize = 14.sp,
                                 fontWeight = FontWeight.Light,
-                                textAlign = TextAlign.Start
+                                textAlign = TextAlign.Start,
+                                color = Color.Black
                             )
                         )
 
@@ -156,7 +168,8 @@ fun RegisterButton(
     ) {
         Text(
             text = stringResource(R.string.register),
-            modifier = modifier.padding(start = 8.dp)
+            modifier = modifier.padding(start = 8.dp),
+            color = Color.White
         )
     }
 }

@@ -119,7 +119,8 @@ fun HomeSearch(
                 IconButton(onClick = { onBack() }) {
                     Icon(
                         imageVector = Icons.Filled.KeyboardArrowLeft,
-                        contentDescription = "Back"
+                        contentDescription = "Back",
+                        tint = Color.Black
                     )
                 }
                 SearchBar(
