@@ -1,6 +1,5 @@
 package com.knowzeteam.knowze.ui.screen.home
 
-import android.annotation.SuppressLint
 import android.widget.Toast
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.LinearEasing
@@ -57,9 +56,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -420,7 +417,7 @@ fun LogoutDialog(showLogoutDialog: MutableState<Boolean>, onConfirmLogout: () ->
         title = {
             Text(
                 "Konfirmasi Keluar",
-                style = TextStyle(color = Color.Black) // Use style to set text color
+                style = TextStyle(color = Color.Black)
             )
         },
         text = {

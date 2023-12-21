@@ -63,7 +63,7 @@ fun AboutContentScreen(
 
     LaunchedEffect(course) {
         course.id?.let { viewModel.fetchCourseDetails(it) }
-        course.title?.let { viewModel.fetchVideos(it) }
+        course.title?.let { viewModel.fetchVideos(course.title, course.id ?: "") }
     }
 
     val videoData by viewModel.videos.observeAsState()
@@ -140,17 +140,6 @@ fun AboutContentScreen(
                 }
             }
         }
-    }
-}
-
-@Composable
-fun DisplayErrorMessage(errorMessage: String?) {
-    if (errorMessage == "Maaf video belum tersedia") {
-        Text(
-            text = errorMessage ?: "",
-            modifier = Modifier.padding(16.dp),
-            textAlign = TextAlign.Center
-        )
     }
 }
 
@@ -249,15 +238,6 @@ fun BannerContent(
             }
         }
     }
-}
-
-@Composable
-fun BoxContentOverlay(modifier: Modifier = Modifier) {
-    Box(
-        modifier = modifier
-            .fillMaxSize()
-            .background(color = Color.Black.copy(alpha = 0.4f))
-    )
 }
 
 //@Preview

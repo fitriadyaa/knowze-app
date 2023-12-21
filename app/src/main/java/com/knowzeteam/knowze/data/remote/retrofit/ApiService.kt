@@ -54,9 +54,16 @@ interface ApiService {
         @Header("Authorization") idToken: String,
     ): Response<List<NewsResponseItem>>
 
-    @POST("/api/video/")
+    @POST("/api/video/{course_id}")
+    suspend fun postVideo(
+        @Header("Authorization") idToken: String,
+        @Body videoRequest: VideoRequest,
+        @Path("course_id") courseId: String
+    ): Response<VideoResponse>
+
+    @GET("/api/course-video/{course_id}")
     suspend fun getVideo(
         @Header("Authorization") idToken: String,
-        @Body videoRequest: VideoRequest
-    ): Response<VideoResponse>
+        @Path("course_id") courseId: String
+    ) : Response<VideoResponse>
 }

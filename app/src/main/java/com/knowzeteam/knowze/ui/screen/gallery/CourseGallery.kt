@@ -47,9 +47,6 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import com.knowzeteam.knowze.R
 import com.knowzeteam.knowze.ui.ViewModelFactory
-import com.knowzeteam.knowze.ui.component.CategoryButton
-import com.knowzeteam.knowze.ui.screen.detailcourse.BoxContentOverlay
-import com.knowzeteam.knowze.ui.screen.detailcourse.CourseViewModel
 import com.knowzeteam.knowze.ui.theme.KnowzeTheme
 
 @OptIn(ExperimentalMaterial3Api::class)

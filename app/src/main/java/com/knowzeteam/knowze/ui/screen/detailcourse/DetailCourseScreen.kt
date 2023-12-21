@@ -21,26 +21,32 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.knowzeteam.knowze.data.remote.response.courseResponse.Content
+import com.knowzeteam.knowze.ui.ViewModelFactory
 import com.knowzeteam.knowze.ui.theme.KnowzeTheme
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailCourseScreen(
-    content: Content,
+    content: Content = Content(),
     navController: NavController
 ) {
-    Log.d("DetailCourseScreen", "Composable called with content: $content")
-
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -86,43 +92,37 @@ fun DetailCourseScreen(
         ) {
             Spacer(modifier = Modifier.height(60.dp))
             Text(
-                text = content.opening ?: "opening",
+                text = "opening",
                 style = MaterialTheme.typography.bodyMedium,
                 color = Color.Black
             )
-            Log.d("DetailCourseScreen", "Opening: ${content.opening}")
-            Spacer(modifier = Modifier.height(8.dp))
-            if (!content.steps.isNullOrEmpty()) {
-                content.steps.forEach { step ->
-                    Log.d("DetailCourseScreen", "Step: $step")
-                    Text(
-                        text = step ?: "",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = Color.Black
-                    )
-                    Spacer(modifier = Modifier.height(8.dp))
-                }
-            }
+
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = content.closing ?: "Closing",
+                text =  "",
+                style = MaterialTheme.typography.bodyMedium,
+                color = Color.Black
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = "Closing",
                 style = MaterialTheme.typography.bodyMedium,
                 color = Color.Black
             )
         }
     }
 }
-@Preview
-@Composable
-fun DetailCoursePreview() {
-    KnowzeTheme {
-        DetailCourseScreen(
-            content = Content(
-                opening = "Sample Opening",
-                steps = listOf("Step 1", "Step 2"),
-                closing = "Sample Closing"
-            ),
-            navController = rememberNavController()
-        )
-    }
-}
+//@Preview
+//@Composable
+//fun DetailCoursePreview() {
+//    KnowzeTheme {
+//        DetailCourseScreen(
+//            content = Content(
+//                opening = "Sample Opening",
+//                steps = listOf("Step 1", "Step 2"),
+//                closing = "Sample Closing"
+//            ),
+//            navController = rememberNavController()
+//        )
+//    }
+//}

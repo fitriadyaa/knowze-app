@@ -22,6 +22,7 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -33,6 +34,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -89,6 +91,15 @@ fun HomeSearch(
         viewModel.fetchRecommendations()
     }
 
+    var isLoading by remember { mutableStateOf(false) }
+
+    LaunchedEffect(response) {
+        isLoading = true
+        if (response?.courseId != null) {
+            isLoading = false
+        }
+    }
+
 
     val recommendations by viewModel.recommendations.observeAsState()
 
@@ -127,6 +138,7 @@ fun HomeSearch(
                     initialText = initialSearchText,
                     onSearchAction = { query ->
                         viewModel.onSearch(query)
+
                     },
                     focusRequester = focusRequester,
                 )
@@ -154,9 +166,20 @@ fun RecommendationContent(
             )
         )
         Spacer(modifier = modifier.height(10.dp))
-        recommendations?.forEach { recommendation ->
-            recommendation?.let {
-                BoxWithText(text = it)
+
+        // Check if the recommendations list is null or empty
+        if (recommendations.isNullOrEmpty()) {
+            // Display dummy recommendations
+            val dummyRecommendations = listOf("Cara membuat hidroponik", "Belajar membuat aplikasi android", "Cara membuka tutup kaleng sarden")
+            dummyRecommendations.forEach { dummyRecommendation ->
+                BoxWithText(text = dummyRecommendation)
+            }
+        } else {
+            // Display actual recommendations
+            recommendations.forEach { recommendation ->
+                recommendation?.let {
+                    BoxWithText(text = it)
+                }
             }
         }
     }
@@ -238,7 +261,8 @@ fun SettingDuration(
                                 .weight(1f)
                                 .padding(top = 8.dp),
                             textAlign = TextAlign.Center,
-                            style = MaterialTheme.typography.bodyMedium
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = Color.Black
                         )
                     }
                 }
