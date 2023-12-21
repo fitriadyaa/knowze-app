@@ -40,6 +40,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.knowzeteam.knowze.data.local.AboutContentData
@@ -67,6 +68,7 @@ fun AboutContentScreen(
 
     val videoData by viewModel.videos.observeAsState()
     val courseDetails by viewModel.courseDetails.observeAsState()
+    val error by viewModel.error.observeAsState()
 
     Log.d("courseDetails_id", course.id.orEmpty())
 
@@ -111,21 +113,44 @@ fun AboutContentScreen(
                         Text(text = "Video", color = Color.Black, style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold))
                     }
 
-                    videoData?.videos?.let { videos ->
-                        items(videos) { video ->
-                            video?.let {
-                                Spacer(modifier = Modifier.height(10.dp))
-                                VideoItem(
-                                    subtitle = it,
-                                    navController = navController
-                                )
-                                Spacer(modifier = Modifier.height(10.dp))
+                    // Display the error message for HTTP 500 error
+                    if (error == "Maaf video belum tersedia") {
+                       item {
+                           Text(
+                               text = error ?: "",
+                               modifier = Modifier.padding(16.dp),
+                               textAlign = TextAlign.Center,
+                               color = Color.Red
+                           )
+                       }
+                    } else {
+                        videoData?.videos?.let { videos ->
+                            items(videos) { video ->
+                                video?.let {
+                                    Spacer(modifier = Modifier.height(10.dp))
+                                    VideoItem(
+                                        subtitle = it,
+                                        navController = navController
+                                    )
+                                    Spacer(modifier = Modifier.height(10.dp))
+                                }
                             }
                         }
                     }
                 }
             }
         }
+    }
+}
+
+@Composable
+fun DisplayErrorMessage(errorMessage: String?) {
+    if (errorMessage == "Maaf video belum tersedia") {
+        Text(
+            text = errorMessage ?: "",
+            modifier = Modifier.padding(16.dp),
+            textAlign = TextAlign.Center
+        )
     }
 }
 

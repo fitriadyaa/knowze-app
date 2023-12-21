@@ -355,8 +355,6 @@ fun CourseContent(
     }
 }
 
-
-
 @Composable
 fun BannerCourse(
     navController: NavController,
@@ -394,7 +392,6 @@ fun BannerCourse(
                         .clickable(onClick = { navController.popBackStack() })
                 )
             }
-
         }
     }
 }

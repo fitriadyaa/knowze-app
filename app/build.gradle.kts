@@ -1,3 +1,5 @@
+import java.util.*
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -6,9 +8,15 @@ plugins {
     kotlin("kapt")
 }
 
+
 android {
     namespace = "com.knowzeteam.knowze"
     compileSdk = 34
+
+    val localProperties = Properties().apply {
+        load(rootProject.file("local.properties").inputStream())
+    }
+
 
     defaultConfig {
         applicationId = "com.knowzeteam.knowze"
@@ -16,6 +24,10 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
+
+
+        val baseUrl = localProperties.getProperty("BASE_URL", "default_url")
+        buildConfigField("String", "BASE_URL", "\"$baseUrl\"")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -41,6 +53,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.3"

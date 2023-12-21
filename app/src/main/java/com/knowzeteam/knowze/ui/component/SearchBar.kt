@@ -1,8 +1,16 @@
 package com.knowzeteam.knowze.ui.component
 
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -13,6 +21,7 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -22,6 +31,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -57,18 +67,37 @@ private fun SearchBarContent(
     onSearchAction: (String) -> Unit,
     focusRequester: FocusRequester = FocusRequester(),
 ) {
+    // Placeholder text
+    val placeholderText = stringResource(R.string.search_value)
+
+    // State for animated typing effect
+    val animatedPlaceholder = remember { Animatable(0f) }
+    LaunchedEffect(key1 = placeholderText) {
+        animatedPlaceholder.animateTo(
+            targetValue = if (searchText.isEmpty()) placeholderText.length.toFloat() else 0f,
+            animationSpec = infiniteRepeatable(
+                animation = tween(durationMillis = 2000, easing = LinearEasing),
+                repeatMode = RepeatMode.Restart
+            )
+        )
+    }
+    val displayText = placeholderText.take(animatedPlaceholder.value.toInt())
+
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .height(50.dp)
-            .background(Color.White, RoundedCornerShape(12.dp)),
+            .background(Color.White, RoundedCornerShape(12.dp))
+            .border(1.dp, Color.Gray, RoundedCornerShape(12.dp))
+            .clickable { focusRequester.requestFocus() }
+            .focusRequester(focusRequester),
         contentAlignment = Alignment.CenterStart
     ) {
         BasicTextField(
             value = searchText,
             onValueChange = onValueChange,
             textStyle = TextStyle(
-                color = MaterialTheme.colorScheme.primary,
+                color = Color.Gray,
                 fontWeight = FontWeight.Normal,
                 fontSize = 16.sp
             ),
@@ -79,8 +108,8 @@ private fun SearchBarContent(
         )
         if (searchText.isEmpty()) {
             Text(
-                text = stringResource(R.string.search_value),
-                color = MaterialTheme.colorScheme.primary,
+                text = displayText,
+                color = Color.Gray,
                 modifier = Modifier.padding(start = 16.dp),
             )
         }
@@ -96,6 +125,7 @@ private fun SearchBarContent(
         )
     }
 }
+
 
 //@Preview(showBackground = true, device = "id:pixel_4")
 //@Composable

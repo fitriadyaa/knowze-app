@@ -17,6 +17,7 @@ import com.knowzeteam.knowze.repository.GenerateRepository
 import com.knowzeteam.knowze.repository.VideoRepository
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import retrofit2.HttpException
 
 class CourseViewModel(private val generateRepository: GenerateRepository, private val videoRepository: VideoRepository) : ViewModel() {
 
@@ -86,7 +87,13 @@ class CourseViewModel(private val generateRepository: GenerateRepository, privat
                             _error.value = "No videos found"
                         }
                     } else {
-                        _error.value = result.exceptionOrNull()?.message ?: "Unknown error occurred"
+                        val errorMessage = result.exceptionOrNull()?.message ?: "Unknown error occurred"
+
+                        if (result.exceptionOrNull() is HttpException && (result.exceptionOrNull() as HttpException)?.code() == 500) {
+                            _error.value = "Maaf video belum tersedia"
+                        } else {
+                            _error.value = errorMessage
+                        }
                     }
                 } catch (e: Exception) {
                     _error.value = "Exception occurred: ${e.message}"

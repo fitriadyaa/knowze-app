@@ -1,6 +1,7 @@
 package com.knowzeteam.knowze.data.remote.retrofit
 
 import android.content.Context
+import com.knowzeteam.knowze.BuildConfig
 import com.knowzeteam.knowze.data.remote.AuthInterceptor
 import com.knowzeteam.knowze.utils.Preference
 import okhttp3.OkHttpClient
@@ -8,7 +9,6 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
-
 
 object ApiConfig {
     fun getApiService(context: Context): ApiService {
@@ -28,7 +28,7 @@ object ApiConfig {
         }.build()
 
         return Retrofit.Builder()
-            .baseUrl("http://34.122.11.96:5000")
+            .baseUrl(BuildConfig.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
             .build()
