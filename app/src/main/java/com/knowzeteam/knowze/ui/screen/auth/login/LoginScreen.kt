@@ -24,7 +24,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -101,11 +100,12 @@ fun LoginScreen(
                 .align(Alignment.Center)
         ) {
             Spacer(modifier = modifier.weight(1f))
+
             Image(
-                painter = painterResource(R.drawable.ic_login),
+                painter = painterResource(R.drawable.logo),
                 contentDescription = stringResource(R.string.icon_login),
                 modifier = modifier
-                    .size(290.dp, 286.dp)
+                    .height(60.dp)
                     .align(Alignment.CenterHorizontally)
             )
 

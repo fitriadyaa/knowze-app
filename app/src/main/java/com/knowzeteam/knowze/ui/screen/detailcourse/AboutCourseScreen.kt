@@ -227,15 +227,14 @@ fun CourseContent(
         Spacer(modifier = modifier.height(25.dp))
 
         Column(
-            horizontalAlignment = Alignment.Start,
-            modifier = modifier
-                .fillMaxSize()
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceBetween
         ) {
             // Judul Course
             Text(
                 text = courseData.title ?: "Default Title",
                 style = MaterialTheme.typography.titleLarge.copy(
-                    fontSize = 24.sp,
+                    fontSize = 18.sp,
                     textAlign = TextAlign.Start,
                     fontWeight = FontWeight.Bold,
                     color = Color.Black
@@ -292,8 +291,8 @@ fun CourseContent(
                 // Deskripsi Course
                 Text(
                     text = stringResource(id = R.string.desc_title),
-                    style = MaterialTheme.typography.titleLarge.copy(
-                        fontSize = 16.sp,
+                    style = MaterialTheme.typography.bodyLarge.copy(
+                        fontSize = 14.sp,
                         textAlign = TextAlign.Start,
                         fontWeight = FontWeight.Bold,
                         color = Color.Black
@@ -308,8 +307,6 @@ fun CourseContent(
                     text = courseData.desc ?: "Description",
                     style = MaterialTheme.typography.bodyMedium.copy(
                         fontSize = 14.sp,
-                        textAlign = TextAlign.Start,
-                        fontWeight = FontWeight.Light,
                         color = Color.Black
                     ),
                     modifier = Modifier
@@ -317,6 +314,7 @@ fun CourseContent(
                 )
                 Spacer(modifier = modifier.height(60.dp))
             }
+
             // Button Mulai
             Button(
                 onClick = {
@@ -388,8 +386,8 @@ fun BannerCourse(
                     contentDescription = "Next",
                     tint = Color.White,
                     modifier = Modifier
-                        .padding(16.dp)
                         .clickable(onClick = { navController.popBackStack() })
+                        .padding(16.dp)
                 )
             }
         }

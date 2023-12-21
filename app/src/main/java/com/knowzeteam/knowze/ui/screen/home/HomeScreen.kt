@@ -400,9 +400,9 @@ fun ClickableSearchBar(
         Image(
             painter = painterResource(id = R.drawable.ic_search),
             contentDescription = "Search Icon",
-            contentScale = ContentScale.None,
+            contentScale = ContentScale.Crop,
             modifier = Modifier
-                .size(32.dp)
+                .size(30.dp)
                 .align(Alignment.CenterEnd)
         )
     }

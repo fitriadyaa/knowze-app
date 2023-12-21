@@ -178,7 +178,7 @@ fun KnowzeApp(viewModelFactory: ViewModelProvider.Factory) {
             route = "${Screen.Youtube.route}/{videoId}",
             arguments = listOf(navArgument("videoId") { type = NavType.StringType })
         ) { backStackEntry ->
-            YoutubeScreen(videoId = backStackEntry.arguments?.getString("videoId") ?: "")
+            YoutubeScreen(videoId = backStackEntry.arguments?.getString("videoId") ?: "", navController)
         }
     }
 }
