@@ -23,6 +23,7 @@ import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -44,9 +45,24 @@ import com.knowzeteam.knowze.ui.theme.KnowzeTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailCourseScreen(
-    content: Content = Content(),
+    courseId : String,
     navController: NavController
 ) {
+
+    val context = LocalContext.current
+
+    val viewModel: CourseViewModel = viewModel(
+        factory = ViewModelFactory(context)
+    )
+
+    val courseDetails by viewModel.courseDetails.observeAsState()
+    
+    LaunchedEffect(courseId) {
+        viewModel.fetchCourseDetails(courseId)
+    }
+
+    Log.d("idnya", courseId)
+
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -91,21 +107,27 @@ fun DetailCourseScreen(
                 .padding(horizontal = 16.dp, vertical = 16.dp)
         ) {
             Spacer(modifier = Modifier.height(60.dp))
+
             Text(
-                text = "opening",
+                text = courseDetails?.subtitles?.get(0)?.content?.opening.toString(),
                 style = MaterialTheme.typography.bodyMedium,
                 color = Color.Black
             )
 
             Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text =  "",
-                style = MaterialTheme.typography.bodyMedium,
-                color = Color.Black
-            )
+
+            courseDetails?.subtitles?.get(0)?.content?.steps?.forEach {
+                Text(
+                    modifier = Modifier.padding(8.dp),
+                    text =  it,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = Color.Black
+                )
+            }
             Spacer(modifier = Modifier.height(8.dp))
+
             Text(
-                text = "Closing",
+                text =  courseDetails?.subtitles?.get(0)?.content?.closing.toString(),
                 style = MaterialTheme.typography.bodyMedium,
                 color = Color.Black
             )

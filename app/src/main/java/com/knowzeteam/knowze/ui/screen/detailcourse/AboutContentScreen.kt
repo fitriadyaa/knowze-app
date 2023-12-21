@@ -102,9 +102,10 @@ fun AboutContentScreen(
                         items(subtitles) { subtitle ->
                             subtitle?.let {
                                 Spacer(modifier = Modifier.height(10.dp))
-                                CourseItem(subtitle = it, navController)
+                                CourseItem(subtitle = it, course.id.toString() , navController)
                                 Spacer(modifier = Modifier.height(10.dp))
                             }
+
                         }
                     }
 

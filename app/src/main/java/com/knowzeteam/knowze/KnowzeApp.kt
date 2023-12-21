@@ -11,6 +11,7 @@ import androidx.navigation.navArgument
 import com.google.firebase.auth.FirebaseAuth
 import com.google.gson.Gson
 import com.knowzeteam.knowze.data.local.AboutContentData
+import com.knowzeteam.knowze.data.remote.response.courseResponse.Content
 import com.knowzeteam.knowze.ui.navigation.Screen
 import com.knowzeteam.knowze.ui.screen.auth.login.LoginScreen
 import com.knowzeteam.knowze.ui.screen.auth.login.LoginViewModel
@@ -34,6 +35,8 @@ import com.knowzeteam.knowze.ui.screen.welcome.SplashScreen
 
 @Composable
 fun KnowzeApp(viewModelFactory: ViewModelProvider.Factory) {
+
+    val gson = Gson()
 
     val navController = rememberNavController()
     val loginViewModel: LoginViewModel = viewModel(factory = viewModelFactory)
@@ -116,7 +119,6 @@ fun KnowzeApp(viewModelFactory: ViewModelProvider.Factory) {
             route = "${Screen.AboutContent.route}/{course}",
             arguments = listOf(navArgument("course") { type = NavType.StringType })
         ) { backStackEntry ->
-            val gson = Gson()
 
             val courseJson = backStackEntry.arguments?.getString("course")
             val course = gson.fromJson(courseJson, AboutContentData::class.java)
@@ -129,8 +131,15 @@ fun KnowzeApp(viewModelFactory: ViewModelProvider.Factory) {
             }
         }
 
-        composable(Screen.DetailCourse.route){
-            DetailCourseScreen(navController = navController)
+        composable(
+            route = "${Screen.DetailCourse.route}/{courseId}",
+            arguments = listOf(navArgument("courseId") { type = NavType.StringType })
+        ){backStackEntry ->
+            val courseId = backStackEntry.arguments?.getString("courseId")
+            DetailCourseScreen(
+                courseId = courseId.toString(),
+                navController = navController
+            )
         }
 
         composable(Screen.TrendingKeyword.route) {

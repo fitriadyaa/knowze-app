@@ -28,7 +28,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.google.gson.Gson
 import com.knowzeteam.knowze.R
+import com.knowzeteam.knowze.data.local.AboutContentData
 import com.knowzeteam.knowze.data.remote.response.courseResponse.SubtitlesItem
 import com.knowzeteam.knowze.data.remote.response.videoresponse.VideosItem
 import com.knowzeteam.knowze.ui.navigation.Screen
@@ -38,6 +40,7 @@ import java.nio.charset.StandardCharsets
 @Composable
 fun CourseItem(
     subtitle : SubtitlesItem,
+    courseId : String,
     navController : NavController
 ) {
     Row(
@@ -50,7 +53,7 @@ fun CourseItem(
             .fillMaxWidth()
             .clickable {
                 subtitle.content?.let {
-                    navController.navigate("${Screen.DetailCourse.route}/$it.id")
+                    navController.navigate("${Screen.DetailCourse.route}/${courseId}")
                 }
             }
             .padding(16.dp)
@@ -90,7 +93,7 @@ fun VideoItem(
             )
             .fillMaxWidth()
             .clickable {
-                val encodedUrl = URLEncoder.encode(subtitle.link, StandardCharsets.UTF_8.toString())
+                val encodedUrl = URLEncoder.encode(subtitle.id, StandardCharsets.UTF_8.toString())
                 navController.navigate("${Screen.Youtube.route}/$encodedUrl")
             }
             .padding(16.dp)

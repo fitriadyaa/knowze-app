@@ -56,5 +56,5 @@ data class Content(
 	val opening: String? = null,
 
 	@field:SerializedName("steps")
-	val steps: List<String?>? = null
+	var steps: List<String> = emptyList()
 )

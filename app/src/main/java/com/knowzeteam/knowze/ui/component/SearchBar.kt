@@ -43,9 +43,10 @@ fun SearchBar(
     initialText: String = "",
     focusRequester: FocusRequester = FocusRequester(),
     onSearchAction: (String) -> Unit,
+    isLoading: Boolean?
 ) {
     var searchText by remember { mutableStateOf(initialText) }
-    var isSearching by remember { mutableStateOf(false) }
+//    val isSearching by remember { mutableStateOf(false) }
 
     SearchBarContent(
         searchText = searchText,
@@ -54,7 +55,7 @@ fun SearchBar(
         },
         onSearchAction = onSearchAction,
         focusRequester = focusRequester,
-        isLoading = isSearching
+        isLoading = isLoading
     )
 }
 
@@ -63,7 +64,7 @@ private fun SearchBarContent(
     searchText: String,
     onValueChange: (String) -> Unit,
     onSearchAction: (String) -> Unit,
-    isLoading: Boolean,
+    isLoading: Boolean?,
     focusRequester: FocusRequester = FocusRequester(),
 ) {
     // Placeholder text
@@ -113,7 +114,7 @@ private fun SearchBarContent(
             )
         }
 
-        if (isLoading) {
+        if (isLoading == true) {
             // Display a loading indicator, e.g., a small CircularProgressIndicator
             CircularProgressIndicator(modifier = Modifier.size(20.dp).align(Alignment.CenterEnd))
         } else {

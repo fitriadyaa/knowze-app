@@ -69,6 +69,7 @@ fun HomeSearch(
     )
 
     val response by viewModel.response.observeAsState()
+    val generateLoading by viewModel.isLoadingGenerate.observeAsState()
 
     LaunchedEffect(response) {
         if (response?.courseId != null) {
@@ -91,14 +92,13 @@ fun HomeSearch(
         viewModel.fetchRecommendations()
     }
 
-    var isLoading by remember { mutableStateOf(false) }
 
-    LaunchedEffect(response) {
-        isLoading = true
-        if (response?.courseId != null) {
-            isLoading = false
-        }
-    }
+//    LaunchedEffect(response) {
+//        isLoading = true
+//        if (response?.courseId != null) {
+//            isLoading = false
+//        }
+//    }
 
 
     val recommendations by viewModel.recommendations.observeAsState()
@@ -141,6 +141,7 @@ fun HomeSearch(
 
                     },
                     focusRequester = focusRequester,
+                    isLoading = generateLoading
                 )
             }
             Spacer(modifier = Modifier.height(20.dp))

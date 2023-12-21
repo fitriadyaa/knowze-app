@@ -57,8 +57,14 @@ class GenerateViewModel(
         }
     }
 
+    private val _isLoadingGenerate = MutableLiveData<Boolean?>()
+    val isLoadingGenerate: LiveData<Boolean?> = _isLoadingGenerate
+
     fun postGenerateQuery(prompt: String) {
         viewModelScope.launch {
+
+            _isLoadingGenerate.value = true
+
             val token = getFirebaseAuthToken()
             if (token.isNullOrEmpty()) {
                 Log.e("GenerateViewModel", "Firebase token is empty or null")
@@ -68,12 +74,17 @@ class GenerateViewModel(
             try {
                 val result = generateRepository.postGenerateQuery("Bearer $token", prompt)
                 _response.value = result
+                if (result != null) {
+                    _isLoadingGenerate.value = false
+                }
             } catch (e: SocketTimeoutException) {
                 Log.e("GenerateViewModel", "Network request timed out: ${e.message}")
                 _response.value = null// Handle the timeout specifically
+                _isLoadingGenerate.value = false
             } catch (e: Exception) {
                 Log.e("GenerateViewModel", "Error: ${e.message}")
                 _response.value = null // Handle other errors
+                _isLoadingGenerate.value = false
             }
         }
     }
