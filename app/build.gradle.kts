@@ -57,6 +57,10 @@ dependencies {
     // ExoPlayer
     implementation("androidx.media3:media3-exoplayer:1.2.0")
     implementation("androidx.media3:media3-ui:1.2.0")
+    implementation("androidx.media3:media3-common:1.2.0")
+
+    // Youtube player
+    implementation("com.pierfrancescosoffritti.androidyoutubeplayer:core:12.1.0")
 
     // Shimmer (Buat bikin loading)
     implementation("com.valentinilk.shimmer:compose-shimmer:1.2.0")

@@ -16,4 +16,6 @@ sealed class Screen(val route: String) {
     object HomeS : Screen("home_search")
     object GeneratingScreen : Screen("generating_course_screen")
     object CourseGallery : Screen("course_gallery")
+    object VideoPlayerScreen: Screen("video_player_screen")
+    object Youtube: Screen("youtube_screen")
 }

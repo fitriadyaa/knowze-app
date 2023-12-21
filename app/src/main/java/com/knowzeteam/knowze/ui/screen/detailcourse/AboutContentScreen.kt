@@ -32,7 +32,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -41,18 +40,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.knowzeteam.knowze.data.local.AboutContentData
-import com.knowzeteam.knowze.data.remote.response.courseResponse.CourseResponse
 import com.knowzeteam.knowze.ui.ViewModelFactory
 import com.knowzeteam.knowze.ui.component.CategoryButton
 import com.knowzeteam.knowze.ui.component.CourseItem
 import com.knowzeteam.knowze.ui.component.VideoItem
-import com.knowzeteam.knowze.ui.theme.KnowzeTheme
 
 @Composable
 fun AboutContentScreen(
@@ -91,62 +85,41 @@ fun AboutContentScreen(
                 .fillMaxSize()
         ) {
             Column(
-                horizontalAlignment = Alignment.Start,
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
             ) {
-                Row(
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = modifier
-                        .fillMaxWidth()
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.course_content),
-                        style = MaterialTheme.typography.titleLarge.copy(
-                            fontSize = 20.sp,
-                            fontWeight = FontWeight.Bold
-                        ),
-                        modifier = modifier
-                            .padding(top = 20.dp)
-                    )
-
-                    Text(
-                        text = stringResource(id = R.string.topic),
-                        style = MaterialTheme.typography.titleSmall.copy(
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.Light
-                        ),
-                        modifier = modifier
-                            .padding(top = 20.dp, end = 10.dp)
-                    )
-                }
-
-                Divider(modifier = modifier.padding(horizontal = 16.dp, vertical = 16.dp))
-
-                Box(
+                LazyColumn(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(end = 16.dp, bottom = 10.dp)
                 ) {
-                    LazyColumn {
-                        // Check if the subtitles list is not null and not empty
-                        courseDetails?.subtitles?.let { subtitles ->
-                            items(subtitles) { subtitle ->
-                                // Only create a CourseItem if the subtitle is not null
-                                subtitle?.let {
-                                    CourseItem(subtitle = it)
-                                }
+                    item {
+                        Text(text = "List Kursus", color = Color.Black, style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold))
+                    }
+
+                    courseDetails?.subtitles?.let { subtitles ->
+                        items(subtitles) { subtitle ->
+                            subtitle?.let {
+                                Spacer(modifier = Modifier.height(10.dp))
+                                CourseItem(subtitle = it, navController)
+                                Spacer(modifier = Modifier.height(10.dp))
                             }
                         }
                     }
 
-                    LazyColumn {
-                        // Check if the subtitles list is not null and not empty
-                        videoData?.videos?.let { subtitles ->
-                            items(subtitles) { subtitle ->
-                                // Only create a CourseItem if the subtitle is not null
-                                subtitle?.let {
-                                    VideoItem(subtitle = it)
-                                }
+                    item {
+                        Spacer(modifier = Modifier.height(16.dp)) // Space between the two lists
+                        Text(text = "Video", color = Color.Black, style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold))
+                    }
+
+                    videoData?.videos?.let { videos ->
+                        items(videos) { video ->
+                            video?.let {
+                                Spacer(modifier = Modifier.height(10.dp))
+                                VideoItem(
+                                    subtitle = it,
+                                    navController = navController
+                                )
+                                Spacer(modifier = Modifier.height(10.dp))
                             }
                         }
                     }
@@ -163,123 +136,88 @@ fun BannerContent(
     modifier: Modifier = Modifier
 ) {
     Box(modifier = Modifier) {
-        Box(
-            modifier = modifier
+        Image(
+            painter = painterResource(id = R.drawable.bg_surface),
+            contentDescription = "Gambar Course",
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
                 .fillMaxWidth()
-                .size(375.dp, 338.dp)
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.ex_pict_course),
-                contentDescription = "Gambar Course",
-                contentScale = ContentScale.Crop,
-                modifier = modifier
-                    .fillMaxSize()
-            )
-        }
-
+                .height(240.dp)
+        )
         Column(
             horizontalAlignment = Alignment.Start,
         ) {
-            Row(
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically,
+            Surface(
                 modifier = modifier
-                    .fillMaxWidth()
-                    .padding(top = 20.dp, bottom = 10.dp, start = 10.dp, end = 30.dp)
+                    .padding(top = 10.dp, start = 10.dp)
+                    .size(56.dp)
+                    .clip(CircleShape),
+                color = MaterialTheme.colorScheme.primary
             ) {
-
-                Surface(
+                Icon(
+                    imageVector = Icons.Default.KeyboardArrowLeft,
+                    contentDescription = "Next",
+                    tint = MaterialTheme.colorScheme.onPrimary,
                     modifier = modifier
-                        .padding(top = 10.dp)
-                        .size(56.dp)
-                        .clip(CircleShape),
-                    color = MaterialTheme.colorScheme.primary
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.KeyboardArrowLeft,
-                        contentDescription = "Next",
-                        tint = MaterialTheme.colorScheme.onPrimary,
-                        modifier = modifier
-                            .padding(16.dp)
-                            .clickable(onClick = { navController.popBackStack() })
-                    )
-                }
+                        .padding(16.dp)
+                        .clickable(onClick = { navController.popBackStack() })
+                )
             }
-
-            Spacer(modifier = modifier.height(25.dp))
-
+            Spacer(modifier = modifier.height(10.dp))
             Row(
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.Top,
+                verticalAlignment = Alignment.CenterVertically,
                 modifier = modifier
                     .fillMaxWidth()
                     .padding(start = 10.dp, top = 10.dp, end = 10.dp)
             ) {
-                CategoryButton(categoryText = "Photography", onClick = { /*TODO*/ }, colors = MaterialTheme.colorScheme.primary)
+                CategoryButton(categoryText = course.themeActivity ?: "", onClick = { /*TODO*/ }, colors = MaterialTheme.colorScheme.primary)
                 Spacer(modifier = modifier.width(10.dp))
-                CategoryButton(categoryText = "Indoor", onClick = { /*TODO*/ }, colors = Color(0xFFFF9900))
+                CategoryButton(categoryText = course.typeActivity ?: "", onClick = { /*TODO*/ }, colors = Color(0xFFFF9900))
             }
-
             Column(
                 horizontalAlignment = Alignment.Start,
                 modifier = modifier
                     .padding(start = 10.dp, top = 10.dp, end = 10.dp)
             ) {
-                // Judul Course
                 Text(
                     text = course.title ?: "Default Title",
                     style = MaterialTheme.typography.titleLarge.copy(
-                        fontSize = 24.sp,
-                        textAlign = TextAlign.Start,
                         fontWeight = FontWeight.Bold,
-                        color = Color.White
+                        color = Color.Black,
                     ),
                     modifier = modifier
                         .fillMaxWidth()
                         .padding(vertical = 8.dp)
                 )
-
-                Spacer(modifier = modifier.height(25.dp))
-
                 Row(
-                    horizontalArrangement = Arrangement.Start,
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = modifier
                         .fillMaxWidth()
-                        .padding(top = 10.dp, end = 10.dp)
                 ) {
-                    // Rating Course //
                     Image(
                         painter = painterResource(id = R.drawable.ic_star),
                         contentDescription = "Course Time",
                         modifier = modifier
                     )
-
                     Spacer(modifier = modifier.width(4.dp))
-
                     Text(
                         text = stringResource(id = R.string.course_rating),
                         style = MaterialTheme.typography.bodyMedium.copy(
-                            color = Color.White
+                            color = Color.Black
                         ),
                     )
-
                     Spacer(modifier = modifier.width(10.dp))
-
-                    // Course Time //
                     Image(
                         painter = painterResource(id = R.drawable.ic_time),
                         contentDescription = "Course Time",
                         modifier = modifier
                             .size(24.dp)
                     )
-
                     Spacer(modifier = modifier.width(4.dp))
-
                     Text(
                         text = course.duration ?: "days",
                         style = MaterialTheme.typography.bodyMedium.copy(
-                            color = Color.White
+                            color = Color.Black
                         ),
                     )
                 }

@@ -1,9 +1,6 @@
 package com.knowzeteam.knowze.data.remote.response.courseResponse
 
-import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import com.squareup.moshi.JsonClass
-import kotlinx.parcelize.Parcelize
 
 data class CourseResponse(
 

@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
+import com.knowzeteam.knowze.data.remote.response.courseResponse.Content
 import com.knowzeteam.knowze.data.remote.response.courseResponse.CourseResponse
 import com.knowzeteam.knowze.data.remote.response.courseResponse.SubtitlesItem
 import com.knowzeteam.knowze.data.remote.response.videoresponse.VideoRequest
@@ -112,5 +113,11 @@ class CourseViewModel(private val generateRepository: GenerateRepository, privat
                 // Handle the exception
             }
         }
+    }
+
+    fun getContentById(contentId: String?): Content? {
+        // Assuming courseDetails is already populated with the course data
+        // and each SubtitlesItem has a Content object
+        return courseDetails.value?.subtitles?.firstOrNull { it?.id == contentId }?.content
     }
 }
