@@ -74,32 +74,12 @@ fun SplashScreen(navController: NavController) {
         contentAlignment = Alignment.Center,
         modifier = Modifier.fillMaxSize()
     ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
-            modifier = Modifier.fillMaxSize()
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.ic_knowze),
-                contentDescription = "Logo Splash",
-                modifier = Modifier
-                    .size(50.dp)
-                    .scale(scale.value)
-            )
-
-            Spacer(modifier = Modifier.height(60.dp))
-
-            Text(
-                text = stringResource(id = R.string.app_name),
-                style = MaterialTheme.typography.titleLarge.copy(
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Black,
-                    textAlign = TextAlign.Center
-                ),
-                modifier = Modifier
-                    .alpha(textAlpha.value)
-            )
-        }
+        Image(
+            painter = painterResource(id = R.drawable.ic_knowze),
+            contentDescription = "Logo Splash",
+            modifier = Modifier
+                .size(50.dp)
+                .scale(scale.value)
+        )
     }
 }

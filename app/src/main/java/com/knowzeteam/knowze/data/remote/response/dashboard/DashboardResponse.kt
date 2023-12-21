@@ -24,7 +24,6 @@ data class DashboardResponse(
 )
 
 data class CoursesItem(
-
     @field:SerializedName("duration")
     val duration: String? = null,
 
@@ -38,7 +37,10 @@ data class CoursesItem(
     val title: String? = null,
 
     @field:SerializedName("total_lessons")
-    val totalLessons: Int? = null
+    val totalLessons: Int? = null,
+
+    @field:SerializedName("timestamp")
+    val timestamp: Long? = null
 )
 
 data class ProgressItem(

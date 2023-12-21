@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
@@ -42,6 +43,7 @@ fun IntroOneScreen(
             contentDescription = stringResource(R.string.icon_welcome),
             modifier = modifier
                 .size(324.dp, 316.dp)
+                .padding(horizontal = 16.dp)
         )
 
         Spacer(modifier = Modifier.height(50.dp))
@@ -52,6 +54,7 @@ fun IntroOneScreen(
                 fontSize = 24.sp,
                 textAlign = TextAlign.Center,
                 fontWeight = FontWeight.Bold,
+                color = Color.Black
             ),
             modifier = modifier.fillMaxWidth()
         )
@@ -60,6 +63,7 @@ fun IntroOneScreen(
             text = stringResource(id = R.string.desc_intro1),
             style = MaterialTheme.typography.bodyMedium.copy(
                 textAlign = TextAlign.Center,
+                color = Color.Black
             ),
             modifier = modifier
                 .fillMaxWidth()
@@ -99,7 +103,7 @@ fun IntroOneScreen(
                 Icon(
                     imageVector = Icons.Default.KeyboardArrowRight,
                     contentDescription = "Next",
-                    tint = MaterialTheme.colorScheme.onPrimary,
+                    tint = Color.White,
                     modifier = Modifier
                         .padding(16.dp)
                 )

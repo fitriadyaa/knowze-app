@@ -22,10 +22,12 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -51,107 +53,116 @@ fun LoginWithEmailScreen(
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    titleContentColor = Color.White,
+                    navigationIconContentColor = Color.White
+                ),
                 title = {
-                    androidx.compose.material3.Text(
-                        text = stringResource(id = R.string.login_here),
+                    androidx.compose.material.Text(
+                        text = stringResource(id = R.string.login),
                         maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
+                        overflow = TextOverflow.Ellipsis,
+                        color = Color.White
                     )
                 },
                 navigationIcon = {
-                    IconButton(onClick = { navController.navigate(Screen.Login.route)}) {
+                    IconButton(onClick = { navController.popBackStack() }) {
                         Icon(
                             imageVector = Icons.Filled.KeyboardArrowLeft,
-                            contentDescription = "Localized description"
+                            contentDescription = "Localized description",
                         )
                     }
                 }
             )
-        },
-        content = {
-            Box (
-                modifier = modifier
-                    .fillMaxSize()
-                    .padding(16.dp),
-                contentAlignment = Alignment.Center
-            ){
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center,
-                    modifier = modifier.fillMaxSize()
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.login_here),
-                        style = MaterialTheme.typography.titleMedium.copy(
-                            fontSize = 24.sp,
-                            fontWeight = FontWeight.Bold,
-                            textAlign = TextAlign.Center
-                        ),
-                        modifier = Modifier.fillMaxWidth()
-                    )
+        }
+    ) {
+        Box(
+            modifier = modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+                modifier = modifier.fillMaxSize()
+            ) {
+                Text(
+                    text = stringResource(id = R.string.login_here),
+                    style = MaterialTheme.typography.titleMedium.copy(
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center,
+                        color = Color.Black
+                    ),
+                    modifier = Modifier.fillMaxWidth()
+                )
 
-                    Spacer(modifier = Modifier.height(30.dp))
+                Spacer(modifier = Modifier.height(30.dp))
 
-                    Box {
-                        Column {
-                            Text(
-                                text = stringResource(id = R.string.email),
-                                style = MaterialTheme.typography.bodyMedium.copy(
-                                    fontSize = 14.sp,
-                                    fontWeight = FontWeight.Light,
-                                    textAlign = TextAlign.Start
-                                )
+                Box {
+                    Column {
+                        Text(
+                            text = stringResource(id = R.string.email),
+                            style = MaterialTheme.typography.bodyMedium.copy(
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.Light,
+                                textAlign = TextAlign.Start,
+                                color = Color.Black
                             )
-
-                            EmailTextField(label = stringResource(id = R.string.email_example))
-
-                            Spacer(modifier = Modifier.height(25.dp))
-
-                            Text(
-                                text = stringResource(id = R.string.password),
-                                style = MaterialTheme.typography.bodyMedium.copy(
-                                    fontSize = 14.sp,
-                                    fontWeight = FontWeight.Light,
-                                    textAlign = TextAlign.Start
-                                )
-                            )
-
-                            PasswordTextField(label = stringResource(id = R.string.password_example))
-                        }
-                    }
-
-                    Spacer(modifier = Modifier.height(25.dp))
-
-                    ClickableText(
-                        onClick = { /*TODO*/ },
-                        text = AnnotatedString(stringResource(id = R.string.forgot_password)),
-                        style = MaterialTheme.typography.bodyMedium.copy(
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.Light,
-                            color = MaterialTheme.colorScheme.primary
                         )
-                    )
 
-                    Spacer(modifier = Modifier.height(25.dp))
+                        EmailTextField(label = stringResource(id = R.string.email_example))
 
-                    LoginButton(onClick = { /*TODO*/ })
+                        Spacer(modifier = Modifier.height(25.dp))
 
-                    Spacer(modifier = Modifier.height(10.dp))
+                        Text(
+                            text = stringResource(id = R.string.password),
+                            style = MaterialTheme.typography.bodyMedium.copy(
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.Light,
+                                textAlign = TextAlign.Start,
+                                color = Color.Black
+                            )
+                        )
 
-                    ClickableText(
-                        onClick = { /*TODO*/ },
-                        text = AnnotatedString(stringResource(id = R.string.register_message)),
-                        style = MaterialTheme.typography.bodyMedium.copy(
-                            fontSize = 12.sp,
-                            textAlign = TextAlign.Center,
-                            color = MaterialTheme.colorScheme.primary
-                        ),
-                        modifier = Modifier.fillMaxWidth()
-                    )
+                        PasswordTextField(label = stringResource(id = R.string.password_example))
+                    }
                 }
+
+                Spacer(modifier = Modifier.height(25.dp))
+
+                ClickableText(
+                    onClick = { /*TODO*/ },
+                    text = AnnotatedString(stringResource(id = R.string.forgot_password)),
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Light,
+                        color = MaterialTheme.colorScheme.primary,
+
+                        )
+                )
+
+                Spacer(modifier = Modifier.height(25.dp))
+
+                LoginButton(onClick = { /*TODO*/ })
+
+                Spacer(modifier = Modifier.height(10.dp))
+
+                ClickableText(
+                    onClick = { /*TODO*/ },
+                    text = AnnotatedString(stringResource(id = R.string.register_message)),
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        fontSize = 12.sp,
+                        textAlign = TextAlign.Center,
+                        color = MaterialTheme.colorScheme.primary
+                    ),
+                    modifier = Modifier.fillMaxWidth()
+                )
             }
         }
-    )
+    }
 }
 
 @Composable
@@ -169,7 +180,8 @@ fun LoginButton(
     ) {
         androidx.compose.material3.Text(
             text = stringResource(R.string.login),
-            modifier = modifier.padding(start = 8.dp)
+            modifier = modifier.padding(start = 8.dp),
+            color = Color.White
         )
     }
 }

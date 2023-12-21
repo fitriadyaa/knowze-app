@@ -8,6 +8,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.knowzeteam.knowze.data.local.UserProfileEntity
+import com.knowzeteam.knowze.data.remote.response.dashboard.CoursesItem
 import com.knowzeteam.knowze.data.remote.response.dashboard.DashboardResponse
 import com.knowzeteam.knowze.data.remote.retrofit.ApiService
 import com.knowzeteam.knowze.repository.TokenRepository
@@ -37,6 +38,10 @@ class LoginViewModel(
 
     private val _userPhotoUrl = MutableStateFlow<String?>(null)
     val userPhotoUrl: StateFlow<String?> = _userPhotoUrl.asStateFlow()
+
+    private val _newestCourses = MutableStateFlow<List<CoursesItem?>?>(null)
+    val newestCourses: StateFlow<List<CoursesItem?>?> = _newestCourses.asStateFlow()
+
 
     fun googleLogin(googleSignInAccount: GoogleSignInAccount) {
 
@@ -90,6 +95,21 @@ class LoginViewModel(
                             val response = apiService.getDashboardData("Bearer $token")
                             if (response.isSuccessful) {
                                 _loginState.value = LoginState.Success(response.body())
+
+                                val dashboardResponse = response.body()
+                                if (dashboardResponse != null) {
+                                    val courses = dashboardResponse.courses
+                                    if (!courses.isNullOrEmpty()) {
+                                        // Sort the courses by timestamp in descending order to get the newest ones first
+                                        val sortedCourses = courses.sortedByDescending { it?.timestamp ?: 0 }
+
+                                        // Save all courses, not just the two newest ones
+                                        _newestCourses.value = sortedCourses
+
+                                        // Update the login state
+                                        _loginState.value = LoginState.Success(dashboardResponse)
+                                    }
+                                }
                             } else {
                                 val errorMessage = "API call failed: ${response.errorBody()?.string()}"
                                 _loginState.value = LoginState.Error(errorMessage)
@@ -147,8 +167,6 @@ class LoginViewModel(
         }
     }
 
-
-
     fun logout() {
         viewModelScope.launch {
             try {
@@ -156,6 +174,33 @@ class LoginViewModel(
                 _loginState.value = LoginState.Logout
             } catch (e: Exception) {
                 _loginState.value = LoginState.Error(e.message ?: "Logout failed")
+            }
+        }
+    }
+
+    init {
+        fetchCourses()
+    }
+
+    private fun fetchCourses() {
+        viewModelScope.launch {
+            val token = getFirebaseAuthToken()
+            if (token != null) {
+                try {
+                    val response = apiService.getDashboardData("Bearer $token")
+                    if (response.isSuccessful) {
+                        val dashboardResponse = response.body()
+                        dashboardResponse?.let { dashboard ->
+                            _newestCourses.value = dashboard.courses
+                        }
+                    } else {
+                        Log.e(TAG, "API call failed: ${response.errorBody()?.string()}")
+                    }
+                } catch (e: Exception) {
+                    Log.e(TAG, "Error fetching courses: ${e.message}")
+                }
+            } else {
+                Log.e(TAG, "Failed to get Firebase token")
             }
         }
     }

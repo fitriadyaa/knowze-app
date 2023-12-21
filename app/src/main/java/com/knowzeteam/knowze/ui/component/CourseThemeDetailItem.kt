@@ -102,9 +102,9 @@ fun CourseThemeDetailItem(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Start
             ) {
-                CategoryButton(categoryText = "Olahraga", onClick = { /*TODO*/ })
+                CategoryButton(categoryText = "Olahraga", onClick = { /*TODO*/ }, colors = MaterialTheme.colorScheme.primary)
                 Spacer(modifier = modifier.width(10.dp))
-                CategoryButton(categoryText = "Outdoor", onClick = { /*TODO*/ })
+                CategoryButton(categoryText = "Outdoor", onClick = { /*TODO*/ }, colors = Color(0xFFFF9900))
             }
 
             Spacer(modifier = Modifier.height(25.dp))

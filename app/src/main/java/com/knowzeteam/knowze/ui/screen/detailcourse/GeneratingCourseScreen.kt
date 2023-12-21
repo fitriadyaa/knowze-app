@@ -92,7 +92,8 @@ fun BannerGenerateCourse() {
             text = stringResource(id = R.string.generate_message),
             style = MaterialTheme.typography.titleLarge.copy(
                 fontSize = 14.sp,
-                fontWeight = FontWeight.SemiBold
+                fontWeight = FontWeight.SemiBold,
+                color = Color.Black
             ),
             modifier = Modifier
                 .weight(1f)

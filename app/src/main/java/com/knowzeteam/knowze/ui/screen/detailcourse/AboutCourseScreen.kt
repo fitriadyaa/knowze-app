@@ -1,5 +1,6 @@
 package com.knowzeteam.knowze.ui.screen.detailcourse
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -40,16 +41,19 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import com.google.gson.Gson
+import com.knowzeteam.knowze.data.local.AboutContentData
 import com.knowzeteam.knowze.data.remote.response.courseResponse.CourseResponse
 import com.knowzeteam.knowze.ui.ViewModelFactory
 import com.knowzeteam.knowze.ui.component.CategoryButton
+import com.knowzeteam.knowze.ui.navigation.Screen
 
 
 @Composable
 fun AboutCourseScreen(
     courseId: String,
-    onBackClick: () -> Unit,
-    onButtonClick: () -> Unit,
+    navController: NavController,
     modifier: Modifier = Modifier
 ) {
 
@@ -70,8 +74,7 @@ fun AboutCourseScreen(
             modifier = modifier
                 .fillMaxSize()
         ) {
-            BannerCourse(onBackClick = onBackClick)
-
+            BannerCourse(navController)
             courseDetails?.let { course ->
                 Box(
                     modifier = modifier
@@ -82,17 +85,13 @@ fun AboutCourseScreen(
                         .padding(16.dp)
                         .fillMaxSize()
                 ) {
-                    CourseContent(course, onButtonClick, modifier)
+                    CourseContent(course, navController, modifier, courseId)
                 }
             } ?: run {
                 Box(
                     contentAlignment = Alignment.Center,
                     modifier = modifier.fillMaxSize()
                 ) {
-                    // You can replace this with a CircularProgressIndicator or a Text
-                    // CircularProgressIndicator()
-                    // Or, display a message
-                    // Text("Loading course details...", textAlign = TextAlign.Center)
                 }
             }
         }
@@ -188,6 +187,7 @@ fun AboutCourseScreen(
                                 fontSize = 16.sp,
                                 textAlign = TextAlign.Center,
                                 fontWeight = FontWeight.Bold,
+                                color = Color.Gray
                             ),
                             modifier = modifier
                                 .fillMaxWidth()
@@ -201,9 +201,10 @@ fun AboutCourseScreen(
 
 @Composable
 fun CourseContent(
-    course: CourseResponse,
-    onButtonClick: () -> Unit,
-    modifier: Modifier
+    courseData: CourseResponse,
+    navController: NavController,
+    modifier: Modifier,
+    courseId: String,
 ) {
     Column(
         modifier = modifier
@@ -219,9 +220,9 @@ fun CourseContent(
                 .padding(top = 10.dp, end = 10.dp)
         ) {
             // Course Category: Photography
-            CategoryButton(categoryText = "Photography", onClick = { /*TODO*/ })
+            CategoryButton(categoryText = courseData.themeActivity ?: "Tema", onClick = { /*TODO*/ }, colors = MaterialTheme.colorScheme.primary)
             Spacer(modifier = modifier.width(10.dp))
-            CategoryButton(categoryText = "Indoor", onClick = { /*TODO*/ })
+            CategoryButton(categoryText = courseData.typeActivity ?: "Tipe", onClick = { /*TODO*/ }, colors = Color(0xFFFF9900))
         }
         Spacer(modifier = modifier.height(25.dp))
 
@@ -232,11 +233,12 @@ fun CourseContent(
         ) {
             // Judul Course
             Text(
-                text = course.title ?: "Default Title",
+                text = courseData.title ?: "Default Title",
                 style = MaterialTheme.typography.titleLarge.copy(
                     fontSize = 24.sp,
                     textAlign = TextAlign.Start,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black
                 ),
                 modifier = modifier
                     .fillMaxWidth()
@@ -259,9 +261,9 @@ fun CourseContent(
                 Spacer(modifier = modifier.width(4.dp))
 
                 Text(
-                    text = stringResource(id = R.string.course_rating)
+                    text = courseData.lessons.toString() + " Topic",
+                    color = Color.Black
                 )
-                // Rating Course //
 
                 Spacer(modifier = modifier.width(10.dp))
 
@@ -275,7 +277,8 @@ fun CourseContent(
                 Spacer(modifier = modifier.width(4.dp))
 
                 Text(
-                    text = course.duration ?: "00.00",
+                    text = courseData.duration ?: "00.00",
+                    color = Color.Black
                 )
             }
 
@@ -292,7 +295,8 @@ fun CourseContent(
                     style = MaterialTheme.typography.titleLarge.copy(
                         fontSize = 16.sp,
                         textAlign = TextAlign.Start,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
+                        color = Color.Black
                     ),
                     modifier = modifier
                         .fillMaxWidth()
@@ -301,68 +305,77 @@ fun CourseContent(
                 Spacer(modifier = modifier.height(10.dp))
 
                 Text(
-                    text = course.title ?: "Description",
+                    text = courseData.desc ?: "Description",
                     style = MaterialTheme.typography.bodyMedium.copy(
                         fontSize = 14.sp,
                         textAlign = TextAlign.Start,
-                        fontWeight = FontWeight.Light
+                        fontWeight = FontWeight.Light,
+                        color = Color.Black
                     ),
                     modifier = Modifier
                         .fillMaxWidth()
                 )
-
                 Spacer(modifier = modifier.height(60.dp))
+            }
+            // Button Mulai
+            Button(
+                onClick = {
 
-                // Button Mulai
-                Button(
-                    onClick = onButtonClick,
-                    shape = RoundedCornerShape(10.dp),
-                    colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary),
+                    courseData.id = courseId
+
+                    val dataAbout = AboutContentData(courseData)
+
+                    val gson = Gson()
+                    val course = gson.toJson(dataAbout)
+
+                    Log.d("jsonString", course)
+                    println("jsonString_print $course")
+
+                    navController.navigate("${Screen.AboutContent.route}/${course}")
+                },
+                shape = RoundedCornerShape(10.dp),
+                colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary),
+                modifier = modifier
+                    .fillMaxWidth()
+                    .size(327.dp, 60.dp)
+            ) {
+                Text(
+                    text = stringResource(id = R.string.start_now),
+                    style = MaterialTheme.typography.titleMedium.copy(
+                        fontSize = 16.sp,
+                        textAlign = TextAlign.Center,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White
+                    ),
                     modifier = modifier
                         .fillMaxWidth()
-                        .size(327.dp, 60.dp)
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.start_now),
-                        style = MaterialTheme.typography.titleMedium.copy(
-                            fontSize = 16.sp,
-                            textAlign = TextAlign.Center,
-                            fontWeight = FontWeight.Bold
-                        ),
-                        modifier = modifier
-                            .fillMaxWidth()
-                    )
-                }
+                )
             }
         }
     }
 }
 
-
-
 @Composable
 fun BannerCourse(
-    onBackClick:  () -> Unit,
+    navController: NavController,
     modifier: Modifier = Modifier
 ) {
     Box(modifier = Modifier) {
         Image(
-            painter = painterResource(id = R.drawable.ex_pict_course),
+            painter = painterResource(id = R.drawable.bg_course),
             contentDescription = "Gambar Course",
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .fillMaxWidth()
-                .size(375.dp, 338.dp)
+                .height(180.dp)
         )
-
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
             modifier = modifier
                 .fillMaxWidth()
-                .padding(bottom = 60.dp, start = 10.dp, end = 30.dp)
+                .padding(top = 20.dp, bottom = 60.dp, start = 10.dp, end = 30.dp)
         ) {
-
             Surface(
                 modifier = Modifier
                     .padding(top = 10.dp)
@@ -373,13 +386,12 @@ fun BannerCourse(
                 Icon(
                     imageVector = Icons.Default.KeyboardArrowLeft,
                     contentDescription = "Next",
-                    tint = MaterialTheme.colorScheme.onPrimary,
+                    tint = Color.White,
                     modifier = Modifier
                         .padding(16.dp)
-                        .clickable(onClick = onBackClick)
+                        .clickable(onClick = { navController.popBackStack() })
                 )
             }
-
         }
     }
 }

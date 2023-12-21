@@ -9,6 +9,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.google.firebase.auth.FirebaseAuth
+import com.google.gson.Gson
+import com.knowzeteam.knowze.data.local.AboutContentData
+import com.knowzeteam.knowze.data.remote.response.courseResponse.Content
 import com.knowzeteam.knowze.ui.navigation.Screen
 import com.knowzeteam.knowze.ui.screen.auth.login.LoginScreen
 import com.knowzeteam.knowze.ui.screen.auth.login.LoginViewModel
@@ -18,7 +21,9 @@ import com.knowzeteam.knowze.ui.screen.detailcourse.AboutContentScreen
 import com.knowzeteam.knowze.ui.screen.detailcourse.AboutCourseScreen
 import com.knowzeteam.knowze.ui.screen.detailcourse.DetailCourseScreen
 import com.knowzeteam.knowze.ui.screen.detailcourse.GeneratingCourseScreen
-import com.knowzeteam.knowze.ui.screen.gallery.CourseThemeGallery
+import com.knowzeteam.knowze.ui.screen.detailcourse.VideoPlayerScreen
+import com.knowzeteam.knowze.ui.screen.detailcourse.YoutubeScreen
+import com.knowzeteam.knowze.ui.screen.gallery.CourseGallery
 import com.knowzeteam.knowze.ui.screen.home.HomeScreen
 import com.knowzeteam.knowze.ui.screen.home.HomeSearch
 import com.knowzeteam.knowze.ui.screen.keyword.TrendingKeywordScreen
@@ -27,8 +32,11 @@ import com.knowzeteam.knowze.ui.screen.welcome.IntroSecondScreen
 import com.knowzeteam.knowze.ui.screen.welcome.IntroThridScreen
 import com.knowzeteam.knowze.ui.screen.welcome.SplashScreen
 
+
 @Composable
 fun KnowzeApp(viewModelFactory: ViewModelProvider.Factory) {
+
+    val gson = Gson()
 
     val navController = rememberNavController()
     val loginViewModel: LoginViewModel = viewModel(factory = viewModelFactory)
@@ -77,13 +85,7 @@ fun KnowzeApp(viewModelFactory: ViewModelProvider.Factory) {
         composable(Screen.Home.route){
             HomeScreen(
                 navController = navController,
-                viewModel = loginViewModel
-            )
-        }
-
-        composable(Screen.GalleryCourse.route){
-            CourseThemeGallery(
-                onBack = { navController.popBackStack() },
+                viewModel = loginViewModel,
             )
         }
 
@@ -109,17 +111,35 @@ fun KnowzeApp(viewModelFactory: ViewModelProvider.Factory) {
 
             AboutCourseScreen(
                 courseId = courseId,
-                onBackClick = { navController.popBackStack() },
-                onButtonClick = { /* TODO: Implement the button click action */ }
+                navController = navController,
             )
         }
 
-        composable(Screen.AboutContent.route){
-            AboutContentScreen()
+        composable(
+            route = "${Screen.AboutContent.route}/{course}",
+            arguments = listOf(navArgument("course") { type = NavType.StringType })
+        ) { backStackEntry ->
+
+            val courseJson = backStackEntry.arguments?.getString("course")
+            val course = gson.fromJson(courseJson, AboutContentData::class.java)
+
+            if (courseJson != null) {
+                AboutContentScreen(
+                    course = course,
+                    navController = navController,
+                )
+            }
         }
 
-        composable(Screen.DetailCourse.route){
-            DetailCourseScreen()
+        composable(
+            route = "${Screen.DetailCourse.route}/{courseId}",
+            arguments = listOf(navArgument("courseId") { type = NavType.StringType })
+        ){backStackEntry ->
+            val courseId = backStackEntry.arguments?.getString("courseId")
+            DetailCourseScreen(
+                courseId = courseId.toString(),
+                navController = navController
+            )
         }
 
         composable(Screen.TrendingKeyword.route) {
@@ -132,6 +152,26 @@ fun KnowzeApp(viewModelFactory: ViewModelProvider.Factory) {
             GeneratingCourseScreen(
                 navController= navController,
             )
+        }
+
+        composable(Screen.CourseGallery.route){
+            CourseGallery(
+                onBack = { navController.popBackStack() },
+            )
+        }
+
+        composable(
+            route = "${Screen.VideoPlayerScreen.route}/{link}",
+            arguments = listOf(navArgument("link") { type = NavType.StringType })
+        ) { backStackEntry ->
+            VideoPlayerScreen(link = backStackEntry.arguments?.getString("link") ?: "")
+        }
+
+        composable(
+            route = "${Screen.Youtube.route}/{videoId}",
+            arguments = listOf(navArgument("videoId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            YoutubeScreen(videoId = backStackEntry.arguments?.getString("videoId") ?: "")
         }
     }
 }

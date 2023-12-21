@@ -1,13 +1,22 @@
+import java.util.*
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("com.google.gms.google-services")
+    id("kotlin-parcelize")
     kotlin("kapt")
 }
+
 
 android {
     namespace = "com.knowzeteam.knowze"
     compileSdk = 34
+
+    val localProperties = Properties().apply {
+        load(rootProject.file("local.properties").inputStream())
+    }
+
 
     defaultConfig {
         applicationId = "com.knowzeteam.knowze"
@@ -15,6 +24,10 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
+
+
+        val baseUrl = localProperties.getProperty("BASE_URL", "default_url")
+        buildConfigField("String", "BASE_URL", "\"$baseUrl\"")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -40,6 +53,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.3"
@@ -56,6 +70,10 @@ dependencies {
     // ExoPlayer
     implementation("androidx.media3:media3-exoplayer:1.2.0")
     implementation("androidx.media3:media3-ui:1.2.0")
+    implementation("androidx.media3:media3-common:1.2.0")
+
+    // Youtube player
+    implementation("com.pierfrancescosoffritti.androidyoutubeplayer:core:12.1.0")
 
     // Shimmer (Buat bikin loading)
     implementation("com.valentinilk.shimmer:compose-shimmer:1.2.0")
@@ -94,6 +112,7 @@ dependencies {
 
     // Hilt dependencies
     implementation("com.google.dagger:hilt-android:2.38.1")
+    implementation("androidx.paging:paging-compose:1.0.0-alpha14")
     kapt("com.google.dagger:hilt-android-compiler:2.38.1")
 
     // Room dependencies
