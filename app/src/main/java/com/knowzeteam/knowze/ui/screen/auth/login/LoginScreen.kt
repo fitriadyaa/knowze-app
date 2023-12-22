@@ -62,7 +62,9 @@ fun LoginScreen(
             }
         }
         LoginViewModel.LoginState.Loading -> {
-            LoadingIndicator() // Show loading indicator
+            LoadingIndicator(
+
+            ) // Show loading indicator
         }
         LoginViewModel.LoginState.Idle -> {
             // Handle idle state if needed
@@ -144,7 +146,9 @@ fun LoginScreen(
 @Composable
 fun LoadingIndicator() {
     Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
-        CircularProgressIndicator()
+        CircularProgressIndicator(
+            color = MaterialTheme.colorScheme.primary
+        )
     }
 }
 @Composable

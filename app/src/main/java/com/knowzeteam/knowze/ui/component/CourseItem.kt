@@ -61,25 +61,14 @@ fun CourseItem(
             .padding(16.dp)
 
     ) {
-        Column {
-            Text(
-                text = subtitle.topic ?: "topic",
-                style = MaterialTheme.typography.titleLarge.copy(
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Black
-                )
+        Text(
+            text = subtitle.topic ?: "topic",
+            style = MaterialTheme.typography.titleLarge.copy(
+                fontSize = 12.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.Black
             )
-            Spacer(modifier = Modifier.height(10.dp))
-            Text(
-                text = "1 minute",
-                style = MaterialTheme.typography.bodyLarge.copy(
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Light,
-                    color = Color.Black
-                )
-            )
-        }
+        )
     }
 }
 

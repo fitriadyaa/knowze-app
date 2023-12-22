@@ -74,7 +74,8 @@ fun CourseGallery(
                         text = stringResource(id = R.string.course_gallery),
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
-                        color = Color.White
+                        color = Color.White,
+                        style = MaterialTheme.typography.bodyLarge
                     )
                 },
                 navigationIcon = {
@@ -157,12 +158,7 @@ fun CardItem(
 
 @Composable
 fun LoadingItem() {
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-    ) {
+    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         CircularProgressIndicator()
     }
 }

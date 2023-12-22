@@ -176,7 +176,7 @@ fun BannerContent(
                 Icon(
                     imageVector = Icons.Default.KeyboardArrowLeft,
                     contentDescription = "Next",
-                    tint = MaterialTheme.colorScheme.onPrimary,
+                    tint = Color.White,
                     modifier = modifier
                         .clickable(onClick = { navController.popBackStack() })
                         .padding(16.dp)

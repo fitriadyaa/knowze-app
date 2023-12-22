@@ -85,15 +85,15 @@ fun DetailCourseScreen(
                         )
                     }
                 },
-                actions = {
-                    IconButton(onClick = { /* do something */ }) {
-                        Icon(
-                            imageVector = Icons.Filled.Check,
-                            contentDescription = "Localized description",
-                            tint = Color.White
-                        )
-                    }
-                },
+//                actions = {
+//                    IconButton(onClick = { /* do something */ }) {
+//                        Icon(
+//                            imageVector = Icons.Filled.Check,
+//                            contentDescription = "Localized description",
+//                            tint = Color.White
+//                        )
+//                    }
+//                },
                 scrollBehavior = scrollBehavior,
             )
         },

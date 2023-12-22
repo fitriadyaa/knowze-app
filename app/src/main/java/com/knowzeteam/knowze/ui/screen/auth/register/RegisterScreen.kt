@@ -62,7 +62,8 @@ fun RegisterScreen(
                         text = stringResource(id = R.string.register),
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
-                        color = Color.White
+                        color = Color.White,
+                        style = MaterialTheme.typography.bodyLarge
                     )
                 },
                 navigationIcon = {

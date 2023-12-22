@@ -7,7 +7,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
@@ -26,6 +28,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -65,7 +68,8 @@ fun TrendingKeywordScreen(
                         text = stringResource(id = R.string.trending_keyword),
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
-                        color = Color.White
+                        color = Color.White,
+                        style = MaterialTheme.typography.bodyLarge
                     )
                 },
                 navigationIcon = {
@@ -103,7 +107,12 @@ fun KeywordList(keywords: List<String>) {
         Column {
             keywords.forEach { keyword ->
                 KeywordItem(keyword)
-                Divider()
+                Divider(
+                    modifier = Modifier
+                        .height(2.dp)
+                        .clip(RoundedCornerShape(10.dp)),
+                    color = Color.LightGray
+                )
             }
         }
     }

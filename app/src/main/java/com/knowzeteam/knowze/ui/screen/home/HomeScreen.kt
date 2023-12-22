@@ -417,13 +417,17 @@ fun LogoutDialog(showLogoutDialog: MutableState<Boolean>, onConfirmLogout: () ->
         title = {
             Text(
                 "Konfirmasi Keluar",
-                style = TextStyle(color = Color.Black)
+                style = MaterialTheme.typography.titleMedium.copy(
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black
+                )
             )
         },
         text = {
             Text(
                 "Apakah kamu yakin ingin keluar?",
-                style = TextStyle(color = Color.Black) // Use style to set text color
+                style = MaterialTheme.typography.bodyMedium,
+                color = Color.Black
             )
         },
         confirmButton = {
@@ -432,14 +436,18 @@ fun LogoutDialog(showLogoutDialog: MutableState<Boolean>, onConfirmLogout: () ->
                     showLogoutDialog.value = false
                     onConfirmLogout()
                 },
-                colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFCB3A31) ),
             ) {
-                Text("Keluar", color = Color.White) // Set the text color to white
+                Text(
+                    "Keluar",
+                    style = MaterialTheme.typography.bodyMedium, color = Color.White
+                )
             }
         },
         dismissButton = {
             OutlinedButton(onClick = { showLogoutDialog.value = false }) {
-                Text("Tidak")
+                Text("Tidak",
+                    style = MaterialTheme.typography.bodyMedium, color = Color.Gray)
             }
         }
     )
@@ -503,7 +511,9 @@ fun CardCourseItem(
         ) {
             Text(
                 text = course?.title ?: "title",
-                style = MaterialTheme.typography.titleMedium,
+                style = MaterialTheme.typography.titleMedium.copy(
+                    fontWeight = FontWeight.Medium
+                ),
                 color = Color.Black
             )
         }
