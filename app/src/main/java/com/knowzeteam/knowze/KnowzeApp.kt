@@ -132,15 +132,22 @@ fun KnowzeApp(viewModelFactory: ViewModelProvider.Factory) {
         }
 
         composable(
-            route = "${Screen.DetailCourse.route}/{courseId}",
-            arguments = listOf(navArgument("courseId") { type = NavType.StringType })
-        ){backStackEntry ->
-            val courseId = backStackEntry.arguments?.getString("courseId")
+            route = "${Screen.DetailCourse.route}/{courseId}/{subtitleId}",
+            arguments = listOf(
+                navArgument("courseId") { type = NavType.StringType },
+                navArgument("subtitleId") { type = NavType.StringType }
+            )
+        ) { backStackEntry ->
+            val courseId = backStackEntry.arguments?.getString("courseId") ?: ""
+            val subtitleId = backStackEntry.arguments?.getString("subtitleId") ?: ""
+
             DetailCourseScreen(
-                courseId = courseId.toString(),
+                courseId = courseId,
+                subtitleId = subtitleId,
                 navController = navController
             )
         }
+
 
         composable(Screen.TrendingKeyword.route) {
             TrendingKeywordScreen(
@@ -171,7 +178,7 @@ fun KnowzeApp(viewModelFactory: ViewModelProvider.Factory) {
             route = "${Screen.Youtube.route}/{videoId}",
             arguments = listOf(navArgument("videoId") { type = NavType.StringType })
         ) { backStackEntry ->
-            YoutubeScreen(videoId = backStackEntry.arguments?.getString("videoId") ?: "")
+            YoutubeScreen(videoId = backStackEntry.arguments?.getString("videoId") ?: "", navController)
         }
     }
 }

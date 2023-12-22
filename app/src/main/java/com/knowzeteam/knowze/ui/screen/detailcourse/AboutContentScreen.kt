@@ -88,7 +88,8 @@ fun AboutContentScreen(
         ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
+                verticalArrangement = Arrangement.Center,
+                modifier = modifier.padding(14.dp)
             ) {
                 LazyColumn(
                     modifier = Modifier
@@ -161,6 +162,9 @@ fun BannerContent(
         )
         Column(
             horizontalAlignment = Alignment.Start,
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(top = 20.dp, bottom = 10.dp, start = 10.dp, end = 30.dp)
         ) {
             Surface(
                 modifier = modifier
@@ -172,10 +176,10 @@ fun BannerContent(
                 Icon(
                     imageVector = Icons.Default.KeyboardArrowLeft,
                     contentDescription = "Next",
-                    tint = MaterialTheme.colorScheme.onPrimary,
+                    tint = Color.White,
                     modifier = modifier
-                        .padding(16.dp)
                         .clickable(onClick = { navController.popBackStack() })
+                        .padding(16.dp)
                 )
             }
             Spacer(modifier = modifier.height(10.dp))

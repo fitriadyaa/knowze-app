@@ -46,7 +46,6 @@ fun SearchBar(
     isLoading: Boolean?
 ) {
     var searchText by remember { mutableStateOf(initialText) }
-//    val isSearching by remember { mutableStateOf(false) }
 
     SearchBarContent(
         searchText = searchText,
@@ -116,17 +115,17 @@ private fun SearchBarContent(
 
         if (isLoading == true) {
             // Display a loading indicator, e.g., a small CircularProgressIndicator
-            CircularProgressIndicator(modifier = Modifier.size(20.dp).align(Alignment.CenterEnd))
+            CircularProgressIndicator(modifier = Modifier.size(32.dp).align(Alignment.CenterEnd).padding(end = 10.dp))
         } else {
             // Existing Image for search icon
             Image(
                 painter = painterResource(id = R.drawable.ic_search),
                 contentDescription = "Search Icon",
-                contentScale = ContentScale.None,
+                contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .size(32.dp)
-                    .align(Alignment.CenterEnd)
                     .padding(end = 10.dp)
+                    .size(30.dp)
+                    .align(Alignment.CenterEnd)
                     .clickable {
                         onSearchAction(searchText)
                     }

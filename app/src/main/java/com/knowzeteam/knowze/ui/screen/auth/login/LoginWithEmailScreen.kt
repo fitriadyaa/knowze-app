@@ -63,7 +63,8 @@ fun LoginWithEmailScreen(
                         text = stringResource(id = R.string.login),
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
-                        color = Color.White
+                        color = Color.White,
+                        style = MaterialTheme.typography.bodyLarge
                     )
                 },
                 navigationIcon = {
@@ -181,7 +182,8 @@ fun LoginButton(
         androidx.compose.material3.Text(
             text = stringResource(R.string.login),
             modifier = modifier.padding(start = 8.dp),
-            color = Color.White
+            color = Color.White,
+            style = MaterialTheme.typography.bodyLarge
         )
     }
 }

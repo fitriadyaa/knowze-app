@@ -52,30 +52,23 @@ fun CourseItem(
             )
             .fillMaxWidth()
             .clickable {
-                subtitle.content?.let {
-                    navController.navigate("${Screen.DetailCourse.route}/${courseId}")
-                }
+//                subtitle.content?.let {
+//                    navController.navigate("${Screen.DetailCourse.route}/${courseId}/")
+//                }
+                val subtitleId = subtitle.id // Assuming SubtitlesItem has an 'id' field
+                navController.navigate("${Screen.DetailCourse.route}/${courseId}/$subtitleId")
             }
             .padding(16.dp)
 
     ) {
-        Column {
-            Text(
-                text = subtitle.topic ?: "topic",
-                style = MaterialTheme.typography.titleLarge.copy(
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Bold
-                )
+        Text(
+            text = subtitle.topic ?: "topic",
+            style = MaterialTheme.typography.titleLarge.copy(
+                fontSize = 12.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.Black
             )
-            Spacer(modifier = Modifier.height(10.dp))
-            Text(
-                text = "1 minute",
-                style = MaterialTheme.typography.bodyLarge.copy(
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Light
-                )
-            )
-        }
+        )
     }
 }
 

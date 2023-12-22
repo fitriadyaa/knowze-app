@@ -1,12 +1,6 @@
 package com.knowzeteam.knowze.ui.screen.home
 
 import android.util.Log
-import androidx.compose.animation.core.LinearEasing
-import androidx.compose.animation.core.RepeatMode
-import androidx.compose.animation.core.animateFloat
-import androidx.compose.animation.core.infiniteRepeatable
-import androidx.compose.animation.core.rememberInfiniteTransition
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -18,11 +12,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -34,20 +26,16 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.knowzeteam.knowze.ui.ViewModelFactory
@@ -92,17 +80,7 @@ fun HomeSearch(
         viewModel.fetchRecommendations()
     }
 
-
-//    LaunchedEffect(response) {
-//        isLoading = true
-//        if (response?.courseId != null) {
-//            isLoading = false
-//        }
-//    }
-
-
     val recommendations by viewModel.recommendations.observeAsState()
-
 
     LaunchedEffect(shouldFocus) {
         if (shouldFocus) {
@@ -201,7 +179,8 @@ fun BoxWithText(
             Text(
                 text = text,
                 style = MaterialTheme.typography.bodyMedium,
-                modifier = Modifier.align(Alignment.Center)
+                modifier = Modifier.align(Alignment.Center),
+                color = Color.Black
             )
         }
     }
@@ -270,30 +249,6 @@ fun SettingDuration(
             }
         }
     }
-}
-
-@Composable
-fun shimmerAnimationEffect(
-    shimmerColor: Color = Color.LightGray.copy(alpha = 0.7f)
-): Brush {
-    val shimmerWidth = 0.2f
-    val infiniteTransition = rememberInfiniteTransition(label = "")
-    val animation = infiniteTransition.animateFloat(
-        initialValue = 0f,
-        targetValue = 1f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(durationMillis = 1000, easing = LinearEasing),
-            repeatMode = RepeatMode.Restart
-        ), label = ""
-    )
-
-    val xShimmer = animation.value
-
-    return Brush.linearGradient(
-        colors = listOf(shimmerColor, shimmerColor.copy(alpha = 0.2f), shimmerColor),
-        start = Offset.Zero,
-        end = Offset(xShimmer + shimmerWidth, 0f)
-    )
 }
 
 //@Preview

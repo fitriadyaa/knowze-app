@@ -33,8 +33,8 @@ fun CategoryButton(
     ) {
         Text(
             text = categoryText,
-            style = MaterialTheme.typography.labelMedium.copy(
-                fontSize = 10.sp, // Adjust the font size as needed
+            style = MaterialTheme.typography.bodyMedium.copy(
+                fontSize = 10.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color.White
             ),
