@@ -387,9 +387,7 @@ fun BannerCourse(
                     tint = Color.White,
                     modifier = Modifier
                         .clickable {
-                            Log.d("BannerCourse", "Back icon clicked")
                             navController.navigateUp()
-                            Log.d("BannerCourse", "popBackStack called")
                         }
                         .padding(16.dp)
                 )

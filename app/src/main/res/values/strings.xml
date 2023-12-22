@@ -80,6 +80,7 @@
     <string name="feedback_button">Kirim Feedback</string>
     <string name="feedback_form">Feedback</string>
     <string name="theme_course_pict">Gambar Tema Kursus</string>
+    <string name="video">Video</string>
 
     <!-- Gallery -->
     <string name="course_gallery">Galeri Kursus</string>
@@ -138,7 +139,6 @@
 
     <!-- SplashScreen -->
     <string name="knowzee">KNOW\nZEEEEEEE</string>
-
     <string name="continue_learn">Lanjutkan belajar ini yuk!</string>
 
 </resources>

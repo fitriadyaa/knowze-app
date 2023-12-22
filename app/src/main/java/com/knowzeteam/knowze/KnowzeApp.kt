@@ -11,7 +11,6 @@ import androidx.navigation.navArgument
 import com.google.firebase.auth.FirebaseAuth
 import com.google.gson.Gson
 import com.knowzeteam.knowze.data.local.AboutContentData
-import com.knowzeteam.knowze.data.remote.response.courseResponse.Content
 import com.knowzeteam.knowze.ui.navigation.Screen
 import com.knowzeteam.knowze.ui.screen.auth.login.LoginScreen
 import com.knowzeteam.knowze.ui.screen.auth.login.LoginViewModel
@@ -20,8 +19,6 @@ import com.knowzeteam.knowze.ui.screen.auth.register.RegisterScreen
 import com.knowzeteam.knowze.ui.screen.detailcourse.AboutContentScreen
 import com.knowzeteam.knowze.ui.screen.detailcourse.AboutCourseScreen
 import com.knowzeteam.knowze.ui.screen.detailcourse.DetailCourseScreen
-import com.knowzeteam.knowze.ui.screen.detailcourse.GeneratingCourseScreen
-import com.knowzeteam.knowze.ui.screen.detailcourse.VideoPlayerScreen
 import com.knowzeteam.knowze.ui.screen.detailcourse.YoutubeScreen
 import com.knowzeteam.knowze.ui.screen.gallery.CourseGallery
 import com.knowzeteam.knowze.ui.screen.home.HomeScreen
@@ -148,16 +145,9 @@ fun KnowzeApp(viewModelFactory: ViewModelProvider.Factory) {
             )
         }
 
-
         composable(Screen.TrendingKeyword.route) {
             TrendingKeywordScreen(
                 onBack = { navController.popBackStack() },
-            )
-        }
-
-        composable(Screen.GeneratingScreen.route){
-            GeneratingCourseScreen(
-                navController= navController,
             )
         }
 
@@ -165,13 +155,6 @@ fun KnowzeApp(viewModelFactory: ViewModelProvider.Factory) {
             CourseGallery(
                 onBack = { navController.popBackStack() },
             )
-        }
-
-        composable(
-            route = "${Screen.VideoPlayerScreen.route}/{link}",
-            arguments = listOf(navArgument("link") { type = NavType.StringType })
-        ) { backStackEntry ->
-            VideoPlayerScreen(link = backStackEntry.arguments?.getString("link") ?: "")
         }
 
         composable(

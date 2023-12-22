@@ -116,7 +116,6 @@ fun HomeSearch(
                     initialText = initialSearchText,
                     onSearchAction = { query ->
                         viewModel.onSearch(query)
-
                     },
                     focusRequester = focusRequester,
                     isLoading = generateLoading

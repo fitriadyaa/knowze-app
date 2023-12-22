@@ -79,7 +79,7 @@ class CourseViewModel(private val generateRepository: GenerateRepository, privat
             if (tokenResult != null) {
                 try {
                     val videoRequest = VideoRequest(prompt)
-                    val result = videoRepository.postVideo("Bearer $tokenResult", videoRequest, courseId)
+                    val result = videoRepository.getVideo("Bearer $tokenResult", courseId)
                     if (result.isSuccess) {
                         result.getOrNull()?.let {
                             _videos.value = it
@@ -102,37 +102,6 @@ class CourseViewModel(private val generateRepository: GenerateRepository, privat
                 }
             } else {
                 _error.value = "Authentication token is null or empty"
-                _isLoading.value = false
-            }
-        }
-    }
-
-    private val _videoResponse = MutableLiveData<VideoResponse>()
-    val videoResponse: LiveData<VideoResponse> = _videoResponse
-
-    // Function to fetch video details
-    fun fetchVideoDetails(courseId: String) {
-        viewModelScope.launch {
-            _isLoading.value = true
-            _error.value = null
-            try {
-                val token = getFirebaseAuthToken()
-                if (token != null) {
-                    val result = videoRepository.getVideo("Bearer $token", courseId)
-                    result.fold(
-                        onSuccess = { videoResponse ->
-                            _videoResponse.value = videoResponse
-                        },
-                        onFailure = { e ->
-                            _error.value = e.message ?: "Unknown error occurred"
-                        }
-                    )
-                } else {
-                    _error.value = "Authentication token is null or empty"
-                }
-            } catch (e: Exception) {
-                _error.value = "Exception occurred: ${e.message}"
-            } finally {
                 _isLoading.value = false
             }
         }

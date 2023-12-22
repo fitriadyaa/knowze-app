@@ -1,21 +1,22 @@
 package com.knowzeteam.knowze.repository
 
+import android.util.Log
 import com.knowzeteam.knowze.data.remote.response.videoresponse.VideoRequest
 import com.knowzeteam.knowze.data.remote.response.videoresponse.VideoResponse
 import com.knowzeteam.knowze.data.remote.retrofit.ApiService
 
 class VideoRepository(private val apiService: ApiService) {
 
-    suspend fun postVideo(idToken: String, videoRequest: VideoRequest, courseId: String): Result<VideoResponse> {
-        return try {
+    suspend fun postVideo(idToken: String, videoRequest: VideoRequest, courseId: String) {
+        try {
             val response = apiService.postVideo(idToken, videoRequest, courseId)
-            if (response.isSuccessful && response.body() != null) {
-                Result.success(response.body()!!)
+            if (response.isSuccessful) {
+                Log.d("VideoRepository", "Video posted successfully")
             } else {
-                Result.failure(RuntimeException("Response not successful"))
+                Log.e("VideoRepository", "Video post failed with code ${response.code()}")
             }
         } catch (e: Exception) {
-            Result.failure(e)
+           Log.e("VideoRepository", "Error posting video: ${e.message}")
         }
     }
 
