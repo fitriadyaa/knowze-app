@@ -36,7 +36,7 @@ fun YoutubeScreen(videoId: String, navController: NavController) {
                     navigationIconContentColor = Color.White
                 ), title = {
                     androidx.compose.material.Text(
-                        text = stringResource(id = R.string.trending_keyword),
+                        text = stringResource(id = R.string.video),
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                         color = Color.White

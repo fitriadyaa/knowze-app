@@ -10,12 +10,14 @@ import com.google.firebase.auth.FirebaseAuth
 import com.knowzeteam.knowze.data.remote.response.courseResponse.CourseResponse
 import com.knowzeteam.knowze.data.remote.response.courseResponse.GenerateResponse
 import com.knowzeteam.knowze.data.remote.response.videoresponse.VideoRequest
+import com.knowzeteam.knowze.data.remote.response.videoresponse.VideoResponse
 import com.knowzeteam.knowze.data.remote.response.videoresponse.VideosItem
 import com.knowzeteam.knowze.repository.GenerateRepository
 import com.knowzeteam.knowze.repository.RecommendationRepository
 import com.knowzeteam.knowze.repository.VideoRepository
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import retrofit2.HttpException
 import java.net.SocketTimeoutException
 
 class GenerateViewModel(
@@ -76,6 +78,11 @@ class GenerateViewModel(
                 _response.value = result
                 if (result != null) {
                     _isLoadingGenerate.value = false
+
+                    val courseId = result.courseId
+                    if (courseId != null) {
+                        postVideos(prompt, courseId)
+                    }
                 }
             } catch (e: SocketTimeoutException) {
                 Log.e("GenerateViewModel", "Network request timed out: ${e.message}")
@@ -120,13 +127,37 @@ class GenerateViewModel(
         }
     }
 
+    private val _videos = MutableLiveData<VideoResponse>()
+    val videos: LiveData<VideoResponse> = _videos
+
+    private fun postVideos(prompt: String, courseId: String) {
+        viewModelScope.launch {
+            _isLoading.value = true
+            _error.value = null
+            val token = getFirebaseAuthToken()
+            if (token != null) {
+                try {
+                    val videoRequest = VideoRequest(prompt)
+                    videoRepository.postVideo("Bearer $token", videoRequest, courseId)
+                } catch (e: Exception) {
+                    _error.value = "Exception occurred: ${e.message}"
+                } finally {
+                    _isLoading.value = false
+                }
+            } else {
+                _error.value = "Authentication token is null or empty"
+                _isLoading.value = false
+            }
+        }
+    }
+
+
     fun onSearch(prompt: String) {
         viewModelScope.launch {
             // Posting the generate query
             postGenerateQuery(prompt)
 
-            // Fetching videos
-//            fetchVideos(prompt)
+//            postVideos(prompt, courseId)
         }
     }
 }

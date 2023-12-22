@@ -1,6 +1,7 @@
 package com.knowzeteam.knowze.ui.screen.auth.register
 
 import android.annotation.SuppressLint
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -26,6 +27,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -39,7 +41,6 @@ import com.knowzeteam.knowze.R
 import com.knowzeteam.knowze.ui.component.EmailTextField
 import com.knowzeteam.knowze.ui.component.NameTextField
 import com.knowzeteam.knowze.ui.component.PasswordTextField
-import com.knowzeteam.knowze.ui.navigation.Screen
 import com.knowzeteam.knowze.ui.theme.KnowzeTheme
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -148,7 +149,7 @@ fun RegisterScreen(
 
                 Spacer(modifier = Modifier.height(50.dp))
 
-                RegisterButton(onClick = { /*TODO*/ })
+                RegisterButton()
             }
         }
     }
@@ -156,11 +157,11 @@ fun RegisterScreen(
 
 @Composable
 fun RegisterButton(
-    onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val context = LocalContext.current
     Button(
-        onClick = onClick,
+        onClick = { Toast.makeText(context, "Maaf, fitur ini dalam proses pengembangan", Toast.LENGTH_LONG).show()  },
         shape = RoundedCornerShape(10.dp),
         modifier = modifier
             .fillMaxWidth()
@@ -170,6 +171,7 @@ fun RegisterButton(
         Text(
             text = stringResource(R.string.register),
             modifier = modifier.padding(start = 8.dp),
+            style = MaterialTheme.typography.bodyMedium,
             color = Color.White
         )
     }

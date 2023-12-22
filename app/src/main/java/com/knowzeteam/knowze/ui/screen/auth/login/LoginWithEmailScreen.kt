@@ -1,6 +1,7 @@
 package com.knowzeteam.knowze.ui.screen.auth.login
 
 import android.annotation.SuppressLint
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -28,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -40,7 +42,6 @@ import androidx.navigation.compose.rememberNavController
 import com.knowzeteam.knowze.R
 import com.knowzeteam.knowze.ui.component.EmailTextField
 import com.knowzeteam.knowze.ui.component.PasswordTextField
-import com.knowzeteam.knowze.ui.navigation.Screen
 import com.knowzeteam.knowze.ui.theme.KnowzeTheme
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -59,7 +60,7 @@ fun LoginWithEmailScreen(
                     navigationIconContentColor = Color.White
                 ),
                 title = {
-                    androidx.compose.material.Text(
+                    Text(
                         text = stringResource(id = R.string.login),
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
@@ -147,7 +148,7 @@ fun LoginWithEmailScreen(
 
                 Spacer(modifier = Modifier.height(25.dp))
 
-                LoginButton(onClick = { /*TODO*/ })
+                LoginButton()
 
                 Spacer(modifier = Modifier.height(10.dp))
 
@@ -168,11 +169,11 @@ fun LoginWithEmailScreen(
 
 @Composable
 fun LoginButton(
-    onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val context = LocalContext.current
     Button(
-        onClick = onClick,
+        onClick = { Toast.makeText(context, "Maaf, fitur login dengan email dalam proses pengembangan", Toast.LENGTH_LONG).show() },
         shape = RoundedCornerShape(10.dp),
         modifier = modifier
             .fillMaxWidth()

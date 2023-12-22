@@ -124,7 +124,7 @@ fun DetailCourseScreen(
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                text = selectedSubtitle?.content?.opening ?: "",
+                text = selectedSubtitle?.content?.closing ?: "",
                 style = MaterialTheme.typography.bodyMedium,
                 color = Color.Black
             )

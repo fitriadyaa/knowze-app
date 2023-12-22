@@ -36,16 +36,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import com.knowzeteam.knowze.R
-
-@Composable
-fun GeneratingCourseScreen(
-    navController: NavController,
-    modifier: Modifier = Modifier,
-) {
-//GeneratingCourseScreen bisa di hapus buat di rapihin
-}
 
 @Composable
 fun GenerateCourseItem() {
@@ -97,11 +88,8 @@ fun BannerGenerateCourse() {
             ),
             modifier = Modifier
                 .weight(1f)
-                .padding(end = 8.dp)
         )
-
-        Spacer(modifier = Modifier.width(16.dp))
-
+        Spacer(modifier = Modifier.width(10.dp))
         Image(
             painter = painterResource(id = R.drawable.ic_generate_course),
             contentDescription = "Generate Icon",
@@ -161,12 +149,3 @@ fun ShimmerAnimation(
 
     content(brush)
 }
-
-
-//@Preview(showBackground = true)
-//@Composable
-//fun GeneratingCoursePreview() {
-//    KnowzeTheme {
-//        GeneratingCourseScreen()
-//    }
-//}
